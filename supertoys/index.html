@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super-Toys Last All Summer Long | 11ESH Intertextual Study</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Dancing+Script:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Press+Start+2P&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared/tokens.css">
+
+    <style>
+        :root { --text-hero: 76px; /* One Perfect Fourth step above --text-3xl (57 * 1.333) */ }
+        html, body { height: 100dvh; overflow: hidden; background: #F5ECD7; }
+        body { font-family: 'Inter', sans-serif; color: #3D2B1E; }
+
+        #app {
+            position: relative; width: 100vw; height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+            overflow: hidden;
+        }
+
+        /* ==============================
+           BACKGROUND — Holodeck to Garden Materialisation
+           ============================== */
+        .bg-container { position: fixed; inset: 0; z-index: 0; background: #F5ECD7; }
+        .bg-grid {
+            position: absolute; inset: 0;
+            background: linear-gradient(rgba(61,107,79,0.12) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(61,107,79,0.12) 1px, transparent 1px);
+            background-size: 60px 60px; opacity: 0; transition: opacity 0.8s ease;
+        }
+        .bg-grid.visible { opacity: 1; }
+        .bg-grid.fading { opacity: 0; transition: opacity 1.5s ease 0.5s; }
+        .bg-image {
+            position: absolute; inset: 0;
+            background: url('../generated-images/gemini_1775536621.jpeg') center/cover no-repeat;
+            opacity: 0;
+        }
+        .bg-image.loading { opacity: 1; animation: holodeckLoad 2.5s ease-out forwards; }
+        @keyframes holodeckLoad {
+            0%   { opacity: 0; filter: brightness(3) saturate(0) blur(10px); clip-path: inset(50% 50% 50% 50%); }
+            20%  { opacity: 0.6; filter: brightness(2.5) saturate(0.2) blur(5px); clip-path: inset(30% 30% 30% 30%); }
+            50%  { opacity: 0.8; filter: brightness(1.5) saturate(0.6) blur(2px); clip-path: inset(10% 10% 10% 10%); }
+            80%  { filter: brightness(1.1) saturate(0.9) blur(0px); clip-path: inset(0); }
+            100% { opacity: 1; filter: brightness(1) saturate(1) blur(0px); clip-path: inset(0); }
+        }
+        .bg-shimmer {
+            position: absolute; inset: 0; pointer-events: none; opacity: 0;
+            background: linear-gradient(105deg, transparent 0%, transparent 40%, rgba(255,255,255,0.15) 45%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.15) 55%, transparent 60%, transparent 100%);
+        }
+        .bg-shimmer.sweep { animation: shimmerSweep 1.5s ease-in-out; }
+        @keyframes shimmerSweep { 0% { opacity:1; transform:translateX(-100%); } 100% { opacity:0; transform:translateX(100%); } }
+
+        /* Warm parchment vignette — fades garden edges into ground colour */
+        .bg-overlay {
+            position: absolute; inset: 0; z-index: 1;
+            background: radial-gradient(ellipse at 50% 40%, transparent 0%, rgba(245,236,215,0.1) 40%, rgba(245,236,215,0.5) 75%, rgba(245,236,215,0.85) 100%);
+        }
+
+        /* ==============================
+           MAIN CONTENT — Three-band vertical flex: title | characters | nav
+           ============================== */
+        .content {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            height: 100vh; width: 100%;
+            padding: 0 var(--space-lg) var(--space-sm);
+        }
+
+        /* ==============================
+           LOGO — Crimson stamp + cream cursive subtitle
+           Title band: ~15% of viewport, vertically centred within its band
+           ============================== */
+        .logo-area {
+            text-align: center; flex-shrink: 0;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding-top: var(--space-xl); padding-bottom: var(--space-sm);
+        }
+        .logo-block {
+            font-family: 'Bungee', cursive;
+            font-size: var(--text-hero);
+            letter-spacing: 0.12em; color: #CC1B1B; line-height: 1;
+            -webkit-text-stroke: 1px #990000;
+            text-shadow: 3px 3px 0 #800000, 6px 6px 0 rgba(80,0,0,0.35), 0 0 25px rgba(204,27,27,0.2);
+            opacity: 0; transform: scale(3) rotate(-3deg);
+        }
+        .logo-block.stamped { animation: stampIn 0.6s cubic-bezier(0.175,0.885,0.32,1.275) forwards; }
+        @keyframes stampIn {
+            0%   { opacity:0; transform:scale(3) rotate(-3deg); }
+            40%  { opacity:1; transform:scale(0.92) rotate(0.5deg); }
+            65%  { transform:scale(1.04) rotate(-0.3deg); }
+            100% { opacity:1; transform:scale(1) rotate(0deg); }
+        }
+        @keyframes screenShake {
+            0%,100% { transform:translate(0,0); } 10% { transform:translate(-4px,3px); }
+            20% { transform:translate(5px,-3px); } 30% { transform:translate(-3px,4px); }
+            50% { transform:translate(-2px,3px); } 70% { transform:translate(-1px,2px); }
+        }
+        .screen-shake { animation: screenShake 0.4s ease-out; }
+
+        /* Subtitle — cream with dark halo for guaranteed contrast over garden */
+        .logo-cursive {
+            font-family: 'Dancing Script', cursive;
+            font-size: var(--text-2xl);
+            font-weight: 700; font-style: italic;
+            color: #FFF8ED;
+            text-shadow:
+                -1px -1px 0 rgba(42,26,10,0.85),
+                 1px -1px 0 rgba(42,26,10,0.85),
+                -1px  1px 0 rgba(42,26,10,0.85),
+                 1px  1px 0 rgba(42,26,10,0.85),
+                 0 0 12px rgba(42,26,10,0.6),
+                 0 2px 4px rgba(42,26,10,0.5);
+            letter-spacing: 0.03em; transform: rotate(-3deg);
+            opacity: 0; clip-path: inset(0 100% 0 0);
+        }
+        .logo-cursive.writing { animation: writeIn 1.8s ease-out forwards; }
+        @keyframes writeIn { 0% { opacity:1; clip-path:inset(0 100% 0 0); } 100% { opacity:1; clip-path:inset(0 0 0 0); } }
+
+        /* ==============================
+           CHARACTER STAGE — Flexbox ground-line alignment
+
+           Sprites are square canvases (124×124 etc.) with the character
+           art occupying roughly the central 50%. Each .character div is
+           given a narrow explicit width; the sprite overflows it visually
+           but the transparent padding overlaps harmlessly. This lets five
+           characters fit in the viewport while the sprites render large.
+           ============================== */
+        .character-stage {
+            position: relative;
+            flex: 1 1 auto;
+            display: flex; align-items: flex-end; justify-content: center;
+            gap: 0;
+            width: 100%;
+            margin: 0 auto;
+            padding-bottom: var(--space-xs);
+        }
+        /* Ground shadow — shared surface line */
+        .character-stage::after {
+            content: ''; position: absolute; bottom: 0; left: 10%; right: 10%;
+            height: 8px;
+            background: radial-gradient(ellipse at 50% 0%, rgba(42,26,10,0.22) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .character {
+            display: flex; flex-direction: column; align-items: center;
+            position: relative; /* contains speech bubble + prop overlays */
+            opacity: 0; cursor: pointer;
+            transition: filter 0.2s;
+            flex-shrink: 0;
+            overflow: visible;
+        }
+        /* Narrow layout columns — sprites overflow visually (transparent padding).
+           All v3-snes sprites are uniform 192×192 with figures filling ~90% of canvas. */
+        .character[data-char-id="teddy"]      { width: 160px; z-index: 1; }
+        .character[data-char-id="david"]      { width: 180px; z-index: 2; }
+        .character[data-char-id="monica"]     { width: 230px; z-index: 3; }
+        .character[data-char-id="henry"]      { width: 210px; z-index: 4; }
+        .character[data-char-id="servingman"] { width: 210px; z-index: 5; }
+
+        .character.entered { opacity: 1; }
+        .character:hover { filter: brightness(1.1) drop-shadow(0 4px 16px rgba(196,132,29,0.45)); }
+        .sprite-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+            pointer-events: none; /* sprites overflow columns — pass clicks to character div */
+        }
+        .character .sprite-img {
+            image-rendering: pixelated; image-rendering: crisp-edges;
+            width: auto;
+            transform-origin: bottom center;
+            pointer-events: none;
+        }
+        /* ---- Size hierarchy + ground-line correction ----
+           All v3-snes sprites are uniform 192×192 with figures filling ~90-99%
+           of the canvas. Padding-below feet (fraction of 192):
+             David 4.2%, Teddy 5.7%, Monica 0.5%, Henry 1.6%, Servingman 3.6%.
+           Since canvases are now uniform and figures nearly fill them, clamp
+           heights below directly control visual figure size — no ratio
+           compensation needed. Target hierarchy: Monica ≈ Henry > Servingman
+           > David >> Teddy. */
+        /* Size hierarchy (v4-painterly): Teddy < David < Monica = Henry < Serving-Man.
+           Teddy canvas is deliberately larger than David's because his figure
+           occupies only ~54% of the 192² canvas (vs ~82% for David); canvas
+           size compensates so his rendered figure remains proportionally smaller. */
+        .character[data-char-id="servingman"] .sprite-img  { height: clamp(315px, 41vh, 470px); }
+        .character[data-char-id="monica"] .sprite-img     { height: clamp(290px, 38vh, 435px); }
+        .character[data-char-id="henry"] .sprite-img      { height: clamp(290px, 38vh, 435px); }
+        .character[data-char-id="david"] .sprite-img      { height: clamp(260px, 34vh, 385px); }
+        .character[data-char-id="teddy"] .sprite-img      { height: clamp(225px, 30vh, 335px); }
+
+        /* Ground-line alignment is handled by alignGroundLine() in JS.
+           JS reads PADDING_BELOW (feet-to-bottom ratio) and adds
+           padding-bottom to each character div so all feet hit one visual
+           line. All v3-snes canvases are 192² — ratios scale with displayed
+           height automatically. */
+        .character canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+
+        /* Character names — directly beneath each sprite.
+           Legible at projection distance; high contrast against garden bg.
+           These labels create lateral L-R reading flow across the row.
+           Names overflow the narrow column divs (like sprites do). */
+        .character-name {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: #FFF8ED;
+            text-shadow:
+                -1px -1px 0 rgba(42,26,10,0.95),
+                 1px -1px 0 rgba(42,26,10,0.95),
+                -1px  1px 0 rgba(42,26,10,0.95),
+                 1px  1px 0 rgba(42,26,10,0.95),
+                 0 0 12px rgba(42,26,10,0.8),
+                 0 2px 6px rgba(42,26,10,0.6);
+            white-space: nowrap; opacity: 0; transition: opacity 0.5s ease 0.3s;
+            letter-spacing: 0.08em;
+        }
+        .character.entered .character-name { opacity: 1; }
+
+        /* Walk-in animations — flex layout, no translateX(-50%) needed */
+        .character.walk-left  { animation: walkInFromLeft 2.5s ease-out forwards; }
+        .character.walk-right { animation: walkInFromRight 2.5s ease-out forwards; }
+        @keyframes walkInFromLeft  { 0% { opacity:1; transform:translateX(-150vw); } 100% { opacity:1; transform:translateX(0); } }
+        @keyframes walkInFromRight { 0% { opacity:1; transform:translateX(150vw); }  100% { opacity:1; transform:translateX(0); } }
+
+        /* ==============================
+           SPEECH BUBBLES
+           ============================== */
+        .speech-bubble {
+            position: absolute; bottom: calc(100% + var(--space-xs)); left: 50%; transform: translateX(-50%);
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFF8ED 100%);
+            border: 2px solid #C4841D; border-radius: 14px;
+            padding: var(--space-sm) var(--space-md);
+            max-width: 380px; min-width: 200px; z-index: 20;
+            box-shadow: 3px 3px 12px rgba(92,74,58,0.25);
+            animation: bubblePop 0.3s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+        }
+        .speech-bubble::after {
+            content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent;
+            border-top: 10px solid #FFF8ED;
+        }
+        .speech-bubble::before {
+            content: ''; position: absolute; bottom: -13px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent;
+            border-top: 12px solid #C4841D;
+        }
+        @keyframes bubblePop { 0% { opacity:0; transform:translateX(-50%) scale(0.5); } 100% { opacity:1; transform:translateX(-50%) scale(1); } }
+        .speech-bubble .quote {
+            font-family: 'Libre Baskerville', serif;
+            font-size: var(--text-base);
+            font-style: italic; color: #3D2B1E; line-height: 1.5;
+        }
+
+        /* ==============================
+           PROP OVERLAYS
+           ============================== */
+        .prop-overlay { position: absolute; pointer-events: none; z-index: 15; }
+        .prop-rose {
+            width: 16px; height: 16px; border-radius: 50%;
+            background: radial-gradient(circle, #FF8C42 30%, #D4644A 70%, #8B3A2A 100%);
+            box-shadow: 0 0 6px rgba(255,140,66,0.5);
+            animation: propFloat 2s ease-in-out infinite;
+        }
+        @keyframes propFloat { 0%,100% { transform:translateY(0) rotate(0); } 50% { transform:translateY(-4px) rotate(10deg); } }
+        .prop-paper {
+            width: 18px; height: 22px; background: #FFF8ED; border: 1px solid #D4C4A8;
+            transform-origin: bottom center;
+            animation: propScribble 2.5s ease-in-out infinite;
+        }
+        @keyframes propScribble { 0%,30% { transform:rotate(0); } 50% { transform:rotate(5deg) translateY(-8px); } 70%,100% { transform:rotate(-2deg) translateY(4px); } }
+        .prop-flash {
+            width: 12px; height: 12px; background: #C4841D; border-radius: 50%;
+            animation: propFlash 1.5s ease-in-out infinite;
+        }
+        @keyframes propFlash { 0%,40%,100% { opacity:0; transform:scale(0); } 50% { opacity:1; transform:scale(1.5); } 60% { opacity:0; transform:scale(2); } }
+
+        /* ==============================
+           NAVIGATION — Storybook chapter buttons
+           Warm parchment tabs, like bookmarks in a children's picture book.
+           ============================== */
+        /* Navigation — compact, subordinate row. Recedes below characters.
+           Button text at --text-sm (14px) to create 2-step gap from names (18px). */
+        .nav-buttons {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-sm);
+            width: 100%; max-width: 500px; flex-shrink: 0;
+            margin-top: var(--space-xs);
+        }
+        .nav-btn {
+            display: flex; align-items: center; justify-content: center;
+            padding: var(--space-xs) var(--space-sm);
+            font-size: var(--text-sm);
+            min-height: 40px; text-decoration: none; text-align: center; cursor: pointer;
+            color: #5C4A3A; border-radius: 8px;
+            background: linear-gradient(to bottom, #FFF8ED 0%, #F5E6D0 50%, #ECD5B8 100%);
+            border: 2px solid #C4A265;
+            box-shadow: 0 2px 4px rgba(92,60,30,0.15), inset 0 1px 0 rgba(255,255,255,0.6);
+            opacity: 0;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            position: relative; overflow: hidden;
+        }
+        /* Subtle page-edge texture */
+        .nav-btn::before {
+            content: ''; position: absolute; inset: 2px;
+            border: 1px dashed rgba(196,162,101,0.3);
+            border-radius: 6px; pointer-events: none;
+        }
+        .nav-btn .btn-label {
+            font-family: 'Libre Baskerville', serif;
+            font-size: var(--text-sm);
+            font-weight: 700; color: #5C4A3A; line-height: 1.2;
+            letter-spacing: 0.01em;
+        }
+        .nav-btn.visible { animation: buttonSlideIn 0.5s ease-out forwards; }
+        @keyframes buttonSlideIn { 0% { opacity:0; transform:translateY(30px); } 100% { opacity:1; transform:translateY(0); } }
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            border-color: #A07840;
+            box-shadow: 0 6px 12px rgba(92,60,30,0.25), inset 0 1px 0 rgba(255,255,255,0.6);
+        }
+        .nav-btn:active { transform: translateY(1px) !important; }
+        .nav-btn:focus-visible { outline: 3px solid #C4841D; outline-offset: 3px; }
+
+        /* ==============================
+           IMPACT FLASH
+           ============================== */
+        .impact-flash { position: fixed; inset: 0; background: rgba(196,132,29,0.12); z-index: 100; pointer-events: none; opacity: 0; }
+        .impact-flash.flash { animation: flashPulse 0.3s ease-out; }
+        @keyframes flashPulse { 0% { opacity:1; } 100% { opacity:0; } }
+
+        /* ==============================
+           TOP CONTROLS — Replay + SFX at top-right
+           ============================== */
+        .top-controls {
+            position: fixed; top: var(--space-sm); right: var(--space-sm); z-index: 50;
+            display: flex; gap: var(--space-xs); align-items: center;
+        }
+        .ctrl-btn {
+            background: rgba(245,236,215,0.92);
+            backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+            border: 2px solid #C4841D; border-radius: 6px; color: #5C4A3A;
+            font-family: 'Press Start 2P', cursive; font-size: var(--text-sm);
+            padding: var(--space-xs) var(--space-sm); cursor: pointer;
+            min-height: var(--space-xl); display: inline-flex; align-items: center;
+            box-shadow: 2px 2px 0 rgba(92,74,58,0.2);
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .ctrl-btn:hover { background: rgba(255,255,255,0.95); border-color: #8B3A3A; }
+        .ctrl-btn:focus-visible { outline: 3px solid #C4841D; outline-offset: 3px; }
+        .hidden { display: none; }
+
+        /* Skip intro — bottom-right, only visible during intro */
+        .skip-btn {
+            position: fixed; bottom: var(--space-sm); right: var(--space-sm); z-index: 50;
+            background: none; border: none; color: rgba(61,43,30,0.45);
+            font-family: 'Inter', sans-serif; font-size: var(--text-base);
+            cursor: pointer; padding: var(--space-xs) var(--space-sm);
+            min-height: var(--space-xl);
+            transition: color 0.2s;
+        }
+        .skip-btn:hover { color: rgba(61,43,30,0.8); }
+
+        /* ==============================
+           BACK TO MAIN MENU
+           ============================== */
+        .back-home {
+            position: fixed; top: var(--space-sm); left: var(--space-sm); z-index: 50;
+            display: inline-flex; align-items: center; gap: var(--space-xs);
+            color: #3D2B1E;
+            font-family: 'Inter', sans-serif; font-size: var(--text-sm);
+            font-weight: 600;
+            text-decoration: none;
+            padding: var(--space-xs) var(--space-sm);
+            min-height: var(--space-xl);
+            border-radius: 6px;
+            background: rgba(245, 236, 215, 0.92);
+            border: 1.5px solid rgba(61,43,30,0.3);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.22);
+            transition: color 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+        .back-home:hover { color: #3D2B1E; background: rgba(245, 236, 215, 1); box-shadow: 0 4px 14px rgba(0,0,0,0.3); }
+        .back-home:focus-visible { outline: 3px solid #C4841D; outline-offset: 3px; }
+
+        /* ==============================
+           RESPONSIVE — Desktop-first graceful degradation
+           ============================== */
+        @media (max-width: 1200px) {
+            .nav-buttons { max-width: 700px; }
+            .character[data-char-id="monica"] { width: 170px; }
+            .character[data-char-id="henry"] { width: 150px; }
+            .character[data-char-id="servingman"] { width: 150px; }
+            .character[data-char-id="david"] { width: 130px; }
+            .character[data-char-id="teddy"] { width: 100px; }
+        }
+        @media (max-width: 900px) {
+            .nav-buttons { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="bg-container">
+            <div class="bg-grid" id="bgGrid"></div>
+            <div class="bg-image" id="bgImage"></div>
+            <div class="bg-shimmer" id="bgShimmer"></div>
+            <div class="bg-overlay"></div>
+        </div>
+        <div class="impact-flash" id="impactFlash"></div>
+
+        <main class="content" id="mainContent">
+            <div class="logo-area">
+                <h1 class="logo-block" id="logoBlock">SUPER TOYS</h1>
+                <p class="logo-cursive" id="logoCursive">last all summer long</p>
+            </div>
+            <div class="character-stage" id="characterStage"></div>
+            <nav class="nav-buttons" id="navButtons">
+                <a href="story.html" class="nav-btn" id="btn0">
+                    <span class="btn-label">Read the Story</span>
+                </a>
+                <a href="characters.html" class="nav-btn" id="btn1">
+                    <span class="btn-label">Activities</span>
+                </a>
+            </nav>
+        </main>
+    </div>
+
+    <a href="../index.html" class="back-home">&#8592; Main Menu</a>
+    <div class="top-controls">
+        <button class="ctrl-btn hidden" id="replayBtn" aria-label="Replay intro">&#9658; Replay</button>
+        <button class="ctrl-btn hidden" id="muteBtn" aria-label="Toggle sound">SFX: ON</button>
+    </div>
+    <button class="skip-btn" id="skipBtn">Skip intro</button>
+
+    <script>
+    /* === AUDIO ENGINE === */
+    class AudioEngine {
+        constructor() { this.ctx = null; this.muted = false; this.initialized = false; }
+        init() {
+            if (this.initialized) return;
+            this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            this.initialized = true;
+        }
+        playStamp() {
+            if (this.muted || !this.ctx) return;
+            const now = this.ctx.currentTime;
+            const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+            o.type='sine'; o.frequency.setValueAtTime(80,now); o.frequency.exponentialRampToValueAtTime(40,now+0.2);
+            g.gain.setValueAtTime(0.4,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.3);
+            o.connect(g).connect(this.ctx.destination); o.start(now); o.stop(now+0.3);
+            const bs=this.ctx.sampleRate*0.15, buf=this.ctx.createBuffer(1,bs,this.ctx.sampleRate), d=buf.getChannelData(0);
+            for(let i=0;i<bs;i++) d[i]=(Math.random()*2-1)*Math.exp(-i/(bs*0.1));
+            const n=this.ctx.createBufferSource(),ng=this.ctx.createGain(),f=this.ctx.createBiquadFilter();
+            n.buffer=buf; f.type='bandpass'; f.frequency.value=400; f.Q.value=1;
+            ng.gain.setValueAtTime(0.15,now); ng.gain.exponentialRampToValueAtTime(0.001,now+0.15);
+            n.connect(f).connect(ng).connect(this.ctx.destination); n.start(now);
+        }
+        playWriting(dur) {
+            if(this.muted||!this.ctx) return;
+            const now=this.ctx.currentTime, bs=this.ctx.sampleRate*dur, buf=this.ctx.createBuffer(1,bs,this.ctx.sampleRate), d=buf.getChannelData(0);
+            for(let i=0;i<bs;i++){const s=Math.sin(i*0.1)*0.3+Math.random()*0.7; d[i]=(Math.random()*2-1)*s*0.03;}
+            const n=this.ctx.createBufferSource(),g=this.ctx.createGain(),f=this.ctx.createBiquadFilter();
+            n.buffer=buf; f.type='highpass'; f.frequency.value=2000; g.gain.setValueAtTime(0.08,now);
+            n.connect(f).connect(g).connect(this.ctx.destination); n.start(now);
+        }
+        playFootstep(p=1) {
+            if(this.muted||!this.ctx) return;
+            const now=this.ctx.currentTime, o=this.ctx.createOscillator(), g=this.ctx.createGain();
+            o.type='triangle'; o.frequency.setValueAtTime(200*p,now); o.frequency.exponentialRampToValueAtTime(80*p,now+0.06);
+            g.gain.setValueAtTime(0.06,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.08);
+            o.connect(g).connect(this.ctx.destination); o.start(now); o.stop(now+0.08);
+        }
+        playHover() {
+            if(this.muted||!this.ctx) return;
+            const now=this.ctx.currentTime, o=this.ctx.createOscillator(), g=this.ctx.createGain();
+            o.type='sine'; o.frequency.setValueAtTime(600,now);
+            g.gain.setValueAtTime(0.05,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.06);
+            o.connect(g).connect(this.ctx.destination); o.start(now); o.stop(now+0.06);
+        }
+        playCharClick() {
+            if(this.muted||!this.ctx) return;
+            const now=this.ctx.currentTime;
+            [440,554,659].forEach((freq,i) => {
+                const o=this.ctx.createOscillator(), g=this.ctx.createGain();
+                o.type='triangle'; o.frequency.value=freq;
+                g.gain.setValueAtTime(0.04,now+i*0.08); g.gain.exponentialRampToValueAtTime(0.001,now+i*0.08+0.15);
+                o.connect(g).connect(this.ctx.destination); o.start(now+i*0.08); o.stop(now+i*0.08+0.15);
+            });
+        }
+        startAmbient() {
+            if(this.muted||!this.ctx) return;
+            const o=this.ctx.createOscillator(), g=this.ctx.createGain(), l=this.ctx.createOscillator(), lg=this.ctx.createGain();
+            o.type='sine'; o.frequency.value=55; g.gain.value=0.012;
+            l.type='sine'; l.frequency.value=0.3; lg.gain.value=0.004;
+            l.connect(lg).connect(g.gain); o.connect(g).connect(this.ctx.destination); o.start(); l.start();
+            this._ambientGain=g;
+        }
+        toggle() { this.muted=!this.muted; if(this._ambientGain) this._ambientGain.gain.value=this.muted?0:0.012; return !this.muted; }
+    }
+
+    /* === CHARACTER DEFINITIONS === */
+    const CHARACTERS = [
+        { id:'david', name:'DAVID', side:'left', targetX:0.30, walkDelay:3000, footstepPitch:1.4, small:false,
+          spriteDir:'sprites/david/animations/walking-v4-painterly/east', staticSprite:'sprites/david/rotations-v4-painterly/south.png', frameCount:6,
+          fallbackColor:'#5B9BD5', fallbackHeight:40,
+          clickAnim: { frames:[
+            {src:'sprites/david/animations/letter-writing-v4-painterly/south/frame_000.png', ms:140},
+            {src:'sprites/david/animations/letter-writing-v4-painterly/south/frame_001.png', ms:140},
+            {src:'sprites/david/animations/letter-writing-v4-painterly/south/frame_002.png', ms:140},
+            {src:'sprites/david/animations/letter-writing-v4-painterly/south/frame_003.png', ms:140},
+            {src:'sprites/david/animations/letter-writing-v4-painterly/south/frame_004.png', ms:140},
+            {src:'sprites/david/animations/letter-writing-v4-painterly/south/frame_005.png', ms:140},
+            {src:'sprites/david/animations/letter-writing-v4-painterly/south/frame_006.png', ms:140},
+            {src:'sprites/david/animations/letter-writing-v4-painterly/south/frame_007.png', ms:140}
+          ], loop:true },
+          animClass:'david-anim', propType:null, propPos:{},
+          quote:'\u201CDear Mummy, I love you...\u201D' },
+        { id:'teddy', name:'TEDDY', side:'left', targetX:0.15, walkDelay:3400, footstepPitch:2.0, small:false,
+          spriteDir:'sprites/teddy/animations/walking-v4-painterly/east', staticSprite:'sprites/teddy/rotations-v4-painterly/south.png', frameCount:6,
+          fallbackColor:'#DAA520', fallbackHeight:28,
+          clickAnim: { frames:[
+            {src:'sprites/teddy/animations/pluck-rose-v4-painterly/south/frame_000.png', ms:140},
+            {src:'sprites/teddy/animations/pluck-rose-v4-painterly/south/frame_001.png', ms:140},
+            {src:'sprites/teddy/animations/pluck-rose-v4-painterly/south/frame_002.png', ms:140},
+            {src:'sprites/teddy/animations/pluck-rose-v4-painterly/south/frame_003.png', ms:140},
+            {src:'sprites/teddy/animations/pluck-rose-v4-painterly/south/frame_004.png', ms:140},
+            {src:'sprites/teddy/animations/pluck-rose-v4-painterly/south/frame_005.png', ms:140},
+            {src:'sprites/teddy/animations/pluck-rose-v4-painterly/south/frame_006.png', ms:140},
+            {src:'sprites/teddy/animations/pluck-rose-v4-painterly/south/frame_007.png', ms:140}
+          ], loop:true },
+          animClass:'', propType:null, propPos:{},
+          quote:'\u201CYou and I are real, David.\u201D' },
+        { id:'monica', name:'MONICA', side:'right', targetX:0.50, walkDelay:3600, footstepPitch:1.2, small:false,
+          spriteDir:'sprites/monica/animations/walking-v4-painterly/west', staticSprite:'sprites/monica/rotations-v4-painterly/south.png', frameCount:6,
+          fallbackColor:'#5F9EA0', fallbackHeight:40,
+          clickAnim: { frames:[
+            {src:'sprites/monica/animations/calling-out-v4-painterly/south/frame_000.png', ms:140},
+            {src:'sprites/monica/animations/calling-out-v4-painterly/south/frame_001.png', ms:140},
+            {src:'sprites/monica/animations/calling-out-v4-painterly/south/frame_002.png', ms:140},
+            {src:'sprites/monica/animations/calling-out-v4-painterly/south/frame_003.png', ms:140},
+            {src:'sprites/monica/animations/calling-out-v4-painterly/south/frame_004.png', ms:140},
+            {src:'sprites/monica/animations/calling-out-v4-painterly/south/frame_005.png', ms:140},
+            {src:'sprites/monica/animations/calling-out-v4-painterly/south/frame_006.png', ms:140},
+            {src:'sprites/monica/animations/calling-out-v4-painterly/south/frame_007.png', ms:140}
+          ], loop:true },
+          animClass:'monica-anim', propType:null, propPos:{},
+          quote:'\u201CIsn\u2019t it lovely?\u201D' },
+        { id:'henry', name:'HENRY', side:'right', targetX:0.67, walkDelay:3900, footstepPitch:0.9, small:false,
+          spriteDir:'sprites/henry/animations/walking-v4-painterly/west', staticSprite:'sprites/henry/rotations-v4-painterly/south.png', frameCount:6,
+          fallbackColor:'#2C3E6B', fallbackHeight:40,
+          clickAnim: { frames:[
+            {src:'sprites/henry/animations/speech-v4-painterly/south/frame_000.png', ms:140},
+            {src:'sprites/henry/animations/speech-v4-painterly/south/frame_001.png', ms:140},
+            {src:'sprites/henry/animations/speech-v4-painterly/south/frame_002.png', ms:140},
+            {src:'sprites/henry/animations/speech-v4-painterly/south/frame_003.png', ms:140},
+            {src:'sprites/henry/animations/speech-v4-painterly/south/frame_004.png', ms:140},
+            {src:'sprites/henry/animations/speech-v4-painterly/south/frame_005.png', ms:140},
+            {src:'sprites/henry/animations/speech-v4-painterly/south/frame_006.png', ms:140},
+            {src:'sprites/henry/animations/speech-v4-painterly/south/frame_007.png', ms:140}
+          ], loop:true },
+          animClass:'henry-anim', propType:'flash', propPos:{top:'20%',right:'10%'},
+          quote:'\u201CPersonal isolation will then be banished forever!\u201D' },
+        { id:'servingman', name:'SERVING-MAN', side:'right', targetX:0.83, walkDelay:4200, footstepPitch:0.7, small:false,
+          spriteDir:'sprites/servingman/animations/walking-v4-painterly/west', staticSprite:'sprites/servingman/rotations-v4-painterly/south.png', frameCount:6,
+          fallbackColor:'#808080', fallbackHeight:40,
+          clickAnim: { frames:[
+            {src:'sprites/servingman/animations/polite-follower-v4-painterly/south/frame_000.png', ms:140},
+            {src:'sprites/servingman/animations/polite-follower-v4-painterly/south/frame_001.png', ms:140},
+            {src:'sprites/servingman/animations/polite-follower-v4-painterly/south/frame_002.png', ms:140},
+            {src:'sprites/servingman/animations/polite-follower-v4-painterly/south/frame_003.png', ms:140},
+            {src:'sprites/servingman/animations/polite-follower-v4-painterly/south/frame_004.png', ms:140},
+            {src:'sprites/servingman/animations/polite-follower-v4-painterly/south/frame_005.png', ms:140},
+            {src:'sprites/servingman/animations/polite-follower-v4-painterly/south/frame_006.png', ms:140},
+            {src:'sprites/servingman/animations/polite-follower-v4-painterly/south/frame_007.png', ms:140}
+          ], loop:true },
+          animClass:'servingman-anim', propType:null, propPos:{},
+          quote:'\u201CRoses occasionally suffer from black spot.\u201D' }
+    ];
+
+    /* === GROUND-LINE ALIGNMENT ===
+       Each sprite is a square canvas where the figure's feet sit at a different
+       vertical position. This function measures each rendered sprite, calculates
+       the absolute padding below feet, and adds padding-bottom to each character
+       div so all feet land on one visual line. */
+    const PADDING_BELOW = { david: 6/192, teddy: 42/192, monica: 2/192, henry: 8/192, servingman: 6/192 };
+
+    function alignGroundLine() {
+        const chars = document.querySelectorAll('.character');
+        if (!chars.length) return;
+        // Reset any previous alignment
+        chars.forEach(el => {
+            const w = el.querySelector('.sprite-wrapper');
+            if (w) w.style.paddingBottom = '';
+            else el.style.paddingBottom = '';
+            const nameEl = el.querySelector('.character-name');
+            if (nameEl) nameEl.style.marginTop = '';
+        });
+        // Measure absolute padding-below-feet in rendered pixels
+        const measurements = [...chars].map(el => {
+            const id = el.dataset.charId;
+            const img = el.querySelector('.sprite-img, canvas');
+            const h = img ? img.getBoundingClientRect().height : 0;
+            return { el, absPad: (PADDING_BELOW[id] || 0) * h };
+        });
+        // The character with the most absolute padding sets the reference line
+        const maxPad = Math.max(...measurements.map(m => m.absPad));
+        // Each sprite-wrapper gets extra padding = (maxPad - their padding)
+        // so all sprite-wrapper bottoms land on the same ground line.
+        measurements.forEach(({ el, absPad }) => {
+            const lift = maxPad - absPad;
+            if (lift > 1) {
+                const w = el.querySelector('.sprite-wrapper');
+                (w || el).style.paddingBottom = lift + 'px';
+            }
+        });
+        // Pull character names up so they sit just below the visual feet.
+        // All chars share the same offset (lift + absPad = maxPad always),
+        // so names stay on a shared horizontal line, tight to the feet.
+        const NAME_GAP = 6; // px between feet and name
+        measurements.forEach(({ el }) => {
+            const nameEl = el.querySelector('.character-name');
+            if (nameEl) nameEl.style.marginTop = -(maxPad - NAME_GAP) + 'px';
+        });
+    }
+
+    /* === SPRITE DETECTION === */
+    function preloadSprite(src) { return new Promise(r => { const img=new Image(); img.onload=()=>r(img); img.onerror=()=>r(null); img.src=src; }); }
+    async function checkSpriteAvailability(c) {
+        const w = await preloadSprite(c.spriteDir+'/frame_000.png');
+        c.hasWalkSprites = w !== null;
+        const dir = c.side==='left' ? 'east' : 'west';
+        const sw = 'sprites/'+c.id+'/rotations-v4-painterly/'+dir+'.png';
+        const si = await preloadSprite(sw);
+        c.hasStaticSprite = si !== null;
+        c.staticWalkSprite = sw;
+        const so = await preloadSprite(c.staticSprite);
+        c.hasSouthSprite = so !== null;
+        c.hasSprites = c.hasWalkSprites || c.hasStaticSprite;
+        // Click animations removed — frames no longer preloaded.
+        c.hasClickAnim = false;
+    }
+
+    /* Click animations were removed — characters stay on their static south-facing
+       sprite when activated; only the speech bubble and any prop overlay appear.
+       These stubs remain so deactivateCharacter() can call them safely. */
+    function playClickAnim() { /* no-op */ }
+    function stopClickAnim() { /* no-op */ }
+
+    /* === SPAWN CHARACTER === */
+    let activeCharacter = null;
+
+    /* Character display order (L-to-R): Teddy, David, Monica, Henry, Serving-man */
+    const CHAR_ORDER = { teddy: 1, david: 2, monica: 3, henry: 4, servingman: 5 };
+
+    function spawnCharacter(def, stage, instant) {
+        const el = document.createElement('div');
+        el.className = 'character' + (def.small ? ' small-sprite' : '');
+        el.style.order = CHAR_ORDER[def.id] || 3;
+        el.dataset.charId = def.id;
+
+        let spriteEl, walkInterval = null;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'sprite-wrapper';
+        if (def.hasWalkSprites) {
+            spriteEl = document.createElement('img'); spriteEl.className='sprite-img'; spriteEl.alt=def.name;
+            spriteEl.src = def.spriteDir+'/frame_000.png';
+            wrapper.appendChild(spriteEl);
+            if (!instant) {
+                let frame=0;
+                walkInterval = setInterval(() => { frame=(frame+1)%def.frameCount; spriteEl.src=def.spriteDir+'/frame_'+String(frame).padStart(3,'0')+'.png'; audio.playFootstep(def.footstepPitch); }, 300);
+            }
+        } else if (def.hasStaticSprite || def.hasSouthSprite) {
+            spriteEl = document.createElement('img'); spriteEl.className='sprite-img'; spriteEl.alt=def.name;
+            spriteEl.src = def.hasStaticSprite ? def.staticWalkSprite : def.staticSprite;
+            wrapper.appendChild(spriteEl);
+            if (!instant) {
+                let bob=0;
+                walkInterval = setInterval(() => { bob++; spriteEl.style.transform='translateY('+(Math.sin(bob*0.8)*3)+'px)'; if(bob%3===0) audio.playFootstep(def.footstepPitch); }, 150);
+                el._bobInterval = walkInterval; /* store so click handler can clear it */
+            }
+        } else {
+            const cv=document.createElement('canvas'); const sz=def.fallbackHeight;
+            cv.width=Math.floor(sz*0.6); cv.height=sz; cv.style.width=(cv.width*3)+'px'; cv.style.height=(sz*3)+'px';
+            cv.style.imageRendering='pixelated';
+            const ctx=cv.getContext('2d'); ctx.fillStyle=def.fallbackColor; ctx.fillRect(0,0,cv.width,cv.height);
+            ctx.fillStyle='#FFE0C4'; ctx.fillRect(Math.floor(cv.width*0.15),0,Math.floor(cv.width*0.7),Math.floor(sz*0.3));
+            wrapper.appendChild(cv);
+        }
+        el.appendChild(wrapper);
+
+        const nameLabel = document.createElement('span'); nameLabel.className='character-name'; nameLabel.textContent=def.name;
+        el.appendChild(nameLabel);
+        stage.appendChild(el);
+
+        if (instant) {
+            el.classList.add('entered');
+            if (spriteEl && def.hasSouthSprite) { spriteEl.src=def.staticSprite; spriteEl.style.transform=''; }
+        } else {
+            requestAnimationFrame(() => { el.classList.add('entered'); el.classList.add(def.side==='left'?'walk-left':'walk-right'); });
+            setTimeout(() => { if(walkInterval) clearInterval(walkInterval); if(spriteEl){spriteEl.style.transform=''; if(def.hasSouthSprite) spriteEl.src=def.staticSprite;} }, 2500);
+        }
+
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
+            audio.init(); audio.playCharClick();
+            toggleCharacterAnimation(el, def);
+        });
+    }
+
+    function toggleCharacterAnimation(el, def) {
+        if (activeCharacter === def.id) {
+            deactivateCharacter();
+            return;
+        }
+        if (activeCharacter) deactivateCharacter();
+
+        activeCharacter = def.id;
+
+        // Clear bob interval and inline transform — static sprite stays put
+        if (el._bobInterval) { clearInterval(el._bobInterval); el._bobInterval = null; }
+        const spriteImg = el.querySelector('.sprite-img');
+        if (spriteImg) spriteImg.style.transform = '';
+
+        if (def.propType) {
+            const prop = document.createElement('div');
+            prop.className = 'prop-overlay prop-' + def.propType;
+            Object.assign(prop.style, def.propPos);
+            prop.dataset.prop = 'true';
+            el.appendChild(prop);
+        }
+
+        const bubble = document.createElement('div');
+        bubble.className = 'speech-bubble';
+        bubble.innerHTML = '<div class="quote">' + def.quote + '</div>';
+        bubble.dataset.bubble = 'true';
+        el.appendChild(bubble);
+    }
+
+    function deactivateCharacter() {
+        const els = document.querySelectorAll('.character');
+        els.forEach(el => {
+            const spriteImg = el.querySelector('.sprite-img');
+            if (spriteImg) {
+                stopClickAnim(spriteImg);
+                spriteImg.style.transform = '';
+                const def = CHARACTERS.find(c => c.id === el.dataset.charId);
+                if (def && def.hasSouthSprite) spriteImg.src = def.staticSprite;
+            }
+            el.classList.remove('animating', 'david-anim', 'monica-anim', 'henry-anim', 'servingman-anim');
+            el.querySelectorAll('[data-prop]').forEach(p => p.remove());
+            el.querySelectorAll('[data-bubble]').forEach(b => b.remove());
+        });
+        activeCharacter = null;
+    }
+
+    /* === ANIMATION SEQUENCER === */
+    const audio = new AudioEngine();
+    let introComplete = false, animationTimers = [];
+    function scheduleAt(ms, fn) { const t=setTimeout(fn,ms); animationTimers.push(t); return t; }
+
+    async function runIntroSequence() {
+        const bgImage=document.getElementById('bgImage'), bgGrid=document.getElementById('bgGrid'),
+              bgShimmer=document.getElementById('bgShimmer'), logoBlock=document.getElementById('logoBlock'),
+              logoCursive=document.getElementById('logoCursive'), mainContent=document.getElementById('mainContent'),
+              impactFlash=document.getElementById('impactFlash'), muteBtn=document.getElementById('muteBtn'),
+              stage=document.getElementById('characterStage');
+
+        scheduleAt(100, () => bgGrid.classList.add('visible'));
+        scheduleAt(600, () => { bgImage.classList.add('loading'); bgGrid.classList.add('fading'); });
+        scheduleAt(2800, () => bgShimmer.classList.add('sweep'));
+        scheduleAt(1500, () => {
+            audio.init(); audio.startAmbient(); muteBtn.classList.remove('hidden');
+            logoBlock.classList.add('stamped'); impactFlash.classList.add('flash'); audio.playStamp();
+            mainContent.classList.add('screen-shake');
+            setTimeout(()=>mainContent.classList.remove('screen-shake'),400);
+            setTimeout(()=>impactFlash.classList.remove('flash'),300);
+        });
+        scheduleAt(2500, () => { logoCursive.classList.add('writing'); audio.playWriting(1.8); });
+        CHARACTERS.forEach(def => { scheduleAt(def.walkDelay, () => spawnCharacter(def, stage, false)); });
+        for(let i=0;i<2;i++) scheduleAt(5500+i*150, () => { const b=document.getElementById('btn'+i); if(b) b.classList.add('visible'); });
+        scheduleAt(5800, () => alignGroundLine());
+        scheduleAt(6500, () => { introComplete=true; document.getElementById('skipBtn').classList.add('hidden'); document.getElementById('replayBtn').classList.remove('hidden'); try{localStorage.setItem('supertoys_intro_seen','1');}catch(e){} });
+    }
+
+    function skipIntro() {
+        animationTimers.forEach(t=>clearTimeout(t)); animationTimers=[];
+        const bg=document.getElementById('bgImage'); bg.style.animation='none'; bg.style.opacity='1'; bg.style.filter='none'; bg.style.clipPath='inset(0)';
+        document.getElementById('bgGrid').style.display='none';
+        const lb=document.getElementById('logoBlock'); lb.style.animation='none'; lb.style.opacity='1'; lb.style.transform='scale(1) rotate(0deg)';
+        const lc=document.getElementById('logoCursive'); lc.style.animation='none'; lc.style.opacity='1'; lc.style.clipPath='inset(0 0 0 0)';
+        document.getElementById('muteBtn').classList.remove('hidden');
+        const stage=document.getElementById('characterStage'); stage.innerHTML='';
+        CHARACTERS.forEach(def => spawnCharacter(def, stage, true));
+        requestAnimationFrame(() => alignGroundLine());
+        setTimeout(alignGroundLine, 300); // belt-and-suspenders: CSS heights may not be ready in first rAF
+        for(let i=0;i<2;i++){const b=document.getElementById('btn'+i); if(b){b.style.animation='none'; b.style.opacity='1'; b.style.transform='translateY(0)';}}
+        introComplete=true; document.getElementById('skipBtn').classList.add('hidden'); document.getElementById('replayBtn').classList.remove('hidden');
+        try{localStorage.setItem('supertoys_intro_seen','1');}catch(e){}
+    }
+
+    /* === INIT === */
+    document.getElementById('skipBtn').addEventListener('click', skipIntro);
+    document.getElementById('replayBtn').addEventListener('click', () => { try{localStorage.removeItem('supertoys_intro_seen');}catch(e){} location.reload(); });
+    document.getElementById('muteBtn').addEventListener('click', () => { audio.init(); const on=audio.toggle(); document.getElementById('muteBtn').textContent='SFX: '+(on?'ON':'OFF'); });
+    document.querySelectorAll('.nav-btn').forEach(btn => { btn.addEventListener('mouseenter', () => { audio.init(); audio.playHover(); }); });
+    document.addEventListener('keydown', e => { if(!introComplete&&(e.key==='Enter'||e.key===' ')){e.preventDefault(); skipIntro();} });
+    document.addEventListener('click', () => { if(activeCharacter) deactivateCharacter(); });
+    let _resizeTimer; window.addEventListener('resize', () => { clearTimeout(_resizeTimer); _resizeTimer = setTimeout(alignGroundLine, 100); });
+
+    Promise.all(CHARACTERS.map(c => checkSpriteAvailability(c))).then(() => {
+        if (localStorage.getItem('supertoys_intro_seen')) { skipIntro(); } else { runIntroSequence(); }
+    });
+    </script>
+</body>
+</html>

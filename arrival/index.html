@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrival | 11ESH Intertextual Study</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 32px;
+            --space-xl: 48px;
+            --space-2xl: 64px;
+            --space-3xl: 96px;
+            --text-sm: 14px;
+            --text-base: 18px;
+            --text-lg: 24px;
+            --text-xl: 32px;
+            --text-2xl: 43px;
+            --text-3xl: 57px;
+        }
+
+        /* === RESET & GROUND === */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100dvh; overflow: hidden; background: #0D1117; }
+        body { font-family: 'Inter', sans-serif; color: #E8E4DF; }
+        #app { position: relative; width: 100vw; height: 100dvh; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
+
+        /* === BACKGROUND — The Chamber === */
+        .bg-container { position: fixed; inset: 0; z-index: 0; background: #0D1117; overflow: hidden; }
+
+        /* Gemini-generated chamber background */
+        .bg-chamber {
+            position: absolute; inset: 0;
+            background: url('../generated-images/gemini_1775669727.jpeg') center/cover no-repeat;
+            opacity: 0;
+        }
+        .bg-chamber.loading {
+            animation: chamberReveal 4s ease-out forwards;
+        }
+        @keyframes chamberReveal {
+            0%   { opacity: 0; filter: brightness(0.2) saturate(0) blur(15px); }
+            30%  { opacity: 0.4; filter: brightness(0.5) saturate(0.3) blur(8px); }
+            60%  { opacity: 0.7; filter: brightness(0.7) saturate(0.7) blur(3px); }
+            100% { opacity: 0.85; filter: brightness(0.75) saturate(0.85) blur(0px); }
+        }
+        /* Fog gradient layers */
+        .bg-fog-base {
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 70%, #1A2332 0%, #0D1117 70%);
+        }
+        .bg-fog-layer {
+            position: absolute; inset: -50%; width: 200%; height: 200%;
+            opacity: 0; transition: opacity 2s ease;
+        }
+        .bg-fog-layer.visible { opacity: 1; }
+        .bg-fog-layer:nth-child(2) {
+            background: radial-gradient(ellipse at 30% 50%, rgba(184,197,214,0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 40%, rgba(184,197,214,0.06) 0%, transparent 45%);
+            animation: fogDrift1 25s ease-in-out infinite;
+        }
+        .bg-fog-layer:nth-child(3) {
+            background: radial-gradient(ellipse at 60% 60%, rgba(107,141,178,0.06) 0%, transparent 40%),
+                        radial-gradient(ellipse at 25% 35%, rgba(184,197,214,0.04) 0%, transparent 35%);
+            animation: fogDrift2 30s ease-in-out infinite;
+        }
+        .bg-fog-layer:nth-child(4) {
+            background: radial-gradient(ellipse at 45% 45%, rgba(212,149,106,0.03) 0%, transparent 30%);
+            animation: fogDrift3 20s ease-in-out infinite;
+        }
+        @keyframes fogDrift1 { 0%,100% { transform:translate(0,0) scale(1); } 50% { transform:translate(3%,-2%) scale(1.05); } }
+        @keyframes fogDrift2 { 0%,100% { transform:translate(0,0) scale(1.02); } 50% { transform:translate(-4%,3%) scale(0.98); } }
+        @keyframes fogDrift3 { 0%,100% { transform:translate(0,0); } 50% { transform:translate(2%,-1%); } }
+
+        /* Floating logograms */
+        .logogram-field { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+        .logogram {
+            position: absolute; border-radius: 50%; opacity: 0;
+            border: 2px solid rgba(232,228,223,0.12);
+            box-shadow: 0 0 30px rgba(184,197,214,0.05), inset 0 0 20px rgba(184,197,214,0.03);
+            transition: opacity 3s ease;
+        }
+        .logogram.visible { opacity: 1; }
+        .logogram::before {
+            content: ''; position: absolute; inset: 15%; border-radius: 50%;
+            border: 1.5px solid rgba(232,228,223,0.08);
+            transform: rotate(0deg);
+        }
+        .logogram::after {
+            content: ''; position: absolute;
+            top: 50%; left: 10%; right: 10%; height: 1.5px;
+            background: rgba(232,228,223,0.06);
+            transform: rotate(var(--r, 30deg));
+        }
+        .logogram:nth-child(1) { width: 180px; height: 180px; top: 8%; left: 5%; --r: 25deg; animation: logoFloat1 18s ease-in-out infinite; }
+        .logogram:nth-child(2) { width: 120px; height: 120px; top: 15%; right: 10%; --r: -40deg; animation: logoFloat2 22s ease-in-out infinite; }
+        .logogram:nth-child(3) { width: 240px; height: 240px; bottom: 10%; left: 15%; --r: 60deg; animation: logoFloat3 26s ease-in-out infinite; }
+        .logogram:nth-child(4) { width: 90px; height: 90px; top: 40%; right: 5%; --r: -15deg; animation: logoFloat2 15s ease-in-out infinite; }
+        .logogram:nth-child(5) { width: 160px; height: 160px; bottom: 20%; right: 20%; --r: 45deg; animation: logoFloat1 20s ease-in-out infinite; }
+        @keyframes logoFloat1 { 0%,100% { transform:translateY(0) rotate(0deg); } 50% { transform:translateY(-20px) rotate(8deg); } }
+        @keyframes logoFloat2 { 0%,100% { transform:translateY(0) rotate(0deg); } 50% { transform:translateY(15px) rotate(-6deg); } }
+        @keyframes logoFloat3 { 0%,100% { transform:translateY(0) rotate(0deg); } 50% { transform:translateY(-12px) rotate(5deg); } }
+
+        /* Vignette overlay */
+        .bg-vignette {
+            position: absolute; inset: 0; z-index: 1;
+            background: radial-gradient(ellipse at 50% 45%, transparent 0%, transparent 35%, rgba(13,17,23,0.4) 65%, rgba(13,17,23,0.85) 100%);
+        }
+
+        /* === MAIN CONTENT === */
+        .content {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100dvh; width: 100%; padding: var(--space-sm) var(--space-lg); gap: 0;
+        }
+
+        /* === LOGO === */
+        .logo-area { text-align: center; margin-bottom: var(--space-xs); flex-shrink: 0; }
+        .logo-main {
+            font-family: 'Cormorant Garamond', serif; font-size: var(--text-3xl);
+            font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase;
+            color: #E8E4DF; line-height: 1;
+            text-shadow: 0 0 60px rgba(184,197,214,0.3), 0 0 120px rgba(184,197,214,0.1);
+            opacity: 0; filter: blur(20px);
+        }
+        .logo-main.revealed {
+            animation: logoReveal 3s ease-out forwards;
+        }
+        @keyframes logoReveal {
+            0%   { opacity: 0; filter: blur(20px); letter-spacing: 0.6em; }
+            40%  { opacity: 0.6; filter: blur(8px); letter-spacing: 0.4em; }
+            70%  { opacity: 0.9; filter: blur(2px); }
+            100% { opacity: 1; filter: blur(0px); letter-spacing: 0.35em; }
+        }
+        .logo-sub {
+            font-family: 'Cormorant Garamond', serif; font-size: var(--text-base);
+            font-weight: 400; font-style: italic; color: rgba(184,197,214,0.5);
+            letter-spacing: 0.2em; margin-top: var(--space-xs);
+            opacity: 0;
+        }
+        .logo-sub.revealed { animation: subReveal 2s ease-out 1.5s forwards; }
+        @keyframes subReveal { 0% { opacity:0; transform:translateY(10px); } 100% { opacity:1; transform:translateY(0); } }
+
+        .logo-quote {
+            font-family: 'Cormorant Garamond', serif; font-size: var(--text-lg);
+            font-style: italic; font-weight: 400; color: rgba(212,149,106,0.6);
+            max-width: 700px; margin: var(--space-sm) auto 0; line-height: 1.6;
+            opacity: 0;
+        }
+        .logo-quote.revealed { animation: subReveal 2.5s ease-out 2.5s forwards; }
+
+        /* === CHARACTER STAGE === */
+        .character-stage {
+            position: relative; width: 100%; max-width: 1400px;
+            height: 340px; margin: 0; flex-shrink: 1; min-height: 200px;
+        }
+        /* Glass divider — the screen between humans and heptapods */
+        .glass-screen {
+            position: absolute; bottom: 30%; left: 10%; right: 10%; height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(184,197,214,0.15), rgba(184,197,214,0.25), rgba(184,197,214,0.15), transparent);
+            opacity: 0; transition: opacity 2s ease;
+        }
+        .glass-screen.visible { opacity: 1; }
+        .glass-screen::before {
+            content: ''; position: absolute; top: -40px; left: 0; right: 0; height: 80px;
+            background: linear-gradient(180deg, transparent, rgba(184,197,214,0.03), transparent);
+        }
+
+        .character {
+            position: absolute; bottom: 0; display: flex; flex-direction: column;
+            align-items: center; gap: var(--space-xs); opacity: 0; cursor: pointer;
+            transition: filter 0.3s; transform: translateX(-50%);
+        }
+        .character.entered { opacity: 1; }
+        .character:hover { filter: brightness(1.2) drop-shadow(0 0 20px rgba(184,197,214,0.3)); }
+        .character .sprite-img {
+            image-rendering: pixelated; image-rendering: crisp-edges;
+            width: auto; height: 280px; transform-origin: bottom center;
+        }
+        /* Heptapods — larger, behind the glass, misty */
+        .character.heptapod { cursor: pointer; }
+        .character.heptapod .sprite-img { height: 320px; filter: brightness(0.7) contrast(0.9); opacity: 0.7; }
+        .character.heptapod:hover .sprite-img { filter: brightness(0.85) contrast(1); opacity: 0.9; }
+
+        /* Size hierarchy — heptapods tower over humans */
+        .character[data-char-id="abbott"] .sprite-img { scale: 1.1; translate: 0 -50px; }
+        .character[data-char-id="costello"] .sprite-img { scale: 1.1; translate: 0 -50px; }
+        .character[data-char-id="louise"] .sprite-img { translate: 0 0; }
+        .character[data-char-id="ian"] .sprite-img { translate: 0 0; }
+        .character[data-char-id="hannah"] .sprite-img { scale: 0.75; translate: 0 -10px; }
+
+        .character canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+        /* Costello is a CSS mirror of Abbott */
+        .character[data-char-id="costello"] .sprite-img { transform: scaleX(-1); }
+        .character-name {
+            font-family: 'Press Start 2P', cursive; font-size: var(--text-sm);
+            text-shadow: 0 0 12px rgba(184,197,214,0.5), 1px 1px 0 rgba(0,0,0,0.8);
+            white-space: nowrap; opacity: 0; transition: opacity 0.5s ease 0.3s;
+        }
+        .character.entered .character-name { opacity: 1; }
+        /* Character-specific name colours */
+        .character[data-char-id="louise"] .character-name { color: #6B8DB2; }
+        .character[data-char-id="hannah"] .character-name { color: #D4956A; }
+        .character[data-char-id="ian"] .character-name { color: #7BA08E; }
+        .character[data-char-id="abbott"] .character-name { color: #8B9DAF; }
+        .character[data-char-id="costello"] .character-name { color: #8B9DAF; }
+
+        /* Fade-from-mist entrance */
+        .character.mist-enter {
+            animation: mistEntrance 3s ease-out forwards;
+        }
+        @keyframes mistEntrance {
+            0%   { opacity: 0; filter: blur(15px) brightness(2); transform: translateX(-50%) scale(0.9); }
+            30%  { opacity: 0.5; filter: blur(8px) brightness(1.5); }
+            60%  { opacity: 0.8; filter: blur(3px) brightness(1.2); }
+            100% { opacity: 1; filter: blur(0px) brightness(1); transform: translateX(-50%) scale(1); }
+        }
+        .character.heptapod.mist-enter {
+            animation: heptapodEntrance 4s ease-out forwards;
+        }
+        @keyframes heptapodEntrance {
+            0%   { opacity: 0; filter: blur(20px) brightness(2); }
+            40%  { opacity: 0.3; filter: blur(10px) brightness(1.3); }
+            100% { opacity: 1; filter: blur(0px) brightness(1); transform: translateX(-50%) scale(1); }
+        }
+
+        /* Idle breathing animations */
+        .character.idle .sprite-img { animation: idleBreathe 4s ease-in-out infinite; }
+        @keyframes idleBreathe {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        /* Heptapods are completely still — only animate on click (frame-swap tentacle animation) */
+
+        /* === SPEECH BUBBLE (Ink-style) === */
+        .speech-bubble {
+            position: absolute; bottom: calc(100% + 16px); left: 50%; transform: translateX(-50%);
+            background: linear-gradient(135deg, rgba(26,35,50,0.95), rgba(13,17,23,0.98));
+            border: 1.5px solid rgba(184,197,214,0.2); border-radius: 16px; padding: var(--space-md) var(--space-md);
+            max-width: 400px; min-width: 220px; z-index: 20;
+            box-shadow: 0 0 40px rgba(184,197,214,0.1), 0 8px 32px rgba(0,0,0,0.4);
+            animation: inkSplash 0.4s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+        }
+        .speech-bubble::after {
+            content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent;
+            border-top: 8px solid rgba(26,35,50,0.95);
+        }
+        @keyframes inkSplash {
+            0% { opacity:0; transform:translateX(-50%) scale(0.3); filter: blur(10px); }
+            60% { filter: blur(0); }
+            100% { opacity:1; transform:translateX(-50%) scale(1); }
+        }
+        .speech-bubble .quote {
+            font-family: 'Cormorant Garamond', serif; font-size: var(--text-base); font-style: italic;
+            color: #E8E4DF; line-height: 1.55;
+        }
+        .speech-bubble .speaker {
+            font-family: 'Inter', sans-serif; font-size: var(--text-sm);
+            color: rgba(184,197,214,0.4); margin-top: var(--space-xs); text-align: right;
+        }
+
+        /* === LOGOGRAM BURST (when clicking heptapods) — Gemini logogram image === */
+        .logogram-burst {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+            width: 280px; height: 280px; pointer-events: none; z-index: 25;
+            animation: logoBurst 4s ease-out forwards;
+        }
+        .logogram-burst .logo-img {
+            width: 100%; height: 100%;
+            filter: drop-shadow(0 0 30px rgba(184,197,214,0.5));
+        }
+        .logogram-burst .logo-text {
+            position: absolute; left: -60px; right: -60px; top: calc(100% + 12px);
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif; font-size: var(--text-base); font-style: italic;
+            color: rgba(232,228,223,0.75); line-height: 1.5;
+            text-shadow: 0 0 20px rgba(13,17,23,0.8);
+        }
+        @keyframes logoBurst {
+            0% { opacity:0; transform:translate(-50%,-50%) scale(0.3); filter: blur(15px); }
+            20% { opacity:1; transform:translate(-50%,-50%) scale(1.05); filter: blur(2px); }
+            30% { transform:translate(-50%,-50%) scale(1); filter: blur(0); }
+            75% { opacity:1; }
+            100% { opacity:0; transform:translate(-50%,-50%) scale(1.1); }
+        }
+
+        /* === NAVIGATION — Circular-themed Buttons === */
+        .nav-buttons {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-sm); max-width: 1200px; width: 100%; margin-top: var(--space-xs);
+        }
+        .nav-btn {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: var(--space-md) var(--space-md); min-height: var(--space-xl); text-decoration: none; text-align: center; cursor: pointer; font-size: var(--text-base);
+            color: #E8E4DF; border-radius: 12px;
+            background: linear-gradient(160deg, rgba(26,35,50,0.9), rgba(13,17,23,0.95));
+            border: 1.5px solid rgba(184,197,214,0.12);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(184,197,214,0.05);
+            opacity: 0; transform: translateY(30px);
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+        }
+        .nav-btn .btn-label {
+            font-family: 'Cormorant Garamond', serif; font-size: var(--text-xl);
+            font-weight: 700; color: #E8E4DF; line-height: 1.2;
+            letter-spacing: 0.02em;
+        }
+        /* Accent colours per button */
+        .nav-btn:nth-child(1) { border-top: 3px solid rgba(107,141,178,0.5); }
+        .nav-btn:nth-child(2) { border-top: 3px solid rgba(212,149,106,0.5); }
+        .nav-btn:nth-child(3) { border-top: 3px solid rgba(123,160,142,0.5); }
+        .nav-btn.visible { animation: btnFadeIn 0.6s ease-out forwards; }
+        @keyframes btnFadeIn { 0% { opacity:0; transform:translateY(30px); } 100% { opacity:1; transform:translateY(0); } }
+        .nav-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 20px rgba(184,197,214,0.08);
+            border-color: rgba(184,197,214,0.3);
+        }
+        .nav-btn:nth-child(1):hover { border-top-color: #6B8DB2; box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 20px rgba(107,141,178,0.15); }
+        .nav-btn:nth-child(2):hover { border-top-color: #D4956A; box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 20px rgba(212,149,106,0.15); }
+        .nav-btn:nth-child(3):hover { border-top-color: #7BA08E; box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 20px rgba(123,160,142,0.15); }
+        .nav-btn:active { transform: translateY(1px) !important; }
+        .nav-btn:focus-visible { outline: 2px solid #6B8DB2; outline-offset: 3px; }
+
+        /* Back link */
+        .back-link {
+            position: fixed; top: var(--space-sm); left: var(--space-sm); z-index: 50;
+            font-family: 'Inter', sans-serif; font-size: var(--text-base); color: rgba(184,197,214,0.4);
+            text-decoration: none; padding: var(--space-xs) var(--space-sm);
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: rgba(184,197,214,0.8); }
+
+        /* === MUTE / SKIP === */
+        .mute-btn {
+            position: fixed; top: var(--space-sm); right: var(--space-sm); z-index: 50;
+            background: rgba(26,35,50,0.8); backdrop-filter: blur(4px);
+            border: 1.5px solid rgba(184,197,214,0.2); border-radius: 6px; color: rgba(184,197,214,0.6);
+            font-family: 'Press Start 2P', cursive; font-size: var(--text-sm); padding: var(--space-xs) var(--space-sm);
+            cursor: pointer; opacity: 0;
+        }
+        .mute-btn.visible { opacity: 1; }
+        .mute-btn:hover { border-color: rgba(184,197,214,0.4); color: rgba(184,197,214,0.9); }
+        .skip-btn {
+            position: fixed; bottom: var(--space-sm); right: var(--space-sm); z-index: 50;
+            background: none; border: none; color: rgba(184,197,214,0.25);
+            font-family: 'Inter', sans-serif; font-size: var(--text-base); cursor: pointer; padding: var(--space-xs) var(--space-sm);
+        }
+        .skip-btn:hover { color: rgba(184,197,214,0.6); }
+        .skip-btn.hidden { display: none; }
+
+        /* Footer */
+        .footer-note {
+            margin-top: var(--space-md); font-size: var(--text-sm); color: rgba(184,197,214,0.12);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 1200px) {
+            .nav-buttons { max-width: 900px; }
+            .character-stage { max-width: 1100px; }
+        }
+        @media (max-width: 900px) {
+            .nav-buttons { grid-template-columns: repeat(2, 1fr); }
+            .character .sprite-img { height: 260px; }
+            .character.heptapod .sprite-img { height: 300px; }
+            .character-stage { height: 340px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="bg-container">
+            <div class="bg-chamber" id="bgChamber"></div>
+            <div class="bg-fog-base"></div>
+            <div class="bg-fog-layer" id="fogLayer1"></div>
+            <div class="bg-fog-layer" id="fogLayer2"></div>
+            <div class="bg-fog-layer" id="fogLayer3"></div>
+            <div class="logogram-field" id="logogramField">
+                <div class="logogram"></div>
+                <div class="logogram"></div>
+                <div class="logogram"></div>
+                <div class="logogram"></div>
+                <div class="logogram"></div>
+            </div>
+            <div class="bg-vignette"></div>
+        </div>
+
+        <main class="content" id="mainContent">
+            <div class="logo-area">
+                <h1 class="logo-main" id="logoMain">ARRIVAL</h1>
+                <p class="logo-sub" id="logoSub">Denis Villeneuve, 2016</p>
+                <p class="logo-quote" id="logoQuote">&ldquo;I used to think this was the beginning of your story.&rdquo;</p>
+            </div>
+            <div class="character-stage" id="characterStage">
+                <div class="glass-screen" id="glassScreen"></div>
+            </div>
+            <nav class="nav-buttons" id="navButtons">
+                <a href="characters/louise.html" class="nav-btn" id="btn0">
+                    <span class="btn-label">Louise Banks</span>
+                </a>
+                <a href="characters/hannah.html" class="nav-btn" id="btn1">
+                    <span class="btn-label">Hannah Banks</span>
+                </a>
+                <a href="characters/ian.html" class="nav-btn" id="btn2">
+                    <span class="btn-label">Ian Donnelly</span>
+                </a>
+            </nav>
+        </main>
+    </div>
+    <a href="../index.html" class="back-link" id="backLink">&larr; Back to Hub</a>
+    <button class="mute-btn" id="muteBtn" aria-label="Toggle sound">SFX: ON</button>
+    <button class="skip-btn" id="skipBtn">Skip intro</button>
+    <button class="skip-btn hidden" id="replayBtn">&#9658; Replay intro</button>
+
+    <script>
+    /* ============================
+       AUDIO ENGINE — Ethereal Drone
+       ============================ */
+    class AudioEngine {
+        constructor() { this.ctx = null; this.muted = false; this.initialized = false; this._nodes = []; }
+        init() {
+            if (this.initialized) return;
+            this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            this.initialized = true;
+        }
+        /* Low drone — two detuned sine waves + filtered noise */
+        startAmbient() {
+            if (this.muted || !this.ctx) return;
+            const now = this.ctx.currentTime;
+            // Base drone
+            const o1 = this.ctx.createOscillator(), g1 = this.ctx.createGain();
+            o1.type = 'sine'; o1.frequency.value = 55;
+            g1.gain.setValueAtTime(0, now); g1.gain.linearRampToValueAtTime(0.015, now + 3);
+            o1.connect(g1).connect(this.ctx.destination); o1.start();
+            // Detuned harmonic
+            const o2 = this.ctx.createOscillator(), g2 = this.ctx.createGain();
+            o2.type = 'sine'; o2.frequency.value = 82.5;
+            g2.gain.setValueAtTime(0, now); g2.gain.linearRampToValueAtTime(0.008, now + 4);
+            o2.connect(g2).connect(this.ctx.destination); o2.start();
+            // Slow LFO on drone
+            const lfo = this.ctx.createOscillator(), lfoG = this.ctx.createGain();
+            lfo.type = 'sine'; lfo.frequency.value = 0.15; lfoG.gain.value = 0.003;
+            lfo.connect(lfoG).connect(g1.gain); lfo.start();
+            this._ambientGain = g1; this._nodes = [o1, o2, lfo, g1, g2, lfoG];
+        }
+        /* Character emerge — ethereal shimmer */
+        playEmerge(pitch = 1) {
+            if (this.muted || !this.ctx) return;
+            const now = this.ctx.currentTime;
+            const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+            o.type = 'sine'; o.frequency.setValueAtTime(400 * pitch, now);
+            o.frequency.exponentialRampToValueAtTime(600 * pitch, now + 0.8);
+            g.gain.setValueAtTime(0.03, now); g.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+            o.connect(g).connect(this.ctx.destination); o.start(now); o.stop(now + 1.2);
+        }
+        /* Logogram materialise — resonant ring */
+        playLogogram() {
+            if (this.muted || !this.ctx) return;
+            const now = this.ctx.currentTime;
+            [220, 330, 440].forEach((freq, i) => {
+                const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+                o.type = 'triangle'; o.frequency.value = freq;
+                g.gain.setValueAtTime(0.02, now + i * 0.12);
+                g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.6);
+                o.connect(g).connect(this.ctx.destination);
+                o.start(now + i * 0.12); o.stop(now + i * 0.12 + 0.6);
+            });
+        }
+        /* Hover — subtle tonal touch */
+        playHover() {
+            if (this.muted || !this.ctx) return;
+            const now = this.ctx.currentTime;
+            const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+            o.type = 'sine'; o.frequency.value = 550;
+            g.gain.setValueAtTime(0.025, now); g.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+            o.connect(g).connect(this.ctx.destination); o.start(now); o.stop(now + 0.08);
+        }
+        /* Character click — soft chime */
+        playCharClick() {
+            if (this.muted || !this.ctx) return;
+            const now = this.ctx.currentTime;
+            [523, 659, 784].forEach((freq, i) => {
+                const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+                o.type = 'sine'; o.frequency.value = freq;
+                g.gain.setValueAtTime(0.03, now + i * 0.1);
+                g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.3);
+                o.connect(g).connect(this.ctx.destination);
+                o.start(now + i * 0.1); o.stop(now + i * 0.1 + 0.3);
+            });
+        }
+        /* Heptapod deep resonance */
+        playHeptapod() {
+            if (this.muted || !this.ctx) return;
+            const now = this.ctx.currentTime;
+            const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+            o.type = 'sawtooth'; o.frequency.setValueAtTime(65, now);
+            o.frequency.exponentialRampToValueAtTime(45, now + 1.5);
+            const f = this.ctx.createBiquadFilter();
+            f.type = 'lowpass'; f.frequency.value = 200; f.Q.value = 5;
+            g.gain.setValueAtTime(0.06, now); g.gain.exponentialRampToValueAtTime(0.001, now + 2);
+            o.connect(f).connect(g).connect(this.ctx.destination); o.start(now); o.stop(now + 2);
+        }
+        toggle() {
+            this.muted = !this.muted;
+            if (this._ambientGain) this._ambientGain.gain.value = this.muted ? 0 : 0.015;
+            return !this.muted;
+        }
+    }
+
+    /* ============================
+       CHARACTER DEFINITIONS
+       ============================ */
+    const CHARACTERS = [
+        { id:'abbott', name:'ABBOTT', isHeptapod:true, targetX:0.35, emergeDelay:2000,
+          staticSprite:'sprites/abbott/rotations/south.png?v=2',
+          fallbackColor:'#4A5568', fallbackHeight:80,
+          quote:'\u201CUse weapon.\u201D', speaker:'Abbott',
+          logogramTexts: [
+              'Offer weapon.',
+              'Louise sees future.'
+          ]},
+        { id:'costello', name:'COSTELLO', isHeptapod:true, targetX:0.65, emergeDelay:2400,
+          staticSprite:'sprites/abbott/rotations/south.png?v=2',
+          fallbackColor:'#4A5568', fallbackHeight:70,
+          quote:'\u201CLouise has weapon. Louise sees future.\u201D', speaker:'Costello',
+          logogramTexts: [
+              'Offer weapon.',
+              'Louise sees future.'
+          ]},
+        { id:'louise', name:'LOUISE', isHeptapod:false, targetX:0.22, emergeDelay:3500,
+          staticSprite:'sprites/louise/rotations/south.png',
+          fallbackColor:'#6B8DB2', fallbackHeight:50,
+          _quoteIdx: 0,
+          quotes: [
+              '\u201CMemory is a strange thing. It doesn\u2019t work like I thought it did. We are so bound by time, by its order.\u201D',
+              '\u201CThere are days that define your story beyond your life. Like the day they arrived.\u201D',
+              '\u201CLanguage is the foundation of civilization. It is the glue that holds a people together. It is the first weapon drawn in a conflict.\u201D',
+              '\u201CIf you could see your whole life from start to finish, would you change things?\u201D'
+          ], speaker:'Louise Banks' },
+        { id:'hannah', name:'HANNAH', isHeptapod:false, targetX:0.50, emergeDelay:4200,
+          staticSprite:'sprites/hannah/rotations/south.png',
+          fallbackColor:'#D4956A', fallbackHeight:35,
+          _quoteIdx: 0,
+          quotes: [
+              '\u201CWhy\u2019s my name Hannah?\u201D',
+              '\u201CLike a technical term, where we make a deal, and we both get something out of it.\u201D',
+              '\u201CI\u2019m unstoppable?\u201D'
+          ], speaker:'Hannah Banks' },
+        { id:'ian', name:'IAN', isHeptapod:false, targetX:0.78, emergeDelay:3800,
+          staticSprite:'sprites/ian/rotations/south.png',
+          fallbackColor:'#7BA08E', fallbackHeight:50,
+          _quoteIdx: 0,
+          quotes: [
+              '\u201CYou know what surprised me the most? It wasn\u2019t meeting them. It was meeting you.\u201D',
+              '\u201CWell, the cornerstone of civilization isn\u2019t language, it\u2019s science.\u201D',
+              '\u201CAre you dreaming in their language?\u201D',
+              '\u201CAre they scientists? Or tourists?\u201D'
+          ], speaker:'Ian Donnelly' }
+    ];
+
+    /* ============================
+       SPRITE PRELOADER
+       ============================ */
+    function preloadSprite(src) {
+        return new Promise(r => {
+            const img = new Image();
+            img.onload = () => r(img);
+            img.onerror = () => r(null);
+            img.src = src;
+        });
+    }
+    async function checkSpriteAvailability(c) {
+        const s = await preloadSprite(c.staticSprite);
+        c.hasSouthSprite = s !== null;
+        c.hasSprites = c.hasSouthSprite;
+    }
+
+    /* ============================
+       HEPTAPOD FRAME ANIMATION
+       ============================ */
+    function startFrameCycling(el, framePaths) {
+        const img = el.querySelector('.sprite-img');
+        if (!img) return;
+        // Preload all frames
+        const frames = framePaths.map(src => { const i = new Image(); i.src = src; return i; });
+        let currentFrame = 0;
+        // Slow, eerie cycle: 400ms per frame (1.6s total loop)
+        setInterval(() => {
+            currentFrame = (currentFrame + 1) % frames.length;
+            if (frames[currentFrame].complete) img.src = frames[currentFrame].src;
+        }, 400);
+    }
+
+    /* ============================
+       MAIN SEQUENCE
+       ============================ */
+    const audio = new AudioEngine();
+    let introComplete = false;
+    let activeBubble = null;
+
+    function createFallbackSprite(c) {
+        const canvas = document.createElement('canvas');
+        const h = c.fallbackHeight;
+        const w = c.isHeptapod ? h * 0.7 : h * 0.5;
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        if (c.isHeptapod) {
+            // Heptapod silhouette — tall oval with tentacle suggestions
+            ctx.fillStyle = c.fallbackColor;
+            ctx.globalAlpha = 0.5;
+            ctx.beginPath();
+            ctx.ellipse(w/2, h*0.35, w*0.3, h*0.35, 0, 0, Math.PI*2);
+            ctx.fill();
+            // Tentacles
+            ctx.globalAlpha = 0.3;
+            for (let i = 0; i < 7; i++) {
+                const angle = (i / 7) * Math.PI + Math.PI * 0.15;
+                const tx = w/2 + Math.cos(angle) * w * 0.35;
+                const ty = h * 0.55 + Math.sin(angle) * h * 0.15;
+                ctx.beginPath();
+                ctx.moveTo(w/2, h*0.5);
+                ctx.quadraticCurveTo(tx, ty, tx + (Math.random()-0.5)*10, h);
+                ctx.lineWidth = 3; ctx.strokeStyle = c.fallbackColor; ctx.stroke();
+            }
+        } else {
+            // Human silhouette
+            ctx.fillStyle = c.fallbackColor;
+            ctx.globalAlpha = 0.6;
+            ctx.beginPath();
+            ctx.ellipse(w/2, h*0.12, w*0.18, h*0.12, 0, 0, Math.PI*2);
+            ctx.fill();
+            ctx.fillRect(w*0.3, h*0.24, w*0.4, h*0.45);
+            ctx.fillRect(w*0.25, h*0.65, w*0.2, h*0.35);
+            ctx.fillRect(w*0.55, h*0.65, w*0.2, h*0.35);
+        }
+        return canvas;
+    }
+
+    function buildCharacterEl(c) {
+        const el = document.createElement('div');
+        el.className = 'character' + (c.isHeptapod ? ' heptapod' : '');
+        el.dataset.charId = c.id;
+        el.style.left = (c.targetX * 100) + '%';
+
+        if (c.hasSouthSprite) {
+            const img = document.createElement('img');
+            img.className = 'sprite-img';
+            img.src = c.staticSprite;
+            img.alt = c.name;
+            img.draggable = false;
+            el.appendChild(img);
+        } else {
+            const canvas = createFallbackSprite(c);
+            canvas.className = 'sprite-img';
+            canvas.style.width = 'auto';
+            canvas.style.height = c.isHeptapod ? '400px' : '350px';
+            el.appendChild(canvas);
+        }
+
+        const nameEl = document.createElement('span');
+        nameEl.className = 'character-name';
+        nameEl.textContent = c.name;
+        el.appendChild(nameEl);
+
+        // Click handler
+        el.addEventListener('click', () => handleCharClick(c, el));
+
+        // Hover sound
+        el.addEventListener('mouseenter', () => {
+            if (introComplete) audio.playHover();
+        });
+
+        return el;
+    }
+
+    let logogramBurstTimeout = null;
+
+    function showLogogramBurst(el, c) {
+        audio.playLogogram();
+        const burst = document.createElement('div');
+        burst.className = 'logogram-burst';
+        // Canvas: draw logogram PNG then replace white bg with transparency
+        const canvas = document.createElement('canvas');
+        canvas.className = 'logo-img';
+        const tmpImg = new Image();
+        tmpImg.onload = () => {
+            const sz = 280;
+            canvas.width = sz; canvas.height = sz;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(tmpImg, 0, 0, sz, sz);
+            const imgData = ctx.getImageData(0, 0, sz, sz);
+            const d = imgData.data;
+            const out = new ImageData(sz, sz);
+            for (let i = 0; i < d.length; i += 4) {
+                // Luminance of original pixel
+                const lum = d[i] * 0.299 + d[i+1] * 0.587 + d[i+2] * 0.114;
+                // Dark pixels = logogram marks → white + fully opaque
+                // White pixels = background → transparent
+                const alpha = Math.round(255 - lum);
+                out.data[i] = 255; out.data[i+1] = 255; out.data[i+2] = 255;
+                out.data[i+3] = alpha;
+            }
+            ctx.putImageData(out, 0, 0);
+        };
+        tmpImg.src = '../generated-images/imagen4_1775804797_1.png';
+        burst.appendChild(canvas);
+        const texts = c.logogramTexts;
+        const textEl = document.createElement('p');
+        textEl.className = 'logo-text';
+        textEl.textContent = texts[Math.floor(Math.random() * texts.length)];
+        burst.appendChild(textEl);
+        el.appendChild(burst);
+        logogramBurstTimeout = setTimeout(() => burst.remove(), 4500);
+    }
+
+    function handleCharClick(c, el) {
+        audio.init();
+        // Remove existing bubble
+        if (activeBubble) { activeBubble.remove(); activeBubble = null; }
+        // Remove existing logogram burst
+        const existingBurst = document.querySelector('.logogram-burst');
+        if (existingBurst) existingBurst.remove();
+        if (logogramBurstTimeout) { clearTimeout(logogramBurstTimeout); logogramBurstTimeout = null; }
+
+        if (c.isHeptapod) {
+            audio.playHeptapod();
+            showLogogramBurst(el, c);
+        } else {
+            audio.playCharClick();
+            // Show speech bubble
+            const bubble = document.createElement('div');
+            bubble.className = 'speech-bubble';
+            const quote = c.quotes[c._quoteIdx];
+            c._quoteIdx = (c._quoteIdx + 1) % c.quotes.length;
+            bubble.innerHTML = `<p class="quote">${quote}</p><p class="speaker">\u2014 ${c.speaker}</p>`;
+            el.appendChild(bubble);
+            activeBubble = bubble;
+            // Click anywhere else to dismiss
+            setTimeout(() => {
+                const dismiss = (e) => {
+                    if (!bubble.contains(e.target)) {
+                        bubble.remove();
+                        activeBubble = null;
+                        document.removeEventListener('click', dismiss);
+                    }
+                };
+                document.addEventListener('click', dismiss);
+            }, 100);
+        }
+    }
+
+    /* === INTRO SEQUENCE === */
+    async function runIntro() {
+        const stage = document.getElementById('characterStage');
+        const fogLayers = document.querySelectorAll('.bg-fog-layer');
+        const logograms = document.querySelectorAll('.logogram');
+        const logoMain = document.getElementById('logoMain');
+        const logoSub = document.getElementById('logoSub');
+        const logoQuote = document.getElementById('logoQuote');
+        const glass = document.getElementById('glassScreen');
+        const muteBtn = document.getElementById('muteBtn');
+        const skipBtn = document.getElementById('skipBtn');
+        const replayBtn = document.getElementById('replayBtn');
+
+        // Check sprite and video availability
+        await Promise.all(CHARACTERS.map(c => checkSpriteAvailability(c)));
+
+        // Build character elements
+        const charEls = CHARACTERS.map(c => {
+            const el = buildCharacterEl(c);
+            stage.appendChild(el);
+            return { def: c, el };
+        });
+
+        // Phase 0: Chamber background materialises
+        const chamber = document.getElementById('bgChamber');
+        setTimeout(() => chamber.classList.add('loading'), 500);
+
+        // Phase 1: Fog emerges (0s)
+        fogLayers.forEach((l, i) => {
+            setTimeout(() => l.classList.add('visible'), i * 500);
+        });
+
+        // Phase 2: Logograms materialise (1s)
+        logograms.forEach((l, i) => {
+            setTimeout(() => l.classList.add('visible'), 1000 + i * 400);
+        });
+
+        // Phase 3: Logo reveals (2s)
+        setTimeout(() => {
+            audio.init();
+            audio.startAmbient();
+            logoMain.classList.add('revealed');
+            muteBtn.classList.add('visible');
+        }, 2000);
+
+        setTimeout(() => logoSub.classList.add('revealed'), 2000);
+        setTimeout(() => logoQuote.classList.add('revealed'), 2000);
+
+        // Phase 4: Glass screen appears (3.5s)
+        setTimeout(() => glass.classList.add('visible'), 3500);
+
+        // Phase 5: Characters emerge from mist
+        charEls.forEach(({ def, el }) => {
+            setTimeout(() => {
+                el.classList.add('mist-enter', 'entered');
+                audio.playEmerge(def.isHeptapod ? 0.6 : 1.0);
+                // After entrance, add idle animation + heptapod frame cycling
+                setTimeout(() => {
+                    el.classList.add('idle');
+                    if (def.animFrames && !def.hasVideoAssets) startFrameCycling(el, def.animFrames);
+                }, 3000);
+            }, def.emergeDelay);
+        });
+
+        // Phase 6: Nav buttons (5.5s)
+        const btns = document.querySelectorAll('.nav-btn');
+        btns.forEach((b, i) => {
+            setTimeout(() => b.classList.add('visible'), 5500 + i * 200);
+        });
+
+        // Mark complete
+        setTimeout(() => {
+            introComplete = true;
+            skipBtn.classList.add('hidden');
+            replayBtn.classList.remove('hidden');
+            try { localStorage.setItem('arrival_intro_played', '1'); } catch (e) {}
+        }, 6500);
+    }
+
+    async function buildCharactersOnly() {
+        const stage = document.getElementById('characterStage');
+        await Promise.all(CHARACTERS.map(c => checkSpriteAvailability(c)));
+        CHARACTERS.forEach(c => stage.appendChild(buildCharacterEl(c)));
+    }
+
+    function skipIntro() {
+        const fogLayers = document.querySelectorAll('.bg-fog-layer');
+        const logograms = document.querySelectorAll('.logogram');
+        const logoMain = document.getElementById('logoMain');
+        const logoSub = document.getElementById('logoSub');
+        const logoQuote = document.getElementById('logoQuote');
+        const glass = document.getElementById('glassScreen');
+        const muteBtn = document.getElementById('muteBtn');
+        const skipBtn = document.getElementById('skipBtn');
+        const replayBtn = document.getElementById('replayBtn');
+        const btns = document.querySelectorAll('.nav-btn');
+
+        // Instantly reveal everything
+        const chamber = document.getElementById('bgChamber');
+        chamber.style.animation = 'none'; chamber.style.opacity = 0.85;
+        chamber.style.filter = 'brightness(0.75) saturate(0.85)';
+        fogLayers.forEach(l => { l.style.transition = 'none'; l.classList.add('visible'); });
+        logograms.forEach(l => { l.style.transition = 'none'; l.classList.add('visible'); });
+        logoMain.style.animation = 'none'; logoMain.style.opacity = 1; logoMain.style.filter = 'none';
+        logoSub.style.animation = 'none'; logoSub.style.opacity = 1;
+        logoQuote.style.animation = 'none'; logoQuote.style.opacity = 1;
+        glass.style.transition = 'none'; glass.classList.add('visible');
+        muteBtn.classList.add('visible');
+
+        // Show all characters instantly + start heptapod frame cycling
+        document.querySelectorAll('.character').forEach(el => {
+            el.style.animation = 'none';
+            el.classList.add('entered', 'idle');
+            el.style.opacity = 1;
+            el.style.filter = 'none';
+            const charId = el.dataset.charId;
+            const charDef = CHARACTERS.find(c => c.id === charId);
+            if (charDef && charDef.animFrames && !charDef.hasVideoAssets) startFrameCycling(el, charDef.animFrames);
+        });
+
+        btns.forEach(b => { b.style.animation = 'none'; b.style.opacity = 1; b.style.transform = 'none'; });
+        introComplete = true;
+        skipBtn.classList.add('hidden');
+        replayBtn.classList.remove('hidden');
+        try { localStorage.setItem('arrival_intro_played', '1'); } catch (e) {}
+    }
+
+    /* === INIT === */
+    document.addEventListener('DOMContentLoaded', async () => {
+        let alreadyPlayed = false;
+        try { alreadyPlayed = localStorage.getItem('arrival_intro_played') === '1'; } catch (e) {}
+
+        if (alreadyPlayed) {
+            await buildCharactersOnly();
+            skipIntro();
+        } else {
+            runIntro();
+        }
+
+        document.getElementById('skipBtn').addEventListener('click', skipIntro);
+        document.getElementById('replayBtn').addEventListener('click', () => {
+            try { localStorage.removeItem('arrival_intro_played'); } catch (e) {}
+            location.reload();
+        });
+        document.getElementById('muteBtn').addEventListener('click', () => {
+            audio.init();
+            const on = audio.toggle();
+            document.getElementById('muteBtn').textContent = on ? 'SFX: ON' : 'SFX: OFF';
+        });
+    });
+    </script>
+</body>
+</html>

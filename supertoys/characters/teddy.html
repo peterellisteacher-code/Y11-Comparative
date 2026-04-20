@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teddy | Super-Toys Last All Summer Long</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/character-activities.css">
+  <style>
+    :root {
+      --cp: #C4922A;
+      --ca: #7A6348;
+    }
+  </style>
+</head>
+<body>
+
+<header class="top-bar">
+  <a href="../characters.html" class="back-link">← Characters</a>
+  <h1 class="page-title">Teddy</h1>
+  <button id="pdf-btn" class="pdf-btn">↓ Save PDF</button>
+</header>
+
+<div class="page-body">
+
+  <!-- ── Character Panel ─────────────────────────────────── -->
+  <aside class="char-panel">
+    <img class="portrait" src="assets/teddy_v4.png" alt="Teddy on a nursery shelf">
+    <p class="char-name">Teddy</p>
+    <div id="sprite-wrap"><img src="../sprites/teddy/rotations/south.png" alt="Teddy"></div>
+    <blockquote class="char-quote">"Real things are good."</blockquote>
+  </aside>
+
+  <!-- ── Activities Panel ────────────────────────────────── -->
+  <div class="activities-panel">
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="activity1" aria-selected="true">Activity 1 — Word Bank</button>
+      <button class="tab-btn" data-tab="activity2" aria-selected="false">Activity 2 — Select Lines</button>
+      <button class="tab-btn" data-tab="activity3" aria-selected="false">Activity 3 — Why These Lines</button>
+      <button class="tab-btn" data-tab="activity4" aria-selected="false">Activity 4 — Monologue</button>
+    </nav>
+
+    <div class="tab-content">
+
+      <!-- ═══ ACTIVITY 1 ═════════════════════════════════════ -->
+      <section class="tab-panel active" id="activity1" aria-hidden="false">
+        <p class="act-title">Words Teddy uses in the story</p>
+        <p class="act-desc">Every word Teddy speaks in Aldiss's text is here. Nothing else. He chooses his words carefully -- so should you. Click a word when you use it in your answers.</p>
+
+        <div class="word-bank-grid">
+          <div>
+            <p class="word-col-header">Verbs</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="say">say</button>
+              <button class="chip" type="button" data-word="go">go</button>
+              <button class="chip" type="button" data-word="tell">tell</button>
+              <button class="chip" type="button" data-word="love">love</button>
+              <button class="chip" type="button" data-word="feel">feel</button>
+              <button class="chip" type="button" data-word="ask">ask</button>
+              <button class="chip" type="button" data-word="know">know</button>
+              <button class="chip" type="button" data-word="mean">mean</button>
+              <button class="chip" type="button" data-word="like">like</button>
+              <button class="chip" type="button" data-word="sound">sound</button>
+            </div>
+          </div>
+          <div>
+            <p class="word-col-header">Nouns</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="crayon">crayon</button>
+              <button class="chip" type="button" data-word="clock">clock</button>
+              <button class="chip" type="button" data-word="time">time</button>
+              <button class="chip" type="button" data-word="wrist">wrist</button>
+              <button class="chip" type="button" data-word="dial">dial</button>
+              <button class="chip" type="button" data-word="garden">garden</button>
+              <button class="chip" type="button" data-word="boy">boy</button>
+              <button class="chip" type="button" data-word="questions">questions</button>
+              <button class="chip" type="button" data-word="psychiatrist">psychiatrist</button>
+            </div>
+          </div>
+          <div>
+            <p class="word-col-header">Adjectives</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="real">real</button>
+              <button class="chip" type="button" data-word="fine">fine</button>
+              <button class="chip" type="button" data-word="good">good</button>
+              <button class="chip" type="button" data-word="silly">silly</button>
+              <button class="chip" type="button" data-word="bad">bad</button>
+              <button class="chip" type="button" data-word="lonely">lonely</button>
+            </div>
+          </div>
+          <div>
+            <p class="word-col-header">Adverbs</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="downstairs">downstairs</button>
+              <button class="chip" type="button" data-word="upstairs">upstairs</button>
+              <button class="chip" type="button" data-word="again">again</button>
+              <button class="chip" type="button" data-word="indoors">indoors</button>
+              <button class="chip" type="button" data-word="really">really</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="act-divider"></div>
+
+        <div class="analysis-section">
+          <p class="analysis-prompt">Based on Teddy's word bank, describe his characteristics, desires, goals and fears. Click words above to mark the ones you're drawing on.</p>
+          <div class="analysis-grid">
+            <div class="analysis-box">
+              <span class="analysis-label">Characteristics</span>
+              <textarea data-save="a1-characteristics" placeholder="What kind of being is Teddy? What do his words reveal about him?"></textarea>
+            </div>
+            <div class="analysis-box">
+              <span class="analysis-label">Desires</span>
+              <textarea data-save="a1-desires" placeholder="What does Teddy want most?"></textarea>
+            </div>
+            <div class="analysis-box">
+              <span class="analysis-label">Goals</span>
+              <textarea data-save="a1-goals" placeholder="What is Teddy trying to achieve or protect?"></textarea>
+            </div>
+            <div class="analysis-box">
+              <span class="analysis-label">Fears</span>
+              <textarea data-save="a1-fears" placeholder="What does Teddy fear -- or what should he fear?"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ ACTIVITY 2 — SELECT LINES ══════════════════════ -->
+      <section class="tab-panel" id="activity2" aria-hidden="true">
+        <p class="act-title">Every line Teddy speaks in the story</p>
+        <p class="act-desc">Below is every line Teddy says aloud across the story. Choose <em>five</em> that feel most telling -- the ones where his pre-programmed voice carries the most weight. Click a line to select or un-select it.</p>
+        <p class="line-counter" id="line-counter">0 of 5 selected</p>
+        <div class="line-list" id="line-list"></div>
+      </section>
+
+      <!-- ═══ ACTIVITY 3 — WHY THESE LINES ═══════════════════ -->
+      <section class="tab-panel" id="activity3" aria-hidden="true">
+        <p class="act-title">The heavy-lifting words in Teddy's lines</p>
+        <p class="act-desc">Your five selected lines are shown below with the <em>verbs</em>, <em>nouns</em>, <em>adjectives</em>, and <em>adverbs</em> picked out. Beneath each line, write why this line matters to Teddy.</p>
+        <div class="pos-legend">
+          <span><span class="legend-swatch-verb">verb</span></span>
+          <span><span class="legend-swatch-noun">noun</span></span>
+          <span><span class="legend-swatch-adj">adjective</span></span>
+          <span><span class="legend-swatch-adv">adverb</span></span>
+        </div>
+        <div class="a3-highlight-list" id="a3-highlight-list"></div>
+      </section>
+
+      <!-- ═══ ACTIVITY 4 — MONOLOGUE ═════════════════════════ -->
+      <section class="tab-panel" id="activity4" aria-hidden="true">
+        <div class="a4-layout">
+          <div class="a4-left">
+            <p class="a4-left-title">Your chosen lines &amp; reasons</p>
+            <div id="a4-lines"></div>
+          </div>
+          <div class="a4-right">
+            <div class="writing-prompt">
+              <p><strong>Write 4 sentences minimum of a monologue for this character, first explaining who they are delivering the monologue to.</strong></p>
+            </div>
+            <div class="writing-area">
+              <span class="writing-label">Your monologue -- work is saved automatically</span>
+              <textarea data-save="a4-monologue" placeholder="Begin Teddy's monologue here…"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- .tab-content -->
+  </div><!-- .activities-panel -->
+
+</div><!-- .page-body -->
+
+<script>
+  window.CHARACTER_LINES = [
+    "What have you said so far?",
+    "That sounds fine. Go downstairs and give it to her.",
+    "Why not do it again in crayon?",
+    "I don't know. You and I are real, David, aren't we?",
+    "Do you love Mummy and Daddy?",
+    "Why do you ask?",
+    "Real things are good.",
+    "Dreams are funny.",
+    "All people are real.",
+    "I don't think your Mummy minds whether you're real or not.",
+    "Perhaps she's tired.",
+    "She's a lovely Mummy and she loves you.",
+    "Let's go indoors.",
+    "I'm lonely too.",
+    "It's time to go indoors soon.",
+    "You've forgotten about the clock on my wrist.",
+    "Does my dial really tell the time?"
+  ];
+</script>
+<script src="../shared/character-activities.js"></script>
+<script>
+  initCharacterPage('teddy');
+</script>
+</body>
+</html>

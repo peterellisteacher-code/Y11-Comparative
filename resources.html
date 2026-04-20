@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources | Intertextual Study</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 32px;
+            --space-xl: 48px;
+            --space-2xl: 64px;
+            --space-3xl: 96px;
+            --text-sm: 14px;
+            --text-base: 18px;
+            --text-lg: 24px;
+            --text-xl: 32px;
+            --text-2xl: 43px;
+            --text-3xl: 57px;
+
+            --ink-deep: #0d0b08;
+            --ink-slate: #1a1a1f;
+            --ink-panel: #14120e;
+            --paper: #e8ddc9;
+            --paper-soft: rgba(232, 221, 201, 0.7);
+            --paper-dim: rgba(232, 221, 201, 0.65);
+            --paper-faint: rgba(232, 221, 201, 0.12);
+            --copper: #a88862;
+            --copper-bright: #c9a661;
+            --copper-dim: rgba(168, 136, 98, 0.5);
+            --copper-hairline: rgba(168, 136, 98, 0.3);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            background: var(--ink-deep);
+            color: var(--paper);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: var(--text-base);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        body {
+            background-image:
+                radial-gradient(ellipse at top, rgba(168, 136, 98, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at bottom, rgba(20, 18, 14, 1) 0%, rgba(13, 11, 8, 1) 100%);
+        }
+
+        .page-shell {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            min-height: 100vh;
+            padding: var(--space-lg) var(--space-xl);
+            gap: var(--space-lg);
+        }
+
+        header {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: baseline;
+            gap: var(--space-md);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--copper-hairline);
+        }
+
+        .back-link {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: var(--text-sm);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--copper);
+            text-decoration: none;
+            padding: var(--space-xs) var(--space-sm);
+            border: 1px solid var(--copper-hairline);
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .back-link:hover { color: var(--copper-bright); border-color: var(--copper); }
+
+        h1 {
+            font-family: 'Libre Baskerville', Georgia, serif;
+            font-size: var(--text-2xl);
+            font-weight: 400;
+            color: var(--paper);
+        }
+
+        h1 em { color: var(--copper-bright); font-style: italic; }
+
+        .subtitle {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: var(--text-sm);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--copper);
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: var(--space-xl);
+            padding: var(--space-md) 0;
+        }
+
+        section {
+            background: rgba(20, 18, 14, 0.6);
+            border: 1px solid var(--copper-hairline);
+            padding: var(--space-lg);
+            display: grid;
+            gap: var(--space-md);
+        }
+
+        h2 {
+            font-family: 'Libre Baskerville', Georgia, serif;
+            font-size: var(--text-lg);
+            font-weight: 700;
+            color: var(--copper-bright);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--copper-hairline);
+        }
+
+        .resource-list {
+            display: grid;
+            gap: var(--space-sm);
+            list-style: none;
+        }
+
+        .resource-list a {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: var(--space-sm);
+            align-items: center;
+            padding: var(--space-sm);
+            color: var(--paper-soft);
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        .resource-list a:hover {
+            background: rgba(168, 136, 98, 0.08);
+            border-color: var(--copper-dim);
+            color: var(--paper);
+        }
+
+        .kind {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: var(--text-sm);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--copper);
+            padding: var(--space-xs) var(--space-sm);
+            border: 1px solid var(--copper-hairline);
+            min-width: 64px;
+            text-align: center;
+        }
+
+        .title {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+        }
+
+        .meta {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: var(--text-sm);
+            color: var(--copper-dim);
+            letter-spacing: 0.1em;
+        }
+
+        footer {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: var(--text-sm);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--copper-dim);
+            text-align: center;
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--copper-hairline);
+        }
+
+        footer span { color: var(--copper); }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <header>
+            <a class="back-link" href="index.html">&larr; Archive</a>
+            <h1>Teaching <em>Resources</em></h1>
+            <span class="subtitle">Unit Materials</span>
+        </header>
+
+        <main>
+            <section>
+                <h2>Assessment</h2>
+                <ul class="resource-list">
+                    <li><a href="Monologue%20Intertextuality%20Task%20Sheet%20-%202026.docx">
+                        <span class="kind">DOCX</span>
+                        <span class="title">Monologue Intertextuality Task Sheet &mdash; 2026</span>
+                        <span class="meta">Task brief</span>
+                    </a></li>
+                    <li><a href="Scholarly%20Analysis%20of%20Why%20David%20Cant%20Write%20Letters.docx">
+                        <span class="kind">DOCX</span>
+                        <span class="title">Scholarly Analysis: Why David Can&rsquo;t Write Letters</span>
+                        <span class="meta">Reference</span>
+                    </a></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Arrival</h2>
+                <ul class="resource-list">
+                    <li><a href="arrival/Arrival%20Script.pdf">
+                        <span class="kind">PDF</span>
+                        <span class="title">Arrival &mdash; Screenplay</span>
+                        <span class="meta">Eric Heisserer</span>
+                    </a></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Super-Toys</h2>
+                <ul class="resource-list">
+                    <li><a href="supertoys/Super-Toys-Last-All-Summer-Long.pdf">
+                        <span class="kind">PDF</span>
+                        <span class="title">Super-Toys Last All Summer Long &mdash; Story</span>
+                        <span class="meta">Brian Aldiss</span>
+                    </a></li>
+                    <li><a href="Super-Toys%20Last%20All%20Summer%20Long%20%28Clean%29.pdf">
+                        <span class="kind">PDF</span>
+                        <span class="title">Super-Toys Last All Summer Long (Clean)</span>
+                        <span class="meta">Alt. typesetting</span>
+                    </a></li>
+                    <li><a href="Super-Toys%20Last%20All%20Summer%20Long.pdf">
+                        <span class="kind">PDF</span>
+                        <span class="title">Super-Toys Last All Summer Long (Archive)</span>
+                        <span class="meta">Alt. typesetting</span>
+                    </a></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>The Singers</h2>
+                <ul class="resource-list">
+                    <li><a href="singers/The%20Singers%20-%20Press%20Kit.pdf">
+                        <span class="kind">PDF</span>
+                        <span class="title">The Singers &mdash; Press Kit</span>
+                        <span class="meta">Production</span>
+                    </a></li>
+                    <li><a href="singers/The%20Singers%20Script.docx">
+                        <span class="kind">DOCX</span>
+                        <span class="title">The Singers &mdash; Script</span>
+                        <span class="meta">Stage play</span>
+                    </a></li>
+                    <li><a href="singers/Images%20of%20each%20singer.docx">
+                        <span class="kind">DOCX</span>
+                        <span class="title">Images of Each Singer</span>
+                        <span class="meta">Visual reference</span>
+                    </a></li>
+                    <li><a href="singers/Early%20Morning%20Rain%20lyrics.docx">
+                        <span class="kind">DOCX</span>
+                        <span class="title">Early Morning Rain &mdash; Lyrics</span>
+                        <span class="meta">Song</span>
+                    </a></li>
+                    <li><a href="singers/House%20of%20the%20Rising%20Sun%20Lyrics.docx">
+                        <span class="kind">DOCX</span>
+                        <span class="title">House of the Rising Sun &mdash; Lyrics</span>
+                        <span class="meta">Song</span>
+                    </a></li>
+                    <li><a href="singers/It%20Hurts%20Me%20Too%20lyrics.docx">
+                        <span class="kind">DOCX</span>
+                        <span class="title">It Hurts Me Too &mdash; Lyrics</span>
+                        <span class="meta">Song</span>
+                    </a></li>
+                    <li><a href="singers/Unchained%20Melody%20lyrics.docx">
+                        <span class="kind">DOCX</span>
+                        <span class="title">Unchained Melody &mdash; Lyrics</span>
+                        <span class="meta">Song</span>
+                    </a></li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <span>&mdash;</span>&nbsp;&nbsp;An Intertextual Archive&nbsp;&nbsp;<span>&mdash;</span>
+        </footer>
+    </div>
+</body>
+</html>

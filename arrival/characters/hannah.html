@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hannah Banks | Arrival | 11ESH</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 32px;
+            --space-xl: 48px;
+            --space-2xl: 64px;
+            --space-3xl: 96px;
+            --text-xs: 12px;
+            --text-sm: 14px;
+            --text-base: 18px;
+            --text-lg: 24px;
+            --text-xl: 32px;
+            --text-2xl: 43px;
+            --text-3xl: 57px;
+        }
+
+        html, body {
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #E8E4DF;
+            background: #0D1117;
+            display: grid;
+            grid-template-rows: auto auto 1fr;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        /* === COMPACT HEADER === */
+        .page-header {
+            background: rgba(13,17,23,0.97);
+            border-bottom: 1px solid rgba(212,149,106,0.15);
+            padding: var(--space-xs) var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .page-header__back {
+            color: rgba(184,197,214,0.5);
+            text-decoration: none;
+            font-size: var(--text-base);
+            transition: color 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .page-header__back:hover { color: #D4956A; }
+
+        .page-header__character {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            flex: 1;
+        }
+
+        .page-header__sprite {
+            height: 56px;
+            width: auto;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            filter: drop-shadow(0 0 8px rgba(212,149,106,0.35));
+            flex-shrink: 0;
+        }
+
+        .page-header__name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-lg);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: #E8E4DF;
+            line-height: 1.1;
+        }
+
+        .page-header__role {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-sm);
+            font-style: italic;
+            color: #D4956A;
+            letter-spacing: 0.05em;
+            margin-top: 2px;
+        }
+
+        /* === TAB BAR === */
+        .tab-bar {
+            display: flex;
+            background: rgba(13,17,23,0.95);
+            border-bottom: 1px solid rgba(212,149,106,0.1);
+            padding: 0 var(--space-md);
+            gap: var(--space-xs);
+            overflow-x: auto;
+            scrollbar-width: none;
+            flex-shrink: 0;
+        }
+        .tab-bar::-webkit-scrollbar { display: none; }
+
+        .tab {
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: rgba(184,197,214,0.45);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            padding: var(--space-xs) var(--space-md);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: color 0.2s, border-color 0.2s;
+            letter-spacing: 0.03em;
+        }
+        .tab:hover { color: rgba(232,228,223,0.7); }
+        .tab.active {
+            color: #D4956A;
+            border-bottom-color: #D4956A;
+        }
+
+        /* === CONTENT AREA === */
+        .tab-content {
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .tab-panel {
+            position: absolute;
+            inset: 0;
+            overflow-y: auto;
+            padding: var(--space-sm) var(--space-lg);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(212,149,106,0.2) transparent;
+            display: flex;
+            flex-direction: column;
+        }
+        .tab-panel[hidden] { display: none; }
+        .tab-panel::-webkit-scrollbar { width: 6px; }
+        .tab-panel::-webkit-scrollbar-track { background: transparent; }
+        .tab-panel::-webkit-scrollbar-thumb { background: rgba(212,149,106,0.2); border-radius: 3px; }
+
+        .panel-inner {
+            max-width: 1180px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-lg);
+            font-weight: 700;
+            color: #E8E4DF;
+            margin-bottom: var(--space-xs);
+            padding-bottom: var(--space-xs);
+            border-bottom: 1px solid rgba(212,149,106,0.2);
+        }
+        .section-intro {
+            font-size: var(--text-sm);
+            color: rgba(232,228,223,0.65);
+            line-height: 1.45;
+            margin-bottom: var(--space-xs);
+        }
+
+        /* === SHARED TEXTAREA & BUTTON STYLES === */
+        .response-textarea {
+            width: 100%;
+            background: rgba(13,17,23,0.6);
+            border: 1.5px solid rgba(212,149,106,0.2);
+            border-radius: var(--space-xs);
+            color: #E8E4DF;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            padding: var(--space-sm) var(--space-md);
+            resize: vertical;
+            min-height: 80px;
+            transition: border-color 0.2s;
+            line-height: 1.5;
+        }
+        .response-textarea:focus { outline: none; border-color: #D4956A; }
+
+        .btn {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            padding: var(--space-xs) var(--space-md);
+            border-radius: var(--space-xs);
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            letter-spacing: 0.04em;
+        }
+        .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+        .btn-amber { background: #D4956A; color: #0D1117; }
+        .btn-ghost {
+            background: transparent;
+            border: 1.5px solid rgba(212,149,106,0.3);
+            color: #D4956A;
+        }
+        .btn-ghost:hover { border-color: #D4956A; }
+        .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+        /* ==========================================
+           TAB 1: CHARACTER CALIBRATION
+        ========================================== */
+        .calibration-rows {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+        .calibration-topic {
+            background: rgba(26,35,50,0.4);
+            border: 1px solid rgba(212,149,106,0.12);
+            border-radius: var(--space-xs);
+            padding: var(--space-xs) var(--space-md);
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: var(--space-lg);
+            align-items: center;
+        }
+        .calibration-topic__left {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+        .calibration-topic__label {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-xs);
+            color: #D4956A;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            line-height: 1.3;
+        }
+        .calibration-topic__evidence {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-sm);
+            color: rgba(232,228,223,0.7);
+            line-height: 1.35;
+            font-style: italic;
+        }
+        .calibration-scale {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: var(--space-xs);
+            align-items: start;
+        }
+        .calibration-pip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-xs);
+            cursor: pointer;
+            padding: var(--space-xs);
+            border: none;
+            background: transparent;
+        }
+        .calibration-pip__dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(212,149,106,0.08);
+            border: 2px solid rgba(212,149,106,0.35);
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+        .calibration-pip:hover .calibration-pip__dot {
+            background: rgba(212,149,106,0.25);
+            border-color: #D4956A;
+            transform: scale(1.12);
+        }
+        .calibration-pip.committed .calibration-pip__dot {
+            background: #D4956A;
+            border-color: #D4956A;
+            box-shadow: 0 0 18px rgba(212,149,106,0.5);
+        }
+        .calibration-pip__label {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            color: rgba(232,228,223,0.45);
+            line-height: 1.15;
+            text-align: center;
+            transition: color 0.15s;
+            white-space: nowrap;
+        }
+        .calibration-pip:hover .calibration-pip__label,
+        .calibration-pip.committed .calibration-pip__label {
+            color: #E8E4DF;
+        }
+
+        .calibration-profile {
+            display: none;
+            margin-top: var(--space-xs);
+            background: linear-gradient(160deg, rgba(212,149,106,0.07), rgba(13,17,23,0.95));
+            border: 2px solid rgba(212,149,106,0.35);
+            border-radius: var(--space-sm);
+            padding: var(--space-xs) var(--space-md);
+        }
+        .calibration-profile.visible {
+            display: block;
+            animation: fadeSlide 0.4s ease-out;
+        }
+        .calibration-profile__header {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: #D4956A;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-xs);
+        }
+        .calibration-profile__title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-lg);
+            font-weight: 700;
+            color: #E8E4DF;
+            margin-bottom: var(--space-sm);
+            line-height: 1.2;
+        }
+        .calibration-profile__list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-sm);
+        }
+        .calibration-profile__item {
+            padding: var(--space-xs) var(--space-sm);
+            background: rgba(13,17,23,0.5);
+            border-left: 2px solid #D4956A;
+            border-radius: 0 var(--space-xs) var(--space-xs) 0;
+        }
+        .calibration-profile__item-topic {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-xs);
+            color: rgba(212,149,106,0.65);
+            margin-bottom: var(--space-xs);
+            line-height: 1.2;
+        }
+        .calibration-profile__item-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            color: #E8E4DF;
+            font-style: italic;
+            line-height: 1.35;
+        }
+
+        /* ==========================================
+           PROFILE STRIP (sticky on Activities 2 & 3)
+        ========================================== */
+        .profile-strip {
+            display: none;
+            background: rgba(26,35,50,0.55);
+            border: 1px solid rgba(212,149,106,0.18);
+            border-radius: var(--space-xs);
+            padding: var(--space-xs) var(--space-sm);
+            margin-bottom: var(--space-sm);
+            gap: var(--space-xs);
+            align-items: center;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+        .profile-strip.visible { display: flex; }
+        .profile-strip__label {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: #D4956A;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-right: var(--space-xs);
+        }
+        .profile-strip__pill {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            color: rgba(232,228,223,0.8);
+            padding: 0 var(--space-xs);
+            background: rgba(212,149,106,0.08);
+            border: 1px solid rgba(212,149,106,0.2);
+            border-radius: var(--space-xs);
+            line-height: 1.6;
+        }
+        .profile-strip__pill strong {
+            color: #D4956A;
+            font-weight: 600;
+            margin-right: var(--space-xs);
+            font-family: 'Inter', sans-serif;
+        }
+        .profile-strip__edit {
+            margin-left: auto;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            color: rgba(212,149,106,0.65);
+            background: transparent;
+            border: 1px solid rgba(212,149,106,0.25);
+            border-radius: var(--space-xs);
+            padding: 0 var(--space-xs);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .profile-strip__edit:hover { color: #D4956A; border-color: #D4956A; background: rgba(212,149,106,0.08); }
+
+        .profile-nudge {
+            display: none;
+            background: rgba(13,17,23,0.4);
+            border: 1px dashed rgba(212,149,106,0.25);
+            border-radius: var(--space-xs);
+            padding: var(--space-xs) var(--space-sm);
+            margin-bottom: var(--space-sm);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-sm);
+            font-style: italic;
+            color: rgba(232,228,223,0.6);
+            flex-shrink: 0;
+        }
+        .profile-nudge.visible { display: block; }
+        .profile-nudge a {
+            color: #D4956A;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(212,149,106,0.4);
+            cursor: pointer;
+        }
+        .profile-nudge a:hover { border-bottom-color: #D4956A; }
+
+        /* ==========================================
+           TAB 2: HANNAH'S WORDS (scene carousel)
+        ========================================== */
+        .scene-carousel {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            flex: 1;
+            min-height: 0;
+        }
+        .scene-card {
+            display: none;
+            gap: var(--space-xl);
+            align-items: start;
+        }
+        .scene-card.active {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            flex: 1;
+            min-height: 0;
+        }
+        .scene-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-xs) 0;
+            border-top: 1px solid rgba(212,149,106,0.12);
+            border-bottom: 1px solid rgba(212,149,106,0.08);
+            margin-bottom: var(--space-xs);
+            flex-shrink: 0;
+        }
+        .scene-nav-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            background: transparent;
+            border: 1px solid rgba(212,149,106,0.25);
+            border-radius: var(--space-xs);
+            color: rgba(212,149,106,0.6);
+            padding: var(--space-xs) var(--space-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .scene-nav-btn:hover:not(:disabled) {
+            color: #D4956A;
+            border-color: rgba(212,149,106,0.5);
+            background: rgba(212,149,106,0.08);
+        }
+        .scene-nav-btn:disabled { opacity: 0.25; cursor: default; }
+        .scene-nav-right { display: flex; gap: var(--space-sm); align-items: center; }
+        .scene-restart-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            background: transparent;
+            border: 1px dashed rgba(212,149,106,0.25);
+            border-radius: 6px;
+            color: rgba(212,149,106,0.5);
+            padding: var(--space-xs) var(--space-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .scene-restart-btn:hover { color: rgba(212,149,106,0.9); border-color: rgba(212,149,106,0.55); background: rgba(212,149,106,0.06); }
+        .scene-counter {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: rgba(212,149,106,0.5);
+        }
+        .scene-image {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1 / 1;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            border-radius: var(--space-xs);
+            border: 1px solid rgba(212,149,106,0.3);
+            object-fit: cover;
+            align-self: start;
+            filter: drop-shadow(0 0 var(--space-md) rgba(212,149,106,0.35));
+        }
+        .scene-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+            overflow-y: auto;
+            padding-right: var(--space-xs);
+        }
+        .scene-label-row {
+            display: flex;
+            align-items: baseline;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+        .scene-label {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: rgba(212,149,106,0.7);
+            letter-spacing: 0.04em;
+        }
+        .scene-age-pill {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: #D4956A;
+            background: rgba(212,149,106,0.12);
+            border: 1px solid rgba(212,149,106,0.3);
+            border-radius: var(--space-xs);
+            padding: 2px var(--space-xs);
+            letter-spacing: 0.04em;
+        }
+        .scene-passage {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            color: rgba(232,228,223,0.9);
+            line-height: 1.7;
+        }
+        .scene-speaker {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: #D4956A;
+            margin-right: var(--space-xs);
+            letter-spacing: 0.04em;
+        }
+        .fill-blank {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+        }
+        .fill-blank__input {
+            background: rgba(212,149,106,0.08);
+            border: none;
+            border-bottom: 2px solid rgba(212,149,106,0.45);
+            border-radius: 2px 2px 0 0;
+            color: #E8E4DF;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            font-style: italic;
+            width: 140px;
+            padding: 0 var(--space-xs);
+            text-align: center;
+            outline: none;
+            cursor: pointer;
+            caret-color: transparent;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .fill-blank__input:focus { border-bottom-color: #D4956A; background: rgba(212,149,106,0.14); }
+        .fill-blank__input.correct { border-bottom-color: #D4956A; background: rgba(212,149,106,0.12); color: #D4956A; cursor: default; }
+        .fill-blank__badge {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: rgba(212,149,106,0.5);
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color 0.2s;
+            user-select: none;
+        }
+        .fill-blank__badge:hover { color: #D4956A; }
+        .scene-bank {
+            display: none;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            padding: var(--space-xs) 0;
+            animation: fadeSlide 0.2s ease-out;
+        }
+        .scene-bank.open { display: flex; }
+        .scene-bank-pill {
+            display: inline-block;
+            background: rgba(212,149,106,0.1);
+            border: 1px solid rgba(212,149,106,0.25);
+            color: rgba(232,228,223,0.85);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            padding: 2px var(--space-xs);
+            border-radius: var(--space-xs);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .scene-bank-pill:hover { background: rgba(212,149,106,0.25); border-color: rgba(212,149,106,0.5); color: #E8E4DF; }
+        .scene-reveal-btn {
+            align-self: flex-start;
+            padding: var(--space-xs) var(--space-md);
+            min-height: 36px;
+            background: transparent;
+            border: 1px solid rgba(212,149,106,0.3);
+            border-radius: var(--space-xs);
+            color: rgba(212,149,106,0.6);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .scene-reveal-btn:hover {
+            background: rgba(212,149,106,0.1);
+            color: #D4956A;
+            border-color: rgba(212,149,106,0.5);
+        }
+        .scene-reveal-note {
+            display: none;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-sm);
+            color: rgba(232,228,223,0.75);
+            line-height: 1.55;
+            border-left: 2px solid rgba(212,149,106,0.4);
+            padding-left: var(--space-sm);
+            animation: fadeSlide 0.3s ease-out;
+        }
+        .scene-reveal-note.open { display: block; }
+        .scene-reveal-note strong { color: #D4956A; }
+
+        .scene-reference {
+            border-top: 1px solid rgba(212,149,106,0.12);
+            padding-top: var(--space-xs);
+            margin-bottom: var(--space-sm);
+        }
+        .scene-reference__heading {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-lg);
+            color: rgba(212,149,106,0.45);
+            margin-bottom: var(--space-xs);
+            display: block;
+        }
+        .scene-reference__list {
+            list-style: decimal;
+            padding-left: var(--space-md);
+        }
+        .scene-reference__list li {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-lg);
+            color: rgba(232,228,223,0.55);
+            font-style: italic;
+            line-height: 1.5;
+        }
+        /* Writing slide (scene 5) */
+        .scene-card--writing.active {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            min-height: 0;
+            overflow-y: auto;
+        }
+        .scene-writing-header {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: var(--space-lg);
+            align-items: start;
+        }
+        .scene-writing-header .scene-image {
+            width: 260px;
+            height: 260px;
+            max-width: 260px;
+            align-self: start;
+        }
+        .scene-writing-header__right {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+        .words-prompts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-sm);
+        }
+        .words-prompt-block {
+            background: rgba(26,35,50,0.4);
+            border: 1px solid rgba(212,149,106,0.12);
+            border-radius: var(--space-xs);
+            padding: var(--space-sm);
+        }
+        .words-prompt-label {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: #D4956A;
+            margin-bottom: var(--space-xs);
+            display: block;
+            line-height: 1.2;
+        }
+        .words-prompt-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-sm);
+            font-style: italic;
+            color: rgba(232,228,223,0.65);
+            line-height: 1.5;
+            margin-bottom: var(--space-xs);
+        }
+
+        /* ==========================================
+           TAB 3: HANNAH'S MONOLOGUE
+        ========================================== */
+        .mono-view { display: flex; flex-direction: column; gap: var(--space-sm); flex: 1; min-height: 0; }
+        .mono-view[hidden] { display: none; }
+
+        .mono-scenarios {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-sm);
+        }
+        .mono-scenario-card {
+            background: linear-gradient(160deg, rgba(26,35,50,0.7), rgba(13,17,23,0.9));
+            border: 1.5px solid rgba(212,149,106,0.2);
+            border-radius: var(--space-xs);
+            padding: var(--space-md);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+        .mono-scenario-card:hover {
+            border-color: #D4956A;
+            background: linear-gradient(160deg, rgba(212,149,106,0.08), rgba(13,17,23,0.95));
+            transform: translateY(-2px);
+        }
+        .mono-scenario-card__label {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: rgba(212,149,106,0.6);
+            letter-spacing: 0.08em;
+        }
+        .mono-scenario-card__title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-lg);
+            font-weight: 700;
+            color: #E8E4DF;
+            line-height: 1.2;
+        }
+        .mono-scenario-card__blurb {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            font-style: italic;
+            color: rgba(232,228,223,0.7);
+            line-height: 1.45;
+        }
+
+        .mono-step-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-xs) 0;
+            border-bottom: 1px solid rgba(212,149,106,0.1);
+        }
+        .mono-back-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            background: transparent;
+            border: 1px solid rgba(212,149,106,0.25);
+            border-radius: var(--space-xs);
+            color: rgba(212,149,106,0.7);
+            padding: var(--space-xs) var(--space-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .mono-back-btn:hover { color: #D4956A; border-color: rgba(212,149,106,0.5); background: rgba(212,149,106,0.08); }
+        .mono-step-counter {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: rgba(212,149,106,0.5);
+        }
+
+        .mono-context-body {
+            background: linear-gradient(135deg, rgba(26,35,50,0.5), rgba(13,17,23,0.85));
+            border: 1px solid rgba(212,149,106,0.15);
+            border-radius: var(--space-xs);
+            padding: var(--space-md) var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            flex: 1;
+        }
+        .mono-scenario-tag {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: #D4956A;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .mono-context-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: #E8E4DF;
+            line-height: 1.2;
+        }
+        .mono-context-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            color: rgba(232,228,223,0.85);
+            line-height: 1.7;
+        }
+
+        .mono-next-btn {
+            align-self: flex-end;
+            padding: var(--space-xs) var(--space-lg);
+            min-height: var(--space-xl);
+            background: rgba(212,149,106,0.12);
+            border: 1.5px solid rgba(212,149,106,0.4);
+            border-radius: var(--space-xs);
+            color: #D4956A;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.05em;
+        }
+        .mono-next-btn:hover { background: rgba(212,149,106,0.22); border-color: #D4956A; }
+
+        .mono-lens {
+            margin-top: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            background: rgba(212,149,106,0.09);
+            border-left: 3px solid #D4956A;
+            border-radius: 0 var(--space-xs) var(--space-xs) 0;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+        .mono-lens__label {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: #D4956A;
+            letter-spacing: 0.06em;
+            line-height: 1.35;
+        }
+        .mono-lens__label em {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        .mono-lens__text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            color: #E8E4DF;
+            line-height: 1.55;
+        }
+        .mono-lens--empty {
+            background: rgba(255,255,255,0.03);
+            border-left-color: rgba(212,149,106,0.3);
+            color: rgba(232,228,223,0.6);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-sm);
+            font-style: italic;
+            display: block;
+        }
+        .mono-lens--empty strong { color: #D4956A; font-family: 'Inter', sans-serif; font-style: normal; }
+
+        .mono-write-recap {
+            background: rgba(26,35,50,0.35);
+            border-left: 2px solid rgba(212,149,106,0.4);
+            border-radius: 0 var(--space-xs) var(--space-xs) 0;
+            padding: var(--space-xs) var(--space-md);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-sm);
+            font-style: italic;
+            color: rgba(232,228,223,0.65);
+            line-height: 1.5;
+        }
+        .mono-write-prompt {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-sm);
+            color: #E8E4DF;
+            line-height: 1.4;
+            padding: var(--space-xs) 0;
+        }
+        .mono-write-textarea {
+            flex: 1;
+            min-height: 200px;
+        }
+
+        /* === SHARED ANIMATIONS === */
+        @keyframes fadeSlide {
+            0%   { opacity: 0; transform: translateY(-8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === PRINT === */
+        @media print {
+            .page-header, .tab-bar,
+            .profile-strip, .profile-nudge,
+            .scene-nav, .scene-reveal-btn { display: none !important; }
+
+            html, body { background: #fff !important; color: #000 !important;
+                         height: auto !important; overflow: visible !important; }
+            .tab-panel { position: static !important; overflow: visible !important;
+                         padding: 0 !important; display: block !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- COMPACT HEADER -->
+    <header class="page-header">
+        <a href="../index.html" class="page-header__back">&larr; Arrival</a>
+        <div class="page-header__character">
+            <div>
+                <h1 class="page-header__name">Hannah</h1>
+            </div>
+        </div>
+    </header>
+
+    <!-- TAB BAR -->
+    <nav class="tab-bar" role="tablist">
+        <button class="tab active" role="tab" aria-selected="true" data-tab="calibration">1. Character Calibration</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="words">2. Hannah&rsquo;s Words</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="monologue">3. Hannah&rsquo;s Monologue</button>
+    </nav>
+
+    <!-- CONTENT AREA -->
+    <main class="tab-content">
+
+        <!-- ========================================================
+             PANEL 1: CHARACTER CALIBRATION
+        ======================================================== -->
+        <section class="tab-panel" id="panel-calibration" role="tabpanel">
+            <div class="panel-inner">
+                <h2 class="section-title">Character Calibration</h2>
+                <p class="section-intro">Decide your Hannah before you start writing. Use the four fronts below to commit to what she has figured out.</p>
+
+                <div class="calibration-rows" id="calibration-rows"></div>
+
+                <div class="calibration-profile" id="calibration-profile">
+                    <div class="calibration-profile__header">Your Hannah &mdash; this is the voice your monologue will speak in</div>
+                    <div class="calibration-profile__list" id="calibration-profile-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             PANEL 2: HANNAH'S WORDS (scene carousel)
+        ======================================================== -->
+        <section class="tab-panel" id="panel-words" role="tabpanel" hidden>
+            <div class="panel-inner">
+                <div class="profile-strip" id="profile-strip-words"></div>
+                <div class="profile-nudge" id="profile-nudge-words">
+                    Commit your Hannah first &mdash; <a onclick="switchTab('calibration')">Character Calibration &rarr;</a> &mdash; to carry her profile through this activity.
+                </div>
+                <h2 class="section-title">Hannah&rsquo;s Words</h2>
+                <p class="section-intro">Four scenes in the order Hannah lives them &mdash; ages 6, 8, and 12. Fill the blanks with the exact word Hannah (or Louise) used.</p>
+
+                <!-- CAROUSEL NAV (top of carousel, always visible) -->
+                <div class="scene-nav">
+                    <button class="scene-nav-btn" id="scene-prev">&#9664; Back to Calibration</button>
+                    <span class="scene-counter" id="scene-counter">Scene 1 of 4</span>
+                    <div class="scene-nav-right">
+                        <button class="scene-restart-btn" id="scene-restart" title="Clear all answers and start over">&#x21bb; Restart activity</button>
+                        <button class="scene-nav-btn" id="scene-next">Next &#9654;</button>
+                    </div>
+                </div>
+
+                <div class="scene-carousel">
+
+                    <!-- SCENE 1: COWBOY PLAY (age 6) -->
+                    <div class="scene-card active">
+                        <img class="scene-image" src="Hannah%20gifs/scene%201.gif" alt="Young Hannah laughing as Louise plays cowboys with her at the lake house">
+                        <div class="scene-body">
+                            <div class="scene-label-row">
+                                <span class="scene-label">Play</span>
+                                <span class="scene-age-pill">age 6</span>
+                            </div>
+                            <p class="scene-passage">
+                                <span class="scene-speaker">Louise:</span> Stick &rsquo;em up! Are you the
+                                <span class="fill-blank"><input class="fill-blank__input" id="s1b1" type="text" data-answer="sheriff" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b1">WORD &#9662;</span></span>
+                                in this here town? These are my tickle guns, and I&rsquo;m gonna getcha!<br>
+                                <span class="scene-speaker">Hannah:</span> <em>(giggling)</em> No!<br>
+                                <span class="scene-speaker">Louise:</span> You want me to chase you? You better
+                                <span class="fill-blank"><input class="fill-blank__input" id="s1b2" type="text" data-answer="run" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b2">WORD &#9662;</span></span>!
+                            </p>
+                            <div id="bk-s1b1" class="scene-bank" data-input="s1b1"></div>
+                            <div id="bk-s1b2" class="scene-bank" data-input="s1b2"></div>
+                            <button class="scene-reveal-btn" data-scene="1">Stuck? Reveal the words</button>
+                            <div class="scene-reveal-note" id="reveal-1"><strong>Sheriff / Run</strong> &mdash; At six, Hannah is copying her mother&rsquo;s vocabulary. &ldquo;Sheriff&rdquo; shows she is taking the invented world seriously, and &ldquo;run&rdquo; shows she has understood the rules of the game: the sheriff gives chase. The word choice tells us she is a child who trusts her mother&rsquo;s imagination enough to live inside it.</div>
+                        </div>
+                    </div>
+
+                    <!-- SCENE 2: THE DRAWING (age 8) -->
+                    <div class="scene-card">
+                        <img class="scene-image" src="Hannah%20gifs/scene%202.jpg" alt="Young Hannah showing Louise her drawing of Mommy and Daddy">
+                        <div class="scene-body">
+                            <div class="scene-label-row">
+                                <span class="scene-label">The Drawing</span>
+                                <span class="scene-age-pill">age 8</span>
+                            </div>
+                            <p class="scene-passage">
+                                <span class="scene-speaker">Hannah:</span> Want to see my
+                                <span class="fill-blank"><input class="fill-blank__input" id="s2b1" type="text" data-answer="project" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s2b1">WORD &#9662;</span></span>
+                                for Miss Garriott&rsquo;s class?<br>
+                                <span class="scene-speaker">Louise:</span> Yeah, little nose.<br>
+                                <span class="scene-speaker">Hannah:</span> We had to make up our own TV show. If we had one. That&rsquo;s you and Dad. The show is called &ldquo;Mommy and Daddy Talk to
+                                <span class="fill-blank"><input class="fill-blank__input" id="s2b2" type="text" data-answer="Animals" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s2b2">WORD &#9662;</span></span>.&rdquo;<br>
+                                <span class="scene-speaker">Louise:</span> Oh! Well, it&rsquo;s lovely.
+                            </p>
+                            <div id="bk-s2b1" class="scene-bank" data-input="s2b1"></div>
+                            <div id="bk-s2b2" class="scene-bank" data-input="s2b2"></div>
+                            <button class="scene-reveal-btn" data-scene="2">Stuck? Reveal the words</button>
+                            <div class="scene-reveal-note" id="reveal-2"><strong>Project / Animals</strong> &mdash; Hannah is eight, her parents have separated, and the drawing reunites them on paper. &ldquo;Project&rdquo; frames her effort as serious work, the kind of word she has heard adults use. &ldquo;Animals&rdquo; is the word she chooses for the heptapods, and it is a hopeful one: it turns her mother&rsquo;s strange past into something shared, gentle, and meaningful to both parents.</div>
+                        </div>
+                    </div>
+
+                    <!-- SCENE 3: THE LAKESIDE (age 8) -->
+                    <div class="scene-card">
+                        <img class="scene-image" src="Hannah%20gifs/scene%203.jpg" alt="Young Hannah and Louise at the lakeside, afternoon light" data-scene-num="3">
+                        <div class="scene-body">
+                            <div class="scene-label-row">
+                                <span class="scene-label">The Lakeside</span>
+                                <span class="scene-age-pill">age 8</span>
+                            </div>
+                            <p class="scene-passage">
+                                <span class="scene-speaker">Hannah:</span> He doesn&rsquo;t look at me the same way anymore.<br>
+                                <span class="scene-speaker">Louise:</span> It&rsquo;s my fault. I told him something that he wasn&rsquo;t ready to hear.<br>
+                                <span class="scene-speaker">Hannah:</span> What? What&rsquo;s going to happen?<br>
+                                <span class="scene-speaker">Louise:</span> It has to do with a really rare disease. And it&rsquo;s
+                                <span class="fill-blank"><input class="fill-blank__input" id="s3b1" type="text" data-answer="unstoppable" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s3b1">WORD &#9662;</span></span>. Kind of like you are, with your swimming, and your
+                                <span class="fill-blank"><input class="fill-blank__input" id="s3b2" type="text" data-answer="poetry" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s3b2">WORD &#9662;</span></span>, and all the other amazing things that you share with the world.<br>
+                                <span class="scene-speaker">Hannah:</span> I&rsquo;m unstoppable?<br>
+                                <span class="scene-speaker">Louise:</span> Yeah.
+                            </p>
+                            <div id="bk-s3b1" class="scene-bank" data-input="s3b1"></div>
+                            <div id="bk-s3b2" class="scene-bank" data-input="s3b2"></div>
+                            <button class="scene-reveal-btn" data-scene="3">Stuck? Reveal the words</button>
+                            <div class="scene-reveal-note" id="reveal-3"><strong>Unstoppable / Poetry</strong> &mdash; Louise is telling Hannah she is going to die, and her word choice is doing enormous protective work. &ldquo;Unstoppable&rdquo; is a word she can turn into a compliment once the diagnosis has been delivered. The placement of the diagnosis between &ldquo;swimming&rdquo; and &ldquo;poetry&rdquo; is deliberate: Louise is making sure the words around the bad news are the things that make Hannah&rsquo;s life full.</div>
+                        </div>
+                    </div>
+
+                    <!-- SCENE 4: THE HOMEWORK (age 12) -->
+                    <div class="scene-card">
+                        <img class="scene-image" src="Hannah%20gifs/Scene%204.jpg" alt="Teen Hannah and Louise doing homework together, interior evening">
+                        <div class="scene-body">
+                            <div class="scene-label-row">
+                                <span class="scene-label">The Homework</span>
+                                <span class="scene-age-pill">age 12</span>
+                            </div>
+                            <p class="scene-passage">
+                                <span class="scene-speaker">Hannah:</span> What&rsquo;s the term for when you make a deal, and we both get something out of it?<br>
+                                <span class="scene-speaker">Louise:</span> A compromise.<br>
+                                <span class="scene-speaker">Hannah:</span> No&hellip; Like, it&rsquo;s a competition. But both sides end up happy.<br>
+                                <span class="scene-speaker">Louise:</span> Like a win-win?<br>
+                                <span class="scene-speaker">Hannah:</span> More
+                                <span class="fill-blank"><input class="fill-blank__input" id="s4b1" type="text" data-answer="science-y" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s4b1">WORD &#9662;</span></span>
+                                than that.<br>
+                                <span class="scene-speaker">Louise:</span> If you want science, call your
+                                <span class="fill-blank"><input class="fill-blank__input" id="s4b2" type="text" data-answer="father" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s4b2">WORD &#9662;</span></span>.
+                            </p>
+                            <div id="bk-s4b1" class="scene-bank" data-input="s4b1"></div>
+                            <div id="bk-s4b2" class="scene-bank" data-input="s4b2"></div>
+                            <button class="scene-reveal-btn" data-scene="4">Stuck? Reveal the words</button>
+                            <div class="scene-reveal-note" id="reveal-4"><strong>Science-y / Father</strong> &mdash; Hannah is twelve, and her word choice still carries a child&rsquo;s suffix. &ldquo;Science-y&rdquo; is the word of someone who is almost but not quite a teenager. Louise&rsquo;s reply, &ldquo;call your father&rdquo;, is a small but important detail. She does not say &ldquo;try&rdquo; or &ldquo;if you can&rdquo;; she assumes Ian is reachable, which tells us he and Louise are back in each other&rsquo;s lives even if the film never shows how.</div>
+                        </div>
+                    </div>
+
+                    <!-- SCENE 5: YOUR ANALYSIS -->
+                    <div class="scene-card scene-card--writing">
+                        <div class="scene-reference">
+                            <span class="scene-reference__heading">The four moments &mdash; for reference as you write:</span>
+                            <ol class="scene-reference__list">
+                                <li><strong>age 6:</strong> &ldquo;Are you the <em>sheriff</em>? / You better <em>run</em>!&rdquo;</li>
+                                <li><strong>age 8:</strong> &ldquo;My <em>project</em> for Miss Garriott&rsquo;s class &hellip; Mommy and Daddy Talk to <em>Animals</em>.&rdquo;</li>
+                                <li><strong>age 8:</strong> &ldquo;A really rare disease. And it&rsquo;s <em>unstoppable</em>. Kind of like you are, with your swimming, and your <em>poetry</em> &hellip; I&rsquo;m unstoppable?&rdquo;</li>
+                                <li><strong>age 12:</strong> &ldquo;More <em>science-y</em> than that. / If you want science, call your <em>father</em>.&rdquo;</li>
+                            </ol>
+                        </div>
+                        <div class="words-prompts">
+                            <div class="words-prompt-block">
+                                <span class="words-prompt-label">Her Voice</span>
+                                <p class="words-prompt-text">Describe what makes Hannah sound like a child, even at twelve.</p>
+                                <textarea class="response-textarea" id="words-q1" rows="2"
+                                          placeholder="Write your response here..."
+                                          oninput="wordsPersist('1',this.value)"></textarea>
+                            </div>
+                            <div class="words-prompt-block">
+                                <span class="words-prompt-label">What She Registers</span>
+                                <p class="words-prompt-text">Identify the lines she understands the weight of, and the ones that slide past her.</p>
+                                <textarea class="response-textarea" id="words-q2" rows="2"
+                                          placeholder="Write your response here..."
+                                          oninput="wordsPersist('2',this.value)"></textarea>
+                            </div>
+                            <div class="words-prompt-block">
+                                <span class="words-prompt-label">The Reconciliation Gap</span>
+                                <p class="words-prompt-text">Work out what happens with Ian in the four years between scenes 3 and 4.</p>
+                                <textarea class="response-textarea" id="words-q3" rows="2"
+                                          placeholder="Write your response here..."
+                                          oninput="wordsPersist('3',this.value)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /.scene-carousel -->
+            </div>
+        </section>
+
+        <!-- ========================================================
+             PANEL 3: HANNAH'S MONOLOGUE
+        ======================================================== -->
+        <section class="tab-panel" id="panel-monologue" role="tabpanel" hidden>
+            <div class="panel-inner">
+                <div class="profile-strip" id="profile-strip-monologue"></div>
+                <div class="profile-nudge" id="profile-nudge-monologue">
+                    Commit your Hannah first &mdash; <a onclick="switchTab('calibration')">Character Calibration &rarr;</a> &mdash; so the voice you write in matches the profile you chose.
+                </div>
+                <h2 class="section-title">Hannah&rsquo;s Monologue</h2>
+                <p class="section-intro">Choose one scenario. Read its context. Then write 3&ndash;4 sentences in Hannah&rsquo;s voice. You can come back and try a different scenario &mdash; each one saves its own draft.</p>
+
+                <!-- VIEW 1: SCENARIO CHOOSER -->
+                <div class="mono-view" id="mono-view-choose">
+                    <div class="mono-scenarios">
+                        <div class="mono-scenario-card" data-scenario="A">
+                            <h3 class="mono-scenario-card__title">Scenario A &mdash; Talking to Ian after the years apart</h3>
+                        </div>
+                        <div class="mono-scenario-card" data-scenario="B">
+                            <h3 class="mono-scenario-card__title">Scenario B &mdash; Realising Louise always knew she would die young</h3>
+                        </div>
+                        <div class="mono-scenario-card" data-scenario="C">
+                            <h3 class="mono-scenario-card__title">Scenario C &mdash; Speaking to the heptapods at the end of her life</h3>
+                        </div>
+                        <div class="mono-scenario-card" data-scenario="D">
+                            <h3 class="mono-scenario-card__title">Scenario D &mdash; Hannah alone, speaking about her own dying</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 2: CONTEXT -->
+                <div class="mono-view" id="mono-view-context" hidden>
+                    <div class="mono-step-header">
+                        <button class="mono-back-btn" id="mono-context-back">&#9664; Back to scenarios</button>
+                        <span class="mono-step-counter">Step 1 of 2 &mdash; context</span>
+                    </div>
+                    <div class="mono-context-body">
+                        <h3 class="mono-context-title" id="mono-context-title"></h3>
+                        <div class="mono-context-text" id="mono-context-text"></div>
+                    </div>
+                    <button class="mono-next-btn" id="mono-context-next">Next: write it &#9654;</button>
+                </div>
+
+                <!-- VIEW 3: WRITE -->
+                <div class="mono-view" id="mono-view-write" hidden>
+                    <div class="mono-step-header">
+                        <button class="mono-back-btn" id="mono-write-back">&#9664; Back to context</button>
+                        <span class="mono-step-counter">Step 2 of 2 &mdash; write</span>
+                    </div>
+                    <div class="mono-write-recap" id="mono-write-recap"></div>
+                    <p class="mono-write-prompt" id="mono-write-prompt"></p>
+                    <textarea class="response-textarea mono-write-textarea" id="mono-write-textarea" rows="6" placeholder="Write 3&ndash;4 sentences in Hannah&rsquo;s voice..."
+                              oninput="monoPersistText()"></textarea>
+                    <button class="mono-next-btn" onclick="savePdf()">&#8595; Save as PDF</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+    /* ============================================================
+       TAB SWITCHING
+    ============================================================ */
+    const tabs   = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    function switchTab(tabId) {
+        tabs.forEach(t => {
+            t.classList.toggle('active', t.dataset.tab === tabId);
+            t.setAttribute('aria-selected', t.dataset.tab === tabId);
+        });
+        panels.forEach(p => {
+            p.hidden = p.id !== 'panel-' + tabId;
+        });
+        renderProfileStrips();
+    }
+
+    tabs.forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
+
+    document.addEventListener('keydown', e => {
+        const active  = document.querySelector('.tab.active');
+        const allTabs = [...tabs];
+        const idx     = allTabs.indexOf(active);
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.key === 'ArrowRight' && idx < allTabs.length - 1) {
+            switchTab(allTabs[idx + 1].dataset.tab);
+            allTabs[idx + 1].focus();
+        }
+        if (e.key === 'ArrowLeft' && idx > 0) {
+            switchTab(allTabs[idx - 1].dataset.tab);
+            allTabs[idx - 1].focus();
+        }
+    });
+
+
+    /* ============================================================
+       TAB 1: CHARACTER CALIBRATION
+    ============================================================ */
+    const CALIBRATION_TOPICS = [
+        {
+            id: 'ian',
+            label: 'Why Ian Left',
+            evidence: 'Age 8: &ldquo;He doesn&rsquo;t look at me the same way.&rdquo; Age 12: Louise says call him for homework help.'
+        },
+        {
+            id: 'heptapods',
+            label: 'The Heptapods',
+            evidence: 'Hannah grows up after first contact. Motifs tie her to the aliens &mdash; palindrome name, horse costume, amber light.'
+        },
+        {
+            id: 'chosen',
+            label: 'That Mum Chose Her Knowing',
+            evidence: 'The film&rsquo;s central secret, never spoken aloud on screen. Whether Hannah has guessed is pure inference.'
+        },
+        {
+            id: 'death',
+            label: 'Her Own Death',
+            evidence: 'Age 8, lakeside: &ldquo;A really rare disease. It&rsquo;s unstoppable.&rdquo; Then a list of compliments.'
+        }
+    ];
+
+    const CALIBRATION_SCALE = [
+        "Doesn\u2019t know",
+        "Feels off",
+        "Suspects",
+        "Mostly pieced",
+        "Knows, silent",
+        "Knows it all"
+    ];
+
+    const CALIBRATION_SCALE_FULL = [
+        "Doesn\u2019t know",
+        "Feels something\u2019s off",
+        "Suspects",
+        "Has pieced most together",
+        "Knows but hasn\u2019t said",
+        "Knows as much as Mum does"
+    ];
+
+    function calibrationKey(topicId) { return 'arrival-hannah-cal-' + topicId; }
+
+    function calibrationGet() {
+        const out = {};
+        CALIBRATION_TOPICS.forEach(t => {
+            try {
+                const v = localStorage.getItem(calibrationKey(t.id));
+                if (v !== null) out[t.id] = parseInt(v, 10);
+            } catch(e) {}
+        });
+        return out;
+    }
+
+    function calibrationCommit(topicId, idx) {
+        try { localStorage.setItem(calibrationKey(topicId), String(idx)); } catch(e) {}
+        calibrationRender();
+        renderProfileStrips();
+    }
+
+    function calibrationRender() {
+        const commits = calibrationGet();
+        const container = document.getElementById('calibration-rows');
+        container.innerHTML = '';
+        CALIBRATION_TOPICS.forEach(topic => {
+            const committedIdx = (topic.id in commits) ? commits[topic.id] : -1;
+            const pipsHtml = CALIBRATION_SCALE.map((label, i) =>
+                '<button class="calibration-pip' + (i === committedIdx ? ' committed' : '') + '" ' +
+                       'data-topic="' + topic.id + '" data-idx="' + i + '" ' +
+                       'aria-label="' + label + '" type="button">' +
+                    '<span class="calibration-pip__dot"></span>' +
+                    '<span class="calibration-pip__label">' + label + '</span>' +
+                '</button>'
+            ).join('');
+            const row = document.createElement('div');
+            row.className = 'calibration-topic';
+            row.innerHTML =
+                '<div class="calibration-topic__left">' +
+                    '<div class="calibration-topic__label">' + topic.label + '</div>' +
+                    '<div class="calibration-topic__evidence">' + topic.evidence + '</div>' +
+                '</div>' +
+                '<div class="calibration-scale">' + pipsHtml + '</div>';
+            container.appendChild(row);
+        });
+
+        // Profile card display
+        const profile  = document.getElementById('calibration-profile');
+        const listNode = document.getElementById('calibration-profile-list');
+        const allDone  = CALIBRATION_TOPICS.every(t => t.id in commits);
+        if (allDone) {
+            listNode.innerHTML = CALIBRATION_TOPICS.map(t =>
+                '<div class="calibration-profile__item">' +
+                    '<div class="calibration-profile__item-topic">' + t.label + '</div>' +
+                    '<div class="calibration-profile__item-value">' + CALIBRATION_SCALE_FULL[commits[t.id]] + '</div>' +
+                '</div>'
+            ).join('');
+            profile.classList.add('visible');
+        } else {
+            profile.classList.remove('visible');
+        }
+    }
+
+    // Click delegation on calibration pips
+    document.getElementById('calibration-rows').addEventListener('click', e => {
+        const pip = e.target.closest('.calibration-pip');
+        if (!pip) return;
+        calibrationCommit(pip.dataset.topic, parseInt(pip.dataset.idx, 10));
+    });
+
+    calibrationRender();
+
+
+    /* ============================================================
+       PROFILE STRIP (shown on tabs 2 & 3 when committed)
+    ============================================================ */
+    function renderProfileStrips() {
+        const commits = calibrationGet();
+        const allDone = CALIBRATION_TOPICS.every(t => t.id in commits);
+
+        ['words', 'monologue'].forEach(tab => {
+            const strip = document.getElementById('profile-strip-' + tab);
+            const nudge = document.getElementById('profile-nudge-' + tab);
+            if (!strip) return;
+
+            if (allDone) {
+                strip.innerHTML =
+                    '<span class="profile-strip__label">Your Hannah</span>' +
+                    CALIBRATION_TOPICS.map(t =>
+                        '<span class="profile-strip__pill">' +
+                            '<strong>' + t.label + ':</strong>' +
+                            CALIBRATION_SCALE[commits[t.id]] +
+                        '</span>'
+                    ).join('');
+                strip.classList.add('visible');
+                if (nudge) nudge.classList.remove('visible');
+            } else {
+                strip.classList.remove('visible');
+                strip.innerHTML = '';
+                if (nudge) nudge.classList.add('visible');
+            }
+        });
+    }
+
+
+    /* ============================================================
+       TAB 2: HANNAH'S WORDS — SCENE CAROUSEL
+    ============================================================ */
+    const SCENE_BLANKS = {
+        's1b1': { answer: 'sheriff',     options: ['sheriff', 'deputy', 'marshal', 'bandit', 'cowboy', 'outlaw'] },
+        's1b2': { answer: 'run',         options: ['run', 'hide', 'laugh', 'giggle', 'squeal', 'scatter'] },
+        's2b1': { answer: 'project',     options: ['project', 'homework', 'assignment', 'essay', 'task', 'report'] },
+        's2b2': { answer: 'Animals',     options: ['Animals', 'Humans', 'Strangers', 'Monsters', 'Ghosts', 'Aliens'] },
+        's3b1': { answer: 'unstoppable', options: ['unstoppable', 'incurable', 'terminal', 'deadly', 'serious', 'fatal'] },
+        's3b2': { answer: 'poetry',      options: ['poetry', 'stories', 'drawings', 'singing', 'dancing', 'paintings'] },
+        's4b1': { answer: 'science-y',   options: ['science-y', 'scientific', 'technical', 'scholarly', 'academic', 'formal'] },
+        's4b2': { answer: 'father',      options: ['father', 'dad', 'Ian', 'daddy', 'papa', 'the professor'] }
+    };
+
+    const sceneCards  = document.querySelectorAll('#panel-words .scene-card');
+    const totalScenes = sceneCards.length;
+    let   sceneIdx    = 0;
+    let   advanceTimer = null;
+
+    function showScene(n) {
+        if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
+        sceneCards.forEach((c, i) => c.classList.toggle('active', i === n));
+        sceneIdx = n;
+        document.getElementById('scene-counter').textContent =
+            (n === totalScenes - 1) ? 'Your Analysis' : 'Scene ' + (n + 1) + ' of ' + (totalScenes - 1);
+        // Back button is always enabled — on scene 0 it takes you back to Calibration
+        const prev = document.getElementById('scene-prev');
+        prev.disabled = false;
+        prev.innerHTML = (n === 0) ? '&#9664; Back to Calibration' : '&#9664; Back';
+        const next = document.getElementById('scene-next');
+        next.disabled = false;
+        next.innerHTML = (n === totalScenes - 1) ? 'Done &rarr; Monologue' : 'Next &#9654;';
+        document.querySelectorAll('#panel-words .scene-bank.open').forEach(b => b.classList.remove('open'));
+    }
+
+    function sceneInputsFor(n) {
+        return [...document.querySelectorAll('#panel-words .fill-blank__input')]
+            .filter(inp => inp.id.startsWith('s' + (n + 1) + 'b'));
+    }
+
+    function isSceneCorrect(n) {
+        const inputs = sceneInputsFor(n);
+        return inputs.length > 0 && inputs.every(inp =>
+            inp.value.trim().toLowerCase() === (inp.dataset.answer || '').toLowerCase()
+        );
+    }
+
+    function markCorrectAndAdvance(n) {
+        sceneInputsFor(n).forEach(inp => {
+            inp.classList.add('correct');
+            inp.disabled = true;
+            saveHannahBlank(inp);
+        });
+        const note = document.getElementById('reveal-' + (n + 1));
+        const btn  = document.querySelector('#panel-words .scene-reveal-btn[data-scene="' + (n + 1) + '"]');
+        if (note) note.classList.add('open');
+        if (btn)  btn.style.display = 'none';
+        try { localStorage.setItem('arrival-hannah-reveal-' + (n + 1), '1'); } catch(e) {}
+    }
+
+    // Build per-blank option pills from SCENE_BLANKS
+    document.querySelectorAll('#panel-words .scene-bank').forEach(bank => {
+        const inputId = bank.dataset.input;
+        const data    = SCENE_BLANKS[inputId];
+        if (!data) return;
+        data.options.forEach(word => {
+            const pill = document.createElement('span');
+            pill.className     = 'scene-bank-pill';
+            pill.textContent   = word;
+            pill.dataset.input = inputId;
+            bank.appendChild(pill);
+        });
+    });
+
+    // Focus on a blank → open its word bank
+    document.getElementById('panel-words').addEventListener('focusin', e => {
+        if (!e.target.classList.contains('fill-blank__input')) return;
+        const badge = e.target.closest('.fill-blank')?.querySelector('.fill-blank__badge');
+        if (!badge) return;
+        const bank = document.getElementById(badge.dataset.bank);
+        if (!bank) return;
+        const sceneBody = e.target.closest('.scene-body');
+        if (!sceneBody) return;
+        sceneBody.querySelectorAll('.scene-bank').forEach(b => {
+            if (b !== bank) b.classList.remove('open');
+        });
+        bank.classList.add('open');
+    });
+
+    // Auto-check on typing
+    document.getElementById('panel-words').addEventListener('input', e => {
+        if (!e.target.classList.contains('fill-blank__input')) return;
+        saveHannahBlank(e.target);
+        const correct = e.target.value.trim().toLowerCase() === (e.target.dataset.answer || '').toLowerCase();
+        e.target.classList.toggle('correct', correct);
+        if (correct && isSceneCorrect(sceneIdx)) markCorrectAndAdvance(sceneIdx);
+    });
+
+    // Click delegation: prev/next, badge, pill, reveal, restart
+    document.getElementById('panel-words').addEventListener('click', e => {
+        if (e.target.id === 'scene-restart') { restartHannahWords(); return; }
+        if (e.target.id === 'scene-prev') {
+            if (sceneIdx > 0) { showScene(sceneIdx - 1); }
+            else { switchTab('calibration'); }
+            return;
+        }
+        if (e.target.id === 'scene-next') {
+            if (sceneIdx < totalScenes - 1) { showScene(sceneIdx + 1); }
+            else { switchTab('monologue'); }
+            return;
+        }
+        if (e.target.classList.contains('fill-blank__badge')) {
+            const bank      = document.getElementById(e.target.dataset.bank);
+            const sceneBody = e.target.closest('.scene-body');
+            sceneBody.querySelectorAll('.scene-bank').forEach(b => {
+                if (b !== bank) b.classList.remove('open');
+            });
+            bank.classList.toggle('open');
+            return;
+        }
+        if (e.target.classList.contains('scene-bank-pill')) {
+            const input = document.getElementById(e.target.dataset.input);
+            if (input && !input.disabled) {
+                input.value = e.target.textContent;
+                saveHannahBlank(input);
+                const correct = input.value.trim().toLowerCase() === (input.dataset.answer || '').toLowerCase();
+                input.classList.toggle('correct', correct);
+                if (correct && isSceneCorrect(sceneIdx)) markCorrectAndAdvance(sceneIdx);
+            }
+            document.querySelectorAll('#panel-words .scene-bank.open').forEach(b => b.classList.remove('open'));
+            return;
+        }
+        if (e.target.classList.contains('scene-reveal-btn')) {
+            revealHannahScene(e.target.dataset.scene);
+            try { localStorage.setItem('arrival-hannah-reveal-' + e.target.dataset.scene, '1'); } catch(e2) {}
+            return;
+        }
+        if (!e.target.classList.contains('fill-blank__input')) {
+            document.querySelectorAll('#panel-words .scene-bank.open').forEach(b => b.classList.remove('open'));
+        }
+    });
+
+    function revealHannahScene(n) {
+        document.querySelectorAll('#panel-words .fill-blank__input').forEach(input => {
+            if (input.id.startsWith('s' + n + 'b')) {
+                input.value    = input.dataset.answer;
+                input.classList.add('correct');
+                input.disabled = true;
+                saveHannahBlank(input);
+            }
+        });
+        const note = document.getElementById('reveal-' + n);
+        const btn  = document.querySelector('#panel-words .scene-reveal-btn[data-scene="' + n + '"]');
+        if (note) note.classList.add('open');
+        if (btn)  btn.style.display = 'none';
+    }
+
+    function saveHannahBlank(input) {
+        try { localStorage.setItem('arrival-hannah-blank-' + input.id, input.value); } catch(e) {}
+    }
+
+    function restartHannahWords() {
+        if (!confirm('Clear all your answers for Hannah\u2019s Words and start over?')) return;
+        try {
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                const k = localStorage.key(i);
+                if (k && (k.startsWith('arrival-hannah-blank-') || k.startsWith('arrival-hannah-reveal-'))) {
+                    localStorage.removeItem(k);
+                }
+            }
+        } catch(e) {}
+        document.querySelectorAll('#panel-words .fill-blank__input').forEach(inp => {
+            inp.value = '';
+            inp.classList.remove('correct');
+            inp.disabled = false;
+        });
+        document.querySelectorAll('#panel-words .scene-bank.open').forEach(b => b.classList.remove('open'));
+        document.querySelectorAll('#panel-words .scene-reveal-note.open').forEach(n => n.classList.remove('open'));
+        document.querySelectorAll('#panel-words .scene-reveal-btn').forEach(b => b.style.display = '');
+        showScene(0);
+    }
+
+    // Restore saved blanks and previously revealed scenes
+    document.querySelectorAll('#panel-words .fill-blank__input').forEach(input => {
+        try {
+            const saved = localStorage.getItem('arrival-hannah-blank-' + input.id);
+            if (saved !== null) input.value = saved;
+        } catch(e) {}
+    });
+    ['1','2','3','4'].forEach(n => {
+        try { if (localStorage.getItem('arrival-hannah-reveal-' + n)) revealHannahScene(n); } catch(e) {}
+    });
+    let startScene = 0;
+    for (let i = 0; i < totalScenes - 1; i++) {
+        if (isSceneCorrect(i)) startScene = Math.min(i + 1, totalScenes - 1);
+        else break;
+    }
+    showScene(startScene);
+
+    function wordsPersist(num, val) {
+        try { localStorage.setItem('arrival-hannah-words-' + num, val); } catch(e) {}
+    }
+
+    function wordsRestore() {
+        ['1','2','3'].forEach(n => {
+            try {
+                const saved = localStorage.getItem('arrival-hannah-words-' + n);
+                const el    = document.getElementById('words-q' + n);
+                if (saved && el) el.value = saved;
+            } catch(e) {}
+        });
+    }
+    wordsRestore();
+
+
+    /* ============================================================
+       TAB 3: HANNAH'S MONOLOGUE
+    ============================================================ */
+    const MONO_SCENARIOS = {
+        A: {
+            label: '',
+            title: 'Scenario A \u2014 Talking to Ian after the years apart',
+            context: '<p>After the lakeside scene, Ian left. Years passed. At some point off-screen he and Hannah reconciled, but the film never shows us how. The only clue is in the \u2018non-zero-sum\u2019 scene, where Louise says \u201cif you want science, call your father\u201d without hesitation, which tells us Ian is back in Hannah\u2019s life by the time she is a teenager.</p><p>Before you write, decide what Hannah knows. If she knows she is going to die, then she already understands why Ian left. If she doesn\u2019t, the conversation will be more confused, and that choice will shape everything about the monologue.</p>',
+            prompt: 'Write 3\u20134 sentences in teenage Hannah\u2019s voice. Choose either the moment of reconciliation itself or a conversation afterwards, and decide what she says and what she leaves out.'
+        },
+        B: {
+            label: '',
+            title: 'Scenario B \u2014 Realising Louise always knew she would die young',
+            context: '<p>Hannah is a teenager, and she realises her mother has always known she would die young. She has been raised by someone who made the choice for Hannah to live and die this early.</p><p>How does Hannah feel about that? This monologue is her response.</p>',
+            prompt: 'Write 3\u20134 sentences in Hannah\u2019s voice, in the moment the realisation arrives. No one else is in the room. She is not speaking to her mother; these are the words she uses inside her own head.'
+        },
+        C: {
+            label: '',
+            title: 'Scenario C \u2014 Speaking to the heptapods at the end of her life',
+            context: '<p>Hannah knows the heptapods gave her mother access to non-linear time, but what else does she know about them, and what might she want to ask?</p><p>Before you write, decide what she understands about the heptapods, whether she can also see time non-linearly (the non-zero-sum scene suggests she might), and how she feels about the gift they gave her mother.</p>',
+            prompt: 'Write 3\u20134 sentences addressed directly to the heptapods. Hannah decides what this moment is for her, whether that is thanks, anger, a question, or something she wants to give back. Write what she chooses to say.'
+        },
+        D: {
+            label: '',
+            title: 'Scenario D \u2014 Hannah alone, speaking about her own dying',
+            context: '<p>Hannah is alone in hospital with only a short time left. What is she thinking, and what is she feeling?</p><p>This monologue is about Hannah\u2019s relationship with herself: how she sees the short life she has had, how she thinks about her parents, and whatever else you believe she would be working through at the end.</p>',
+            prompt: 'Write 3\u20134 sentences in Hannah\u2019s voice with no audience, spoken aloud to the room or silently inside her head. Decide which words belong only to her.'
+        }
+    };
+
+    /* Dynamic lens — the calibration commit shapes how each scenario reads. */
+    const SCENARIO_LENS_TOPIC = {
+        A: 'ian',
+        B: 'death',
+        C: 'heptapods',
+        D: 'death'
+    };
+
+    const SCENARIO_LENSES = {
+        A: [
+            "Your Hannah doesn\u2019t know why Dad left.",
+            "Your Hannah has felt something was off about why he left.",
+            "Your Hannah suspects it was something Mum did.",
+            "Your Hannah has worked out the rough outline of what made him leave.",
+            "Your Hannah knows why he left and hasn\u2019t told anyone.",
+            "Your Hannah knows everything Mum knows about why he left."
+        ],
+        B: [
+            "Your Hannah didn\u2019t know until this moment.",
+            "Your Hannah has felt something wrong for years.",
+            "Your Hannah has suspected it for a while.",
+            "Your Hannah has pieced most of it together.",
+            "Your Hannah has known but hasn\u2019t said it aloud.",
+            "Your Hannah has always known what Mum knows."
+        ],
+        C: [
+            "Your Hannah doesn\u2019t know what the Heptapods gave Mum.",
+            "Your Hannah has felt something about them without knowing what.",
+            "Your Hannah suspects they gave Mum a gift of knowing.",
+            "Your Hannah has worked out roughly what they did to Mum.",
+            "Your Hannah knows what they gave Mum and has sat with it.",
+            "Your Hannah knows everything Mum knows about them."
+        ],
+        D: [
+            "Your Hannah didn\u2019t know until this moment alone.",
+            "Your Hannah has sensed it and now lets herself feel it fully.",
+            "Your Hannah has suspected and now admits it to herself.",
+            "Your Hannah has worked most of it out and lets the last pieces in.",
+            "Your Hannah has known but not spoken it aloud until now.",
+            "Your Hannah has always known and isn\u2019t discovering anything."
+        ]
+    };
+
+    function monoLensHtml(scenarioId) {
+        const topic = SCENARIO_LENS_TOPIC[scenarioId];
+        const commits = calibrationGet();
+        const idx = commits[topic];
+        const topicLabel = (CALIBRATION_TOPICS.find(t => t.id === topic) || {}).label || topic;
+        if (idx === undefined) {
+            return '<div class="mono-lens mono-lens--empty">Commit your Hannah on <strong>' + topicLabel + '</strong> in Activity 1 to see how that shapes this scene.</div>';
+        }
+        const lens = SCENARIO_LENSES[scenarioId][idx];
+        return '<div class="mono-lens">' +
+                 '<span class="mono-lens__label">Given your calibration on ' + topicLabel + ' \u2014 <em>' + CALIBRATION_SCALE_FULL[idx] + '</em>:</span>' +
+                 '<span class="mono-lens__text">' + lens + '</span>' +
+               '</div>';
+    }
+
+    let activeMonoScenario = null;
+
+    function monoShowView(view) {
+        document.getElementById('mono-view-choose').hidden  = view !== 'choose';
+        document.getElementById('mono-view-context').hidden = view !== 'context';
+        document.getElementById('mono-view-write').hidden   = view !== 'write';
+    }
+
+    function monoSelectScenario(id) {
+        const s = MONO_SCENARIOS[id];
+        if (!s) return;
+        activeMonoScenario = id;
+        try { localStorage.setItem('arrival-hannah-mono-active', id); } catch(e) {}
+        document.getElementById('mono-context-title').textContent = s.title;
+        document.getElementById('mono-context-text').innerHTML    = s.context + monoLensHtml(id);
+        document.getElementById('mono-write-recap').textContent   = s.title;
+        document.getElementById('mono-write-prompt').textContent  = s.prompt;
+        try {
+            const saved = localStorage.getItem('arrival-hannah-mono-text-' + id);
+            document.getElementById('mono-write-textarea').value = saved || '';
+        } catch(e) { document.getElementById('mono-write-textarea').value = ''; }
+        monoShowView('context');
+    }
+
+    function monoPersistText() {
+        if (!activeMonoScenario) return;
+        try {
+            localStorage.setItem('arrival-hannah-mono-text-' + activeMonoScenario,
+                document.getElementById('mono-write-textarea').value);
+        } catch(e) {}
+    }
+
+    // Delegated click handler for scenario selection + nav buttons
+    document.getElementById('panel-monologue').addEventListener('click', e => {
+        if (e.target.id === 'mono-context-back') {
+            activeMonoScenario = null;
+            monoShowView('choose');
+            return;
+        }
+        if (e.target.id === 'mono-context-next') {
+            monoShowView('write');
+            document.getElementById('mono-write-textarea').focus();
+            return;
+        }
+        if (e.target.id === 'mono-write-back') {
+            monoShowView('context');
+            return;
+        }
+        const card = e.target.closest('.mono-scenario-card');
+        if (card && card.dataset.scenario) {
+            monoSelectScenario(card.dataset.scenario);
+        }
+    });
+
+    // Restore last-active scenario on load
+    try {
+        const lastActive = localStorage.getItem('arrival-hannah-mono-active');
+        if (lastActive && MONO_SCENARIOS[lastActive]) {
+            // Leave on chooser by default; user can re-select to resume.
+            // Pre-populate the inputs so re-entry is seamless.
+            monoSelectScenario(lastActive);
+            monoShowView('choose');
+        }
+    } catch(e) {}
+
+    // Render profile strips on initial load (in case tabs 2 or 3 become active)
+    renderProfileStrips();
+
+    function buildPdf() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+        const charName      = document.querySelector('.page-header__name')?.textContent?.trim() || 'Hannah';
+        const scenarioTitle = document.getElementById('mono-context-title')?.textContent?.trim() || '';
+        const prompt        = document.getElementById('mono-write-prompt')?.textContent?.trim() || '';
+        const text          = document.getElementById('mono-write-textarea')?.value || '';
+        const W = 170;
+        let y = 20;
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        doc.setTextColor(110, 110, 110);
+        doc.text('ARRIVAL \u2014 CHARACTER STUDY', 20, y);
+        y += 8;
+
+        doc.setFontSize(20);
+        doc.setTextColor(30, 30, 30);
+        doc.text(charName, 20, y);
+        y += 6;
+
+        doc.setDrawColor(190, 190, 190);
+        doc.line(20, y, 190, y);
+        y += 8;
+
+        if (scenarioTitle) {
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(13);
+            doc.setTextColor(50, 50, 50);
+            doc.text(scenarioTitle, 20, y);
+            y += 7;
+        }
+
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(10);
+        doc.setTextColor(110, 110, 110);
+        const promptLines = doc.splitTextToSize(prompt, W);
+        doc.text(promptLines, 20, y);
+        y += promptLines.length * 5 + 8;
+
+        doc.setDrawColor(190, 190, 190);
+        doc.line(20, y, 190, y);
+        y += 8;
+
+        doc.setFont('times', 'normal');
+        doc.setFontSize(13);
+        doc.setTextColor(20, 20, 20);
+        const monoLines = doc.splitTextToSize(text || '(nothing written yet)', W);
+        if (y + monoLines.length * 6 > 270) { doc.addPage(); y = 20; }
+        doc.text(monoLines, 20, y);
+
+        doc.save('hannah-monologue.pdf');
+    }
+    function savePdf() {
+        if (window.jspdf) { buildPdf(); return; }
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+        s.onload = buildPdf;
+        document.head.appendChild(s);
+    }
+    </script>
+</body>
+</html>

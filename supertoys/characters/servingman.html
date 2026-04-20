@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Serving-man | Super-Toys Last All Summer Long</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/character-activities.css">
+  <style>
+    :root {
+      --cp: #647B8A;
+      --ca: #9E9E94;
+    }
+  </style>
+</head>
+<body>
+
+<header class="top-bar">
+  <a href="../characters.html" class="back-link">← Characters</a>
+  <h1 class="page-title">The Serving-man</h1>
+  <button id="pdf-btn" class="pdf-btn">↓ Save PDF</button>
+</header>
+
+<div class="page-body">
+
+  <!-- ── Character Panel ─────────────────────────────────── -->
+  <aside class="char-panel">
+    <img class="portrait" src="assets/servingman_v4.png" alt="The serving-man in the hallway">
+    <p class="char-name">Serving-man</p>
+    <div id="sprite-wrap"><img src="../sprites/servingman/rotations/south.png" alt="Serving-Man"></div>
+    <blockquote class="char-quote">"It is always advisable to purchase goods with guarantees, even if they cost slightly more."</blockquote>
+  </aside>
+
+  <!-- ── Activities Panel ────────────────────────────────── -->
+  <div class="activities-panel">
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="activity1" aria-selected="true">Activity 1 — Word Bank</button>
+      <button class="tab-btn" data-tab="activity2" aria-selected="false">Activity 2 — Select Lines</button>
+      <button class="tab-btn" data-tab="activity3" aria-selected="false">Activity 3 — Why These Lines</button>
+      <button class="tab-btn" data-tab="activity4" aria-selected="false">Activity 4 — Monologue</button>
+    </nav>
+
+    <div class="tab-content">
+
+      <!-- ═══ ACTIVITY 1 ═════════════════════════════════════ -->
+      <section class="tab-panel active" id="activity1" aria-hidden="false">
+        <p class="act-title">Words the serving-man uses in the story</p>
+        <p class="act-desc">The serving-man speaks <em>twice</em> in the entire story. Both sentences are here. That is all. Click a word when you use it below.</p>
+
+        <div class="sparse-note">
+          The serving-man has twelve words across two sentences. David has forty-one. Henry has over seventy. Sit with that difference for a moment before you answer below. It is telling you something.
+        </div>
+
+        <div class="word-bank-grid">
+          <div>
+            <p class="word-col-header">Verbs</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="suffer">suffer</button>
+              <button class="chip" type="button" data-word="purchase">purchase</button>
+              <button class="chip" type="button" data-word="cost">cost</button>
+            </div>
+          </div>
+          <div>
+            <p class="word-col-header">Nouns</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="roses">roses</button>
+              <button class="chip" type="button" data-word="spot">spot</button>
+              <button class="chip" type="button" data-word="goods">goods</button>
+              <button class="chip" type="button" data-word="guarantees">guarantees</button>
+            </div>
+          </div>
+          <div>
+            <p class="word-col-header">Adjectives</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="black">black</button>
+              <button class="chip" type="button" data-word="advisable">advisable</button>
+            </div>
+          </div>
+          <div>
+            <p class="word-col-header">Adverbs</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="occasionally">occasionally</button>
+              <button class="chip" type="button" data-word="always">always</button>
+              <button class="chip" type="button" data-word="slightly">slightly</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="act-divider"></div>
+
+        <div class="analysis-section">
+          <p class="analysis-prompt">Using the serving-man's word bank -- sparse as it is -- describe his characteristics, desires, goals and fears. If a box feels impossible to fill, that difficulty is itself the answer.</p>
+          <div class="analysis-grid">
+            <div class="analysis-box">
+              <span class="analysis-label">Characteristics</span>
+              <textarea data-save="a1-characteristics" placeholder="What kind of being is the serving-man? What do his two sentences reveal?"></textarea>
+            </div>
+            <div class="analysis-box">
+              <span class="analysis-label">Desires</span>
+              <textarea data-save="a1-desires" placeholder="Does the serving-man have desires? What might they be -- or is that the wrong question?"></textarea>
+            </div>
+            <div class="analysis-box">
+              <span class="analysis-label">Goals</span>
+              <textarea data-save="a1-goals" placeholder="What is the serving-man designed to achieve?"></textarea>
+            </div>
+            <div class="analysis-box">
+              <span class="analysis-label">Fears</span>
+              <textarea data-save="a1-fears" placeholder="Can the serving-man fear? What does the absence of fear words tell us?"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ ACTIVITY 2 — SELECT LINES ══════════════════════ -->
+      <section class="tab-panel" id="activity2" aria-hidden="true">
+        <p class="act-title">Every line the serving-man speaks in the story</p>
+        <p class="act-desc">The serving-man speaks only <em>twice</em>. Select both -- they are all he gives you. Click a line to select or un-select it.</p>
+        <p class="line-counter" id="line-counter">0 of 2 selected</p>
+        <div class="line-list" id="line-list"></div>
+      </section>
+
+      <!-- ═══ ACTIVITY 3 — WHY THESE LINES ═══════════════════ -->
+      <section class="tab-panel" id="activity3" aria-hidden="true">
+        <p class="act-title">The heavy-lifting words in the serving-man's lines</p>
+        <p class="act-desc">Your selected lines are shown below with the <em>verbs</em>, <em>nouns</em>, <em>adjectives</em>, and <em>adverbs</em> picked out. These are the words doing the heavy lifting. Beneath each line, write why this line matters -- or what its emptiness reveals.</p>
+        <div class="pos-legend">
+          <span><span class="legend-swatch-verb">verb</span></span>
+          <span><span class="legend-swatch-noun">noun</span></span>
+          <span><span class="legend-swatch-adj">adjective</span></span>
+          <span><span class="legend-swatch-adv">adverb</span></span>
+        </div>
+        <div class="a3-highlight-list" id="a3-highlight-list"></div>
+      </section>
+
+      <!-- ═══ ACTIVITY 4 — MONOLOGUE ═════════════════════════ -->
+      <section class="tab-panel" id="activity4" aria-hidden="true">
+        <div class="a4-layout">
+          <div class="a4-left">
+            <p class="a4-left-title">Your chosen lines &amp; reasons</p>
+            <div id="a4-lines"></div>
+          </div>
+          <div class="a4-right">
+            <div class="writing-prompt">
+              <p><strong>Write 4 sentences minimum of a monologue for this character, first explaining who they are delivering the monologue to.</strong></p>
+            </div>
+            <div class="writing-area">
+              <span class="writing-label">Your monologue -- work is saved automatically</span>
+              <textarea data-save="a4-monologue" placeholder="Begin the serving-man's monologue here…"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- .tab-content -->
+  </div><!-- .activities-panel -->
+
+</div><!-- .page-body -->
+
+<script>
+  window.CHARACTER_LINES = [
+    "Roses occasionally suffer from black spot.",
+    "It is always advisable to purchase goods with guarantees, even if they cost slightly more."
+  ];
+</script>
+<script src="../shared/character-activities.js"></script>
+<script>
+  initCharacterPage('servingman');
+</script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monica | Super-Toys Last All Summer Long</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/character-activities.css">
+  <style>
+    :root {
+      --cp: #8E5E7A;
+      --ca: #C4A24D;
+    }
+  </style>
+</head>
+<body>
+
+<header class="top-bar">
+  <a href="../characters.html" class="back-link">← Characters</a>
+  <h1 class="page-title">Monica Swinton</h1>
+  <button id="pdf-btn" class="pdf-btn">↓ Save PDF</button>
+</header>
+
+<div class="page-body">
+
+  <!-- ── Character Panel ─────────────────────────────────── -->
+  <aside class="char-panel">
+    <img class="portrait" src="assets/monica_v4.png" alt="Monica at the window">
+    <p class="char-name">Monica</p>
+    <div id="sprite-wrap"><img src="../sprites/monica/rotations/south.png" alt="Monica"></div>
+    <blockquote class="char-quote">"Why can't we communicate?"</blockquote>
+  </aside>
+
+  <!-- ── Activities Panel ────────────────────────────────── -->
+  <div class="activities-panel">
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="activity1" aria-selected="true">Activity 1 — Word Bank</button>
+      <button class="tab-btn" data-tab="activity2" aria-selected="false">Activity 2 — Select Lines</button>
+      <button class="tab-btn" data-tab="activity3" aria-selected="false">Activity 3 — Why These Lines</button>
+      <button class="tab-btn" data-tab="activity4" aria-selected="false">Activity 4 — Monologue</button>
+    </nav>
+
+    <div class="tab-content">
+
+      <!-- ═══ ACTIVITY 1 ═════════════════════════════════════ -->
+      <section class="tab-panel active" id="activity1" aria-hidden="false">
+        <p class="act-title">Words Monica uses in the story</p>
+        <p class="act-desc">Every word Monica says aloud in the story is here. Her vocabulary moves between the domestic and the things she can't quite bring herself to say. Click a word when you use it below.</p>
+
+        <div class="word-bank-grid">
+          <div>
+            <p class="word-col-header">Verbs</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="love">love</button>
+              <button class="chip" type="button" data-word="try">try</button>
+              <button class="chip" type="button" data-word="want">want</button>
+              <button class="chip" type="button" data-word="talk">talk</button>
+              <button class="chip" type="button" data-word="tell">tell</button>
+              <button class="chip" type="button" data-word="lie">lie</button>
+              <button class="chip" type="button" data-word="call">call</button>
+              <button class="chip" type="button" data-word="avoid">avoid</button>
+              <button class="chip" type="button" data-word="communicate">communicate</button>
+              <button class="chip" type="button" data-word="work">work</button>
+              <button class="chip" type="button" data-word="think">think</button>
+              <button class="chip" type="button" data-word="dial">dial</button>
+              <button class="chip" type="button" data-word="believe">believe</button>
+              <button class="chip" type="button" data-word="win">win</button>
+              <button class="chip" type="button" data-word="conceive">conceive</button>
+              <button class="chip" type="button" data-word="go">go</button>
+            </div>
+          </div>
+          <div>
+            <p class="word-col-header">Nouns</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="darling">darling</button>
+              <button class="chip" type="button" data-word="shoes">shoes</button>
+              <button class="chip" type="button" data-word="socks">socks</button>
+              <button class="chip" type="button" data-word="room">room</button>
+              <button class="chip" type="button" data-word="garden">garden</button>
+              <button class="chip" type="button" data-word="trouble">trouble</button>
+              <button class="chip" type="button" data-word="factory">factory</button>
+              <button class="chip" type="button" data-word="despair">despair</button>
+              <button class="chip" type="button" data-word="post">post</button>
+              <button class="chip" type="button" data-word="lottery">lottery</button>
+              <button class="chip" type="button" data-word="parenthood">parenthood</button>
+              <button class="chip" type="button" data-word="child">child</button>
+            </div>
+          </div>
+          <div>
+            <p class="word-col-header">Adjectives</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="lovely">lovely</button>
+              <button class="chip" type="button" data-word="awful">awful</button>
+              <button class="chip" type="button" data-word="afraid">afraid</button>
+              <button class="chip" type="button" data-word="verbal">verbal</button>
+              <button class="chip" type="button" data-word="wonderful">wonderful</button>
+            </div>
+          </div>
+          <div>
+            <p class="word-col-header">Adverbs</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="really">really</button>
+              <button class="chip" type="button" data-word="well">well</button>
+              <button class="chip" type="button" data-word="still">still</button>
+              <button class="chip" type="button" data-word="back">back</button>
+              <button class="chip" type="button" data-word="again">again</button>
+              <button class="chip" type="button" data-word="just">just</button>
+              <button class="chip" type="button" data-word="never">never</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="act-divider"></div>
+
+        <div class="analysis-section">
+          <p class="analysis-prompt">Based on Monica's word bank, describe her characteristics, desires, goals and fears. Click words above to mark the ones you're drawing on.</p>
+          <div class="analysis-grid">
+            <div class="analysis-box">
+              <span class="analysis-label">Characteristics</span>
+              <textarea data-save="a1-characteristics" placeholder="What kind of person is Monica? What do her words reveal about her?"></textarea>
+            </div>
+            <div class="analysis-box">
+              <span class="analysis-label">Desires</span>
+              <textarea data-save="a1-desires" placeholder="What does Monica want most?"></textarea>
+            </div>
+            <div class="analysis-box">
+              <span class="analysis-label">Goals</span>
+              <textarea data-save="a1-goals" placeholder="What is Monica trying to achieve or protect?"></textarea>
+            </div>
+            <div class="analysis-box">
+              <span class="analysis-label">Fears</span>
+              <textarea data-save="a1-fears" placeholder="What does Monica fear -- or what should she fear?"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ ACTIVITY 2 — SELECT LINES ══════════════════════ -->
+      <section class="tab-panel" id="activity2" aria-hidden="true">
+        <p class="act-title">Every line Monica speaks in the story</p>
+        <p class="act-desc">Below is every line Monica says aloud across the story. Choose <em>five</em> that feel most telling -- the ones where her voice carries the most weight. Click a line to select or un-select it.</p>
+        <p class="line-counter" id="line-counter">0 of 5 selected</p>
+        <div class="line-list" id="line-list"></div>
+      </section>
+
+      <!-- ═══ ACTIVITY 3 — WHY THESE LINES ═══════════════════ -->
+      <section class="tab-panel" id="activity3" aria-hidden="true">
+        <p class="act-title">The heavy-lifting words in Monica's lines</p>
+        <p class="act-desc">Your five selected lines are shown below with the <em>verbs</em>, <em>nouns</em>, <em>adjectives</em>, and <em>adverbs</em> picked out. These are the words doing the heavy lifting. Beneath each line, write why this line matters to Monica.</p>
+        <div class="pos-legend">
+          <span><span class="legend-swatch-verb">verb</span></span>
+          <span><span class="legend-swatch-noun">noun</span></span>
+          <span><span class="legend-swatch-adj">adjective</span></span>
+          <span><span class="legend-swatch-adv">adverb</span></span>
+        </div>
+        <div class="a3-highlight-list" id="a3-highlight-list"></div>
+      </section>
+
+      <!-- ═══ ACTIVITY 4 — MONOLOGUE ═════════════════════════ -->
+      <section class="tab-panel" id="activity4" aria-hidden="true">
+        <div class="a4-layout">
+          <div class="a4-left">
+            <p class="a4-left-title">Your chosen lines &amp; reasons</p>
+            <div id="a4-lines"></div>
+          </div>
+          <div class="a4-right">
+            <div class="writing-prompt">
+              <p><strong>Write 4 sentences minimum of a monologue for this character, first explaining who they are delivering the monologue to.</strong></p>
+            </div>
+            <div class="writing-area">
+              <span class="writing-label">Your monologue -- work is saved automatically</span>
+              <textarea data-save="a4-monologue" placeholder="Begin Monica's monologue here…"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- .tab-content -->
+  </div><!-- .activities-panel -->
+
+</div><!-- .page-body -->
+
+<script>
+  window.CHARACTER_LINES = [
+    "Isn't it lovely?",
+    "David, darling, do you have to be so awful? Come in at once and change your shoes and socks.",
+    "David!",
+    "Teddy!",
+    "Is David in his room, Teddy?",
+    "Come down here, Teddy!",
+    "Stand there, Teddy. I want to talk to you.",
+    "Teddy, did David tell you to tell me he had gone into the garden?",
+    "So you lied to me.",
+    "Stop calling me Mummy! Why is David avoiding me? He's not afraid of me, is he?",
+    "Why can't we communicate?",
+    "Henry, Henry — oh, my darling, I was in despair… but I've just dialed the afternoon post and — you'll never believe it! Oh, it's wonderful!",
+    "Yes, my darling, yes, we've won this week's parenthood lottery! We can go ahead and conceive a child at once!",
+    "Teddy's no trouble. He works well.",
+    "His verbal communication-center is still giving trouble. I think he'll have to go back to the factory again."
+  ];
+</script>
+<script src="../shared/character-activities.js"></script>
+<script>
+  initCharacterPage('monica');
+</script>
+</body>
+</html>

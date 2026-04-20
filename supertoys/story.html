@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read the Story | Super-Toys Last All Summer Long</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Dancing+Script:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared/tokens.css">
+
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            font-size: 16px; /* stylelint-disable-line scale-unlimited/declaration-strict-value */
+        }
+
+        body {
+            font-family: 'Libre Baskerville', 'Georgia', serif;
+            background: #1a1510;
+            color: #2c2416;
+            line-height: 2.0;
+            height: 100dvh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ============================================
+           BACK NAVIGATION - Top Bar
+           ============================================ */
+        .top-nav {
+            flex-shrink: 0;
+            z-index: 100;
+            background: rgba(26, 21, 16, 0.95);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(204, 27, 27, 0.2);
+            padding: var(--space-sm) var(--space-lg);
+        }
+
+        .top-nav a {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            color: rgba(245, 230, 208, 0.6);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .top-nav a:hover,
+        .top-nav a:focus-visible {
+            color: #F5E6D0;
+        }
+
+        .top-nav a:focus-visible {
+            outline: 2px solid #FFD700;
+            outline-offset: 3px;
+            border-radius: 3px;
+        }
+
+        .back-arrow {
+            font-size: var(--text-base);
+            line-height: 1;
+        }
+
+        /* ============================================
+           PAGE WRAPPER
+           ============================================ */
+        .page-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--space-lg) var(--space-lg) var(--space-xl);
+            flex: 1;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            width: 100%;
+        }
+
+        /* ============================================
+           STORY HEADER - Matching Index Page Logo
+           ============================================ */
+        .story-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid rgba(139, 90, 43, 0.3);
+        }
+
+        .logo-title {
+            font-family: 'Bungee', cursive;
+            font-size: var(--text-3xl);
+            letter-spacing: 0.08em;
+            color: #CC1B1B;
+            line-height: 1;
+            -webkit-text-stroke: 1px #990000;
+            text-shadow:
+                3px 3px 0 #800000,
+                6px 6px 0 rgba(80, 0, 0, 0.5),
+                0 0 30px rgba(255, 50, 50, 0.2);
+            margin-bottom: var(--space-xs);
+        }
+
+        .logo-cursive {
+            font-family: 'Dancing Script', cursive;
+            font-size: var(--text-xl);
+            font-weight: 700;
+            font-style: italic;
+            color: #FFD700;
+            text-shadow:
+                2px 2px 0 rgba(139, 100, 0, 0.5),
+                0 0 20px rgba(255, 215, 0, 0.3);
+            letter-spacing: 0.03em;
+            transform: rotate(-3deg);
+            display: block;
+            margin-bottom: var(--space-sm);
+        }
+
+        .story-author {
+            font-family: 'Libre Baskerville', serif;
+            font-size: var(--text-base);
+            font-weight: 700;
+            color: #B8860B;
+            margin-bottom: var(--space-xs);
+        }
+
+        .story-publication {
+            font-family: 'Libre Baskerville', serif;
+            font-style: italic;
+            font-size: var(--text-base);
+            color: rgba(139, 90, 43, 0.7);
+        }
+
+        /* ============================================
+           PROGRESS BAR
+           ============================================ */
+        .progress-container {
+            background: rgba(139, 90, 43, 0.15);
+            border-radius: 20px;
+            padding: var(--space-sm) var(--space-md);
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .progress-label {
+            font-size: var(--text-base);
+            color: rgba(245, 230, 208, 0.7);
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .progress-bar-track {
+            flex: 1;
+            height: 8px;
+            background: rgba(139, 90, 43, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #CC1B1B, #FFD700);
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: var(--space-xs);
+        }
+
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(139, 90, 43, 0.25);
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .progress-dot.completed {
+            background: #B8860B;
+        }
+
+        .progress-dot.active {
+            background: #FFD700;
+            transform: scale(1.3);
+            box-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
+        }
+
+        /* ============================================
+           DOWNLOAD BUTTON - Storybook Card Style
+           ============================================ */
+        .download-section {
+            text-align: center;
+            margin: var(--space-lg) 0;
+        }
+
+        .download-section-top {
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid rgba(139, 90, 43, 0.15);
+        }
+
+        .download-section-bottom {
+            padding-top: var(--space-lg);
+            border-top: 1px solid rgba(139, 90, 43, 0.15);
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            min-height: 56px;
+            font-family: 'Libre Baskerville', serif;
+            font-size: var(--text-base);
+            color: #4a3520;
+            text-decoration: none;
+            background: linear-gradient(135deg, #F5E6D0, #E8D4B8);
+            border: 2px solid #B8860B;
+            border-radius: 3px;
+            box-shadow:
+                3px 3px 0 rgba(139, 90, 43, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow:
+                5px 5px 0 rgba(139, 90, 43, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            background: linear-gradient(135deg, #F9ECD8, #ECD9C0);
+        }
+
+        .download-btn:active {
+            transform: translate(1px, 1px);
+            box-shadow:
+                1px 1px 0 rgba(139, 90, 43, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .download-btn:focus-visible {
+            outline: 3px solid #FFD700;
+            outline-offset: 3px;
+        }
+
+        .download-icon {
+            font-size: var(--text-lg);
+            line-height: 1;
+        }
+
+        /* ============================================
+           PARCHMENT CONTENT AREA
+           ============================================ */
+        .parchment {
+            background: #F5E6D0;
+            border-radius: 4px;
+            padding: var(--space-xl) var(--space-2xl);
+            box-shadow:
+                0 2px 20px rgba(0, 0, 0, 0.3),
+                0 0 60px rgba(0, 0, 0, 0.15),
+                inset 0 0 80px rgba(139, 90, 43, 0.06);
+            border: 1px solid rgba(139, 90, 43, 0.2);
+            position: relative;
+        }
+
+        .parchment::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 4px;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(139, 90, 43, 0.04), transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(139, 90, 43, 0.03), transparent 60%);
+            pointer-events: none;
+        }
+
+        /* ============================================
+           STORY TEXT TYPOGRAPHY
+           ============================================ */
+        .story-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .story-text p {
+            font-size: var(--text-base);
+            line-height: 2.05;
+            margin-bottom: 1.15em; /* stylelint-disable-line scale-unlimited/declaration-strict-value */
+            color: #2c2416;
+            text-align: justify;
+            hyphens: auto;
+            -webkit-hyphens: auto;
+        }
+
+        .story-text p.dialogue {
+            text-indent: 1.5em;
+        }
+
+        .story-text em {
+            font-style: italic;
+            color: #3a2a18;
+        }
+
+        .story-text .thought {
+            font-style: italic;
+        }
+
+        .story-text .letter {
+            font-style: italic;
+            display: block;
+            margin: 0.7em 0 0.7em 2.5em; /* stylelint-disable-line scale-unlimited/declaration-strict-value */
+            color: #3a2a18;
+            line-height: 1.8;
+        }
+
+        /* ============================================
+           SECTION BREAKS - Decorative Separators
+           ============================================ */
+        .section-break {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            margin: var(--space-xl) 0;
+            color: rgba(139, 90, 43, 0.4);
+            font-size: var(--text-sm);
+            letter-spacing: 0.5em;
+            user-select: none;
+        }
+
+        .section-break::before,
+        .section-break::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(139, 90, 43, 0.25) 20%,
+                rgba(139, 90, 43, 0.25) 80%,
+                transparent
+            );
+        }
+
+        .section-break-dots {
+            display: flex;
+            gap: var(--space-xs);
+        }
+
+        .section-break-dots span {
+            display: block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(139, 90, 43, 0.35);
+        }
+
+        /* ============================================
+           STORY END MARKER
+           ============================================ */
+        .story-end {
+            text-align: center;
+            margin-top: var(--space-xl);
+            padding-top: var(--space-lg);
+            border-top: 1px solid rgba(139, 90, 43, 0.2);
+            font-family: 'Libre Baskerville', serif;
+            font-style: italic;
+            font-size: var(--text-base);
+            color: rgba(139, 90, 43, 0.5);
+            letter-spacing: 0.15em;
+        }
+
+        /* ============================================
+           PAGE VISIBILITY
+           ============================================ */
+        .story-page {
+            display: none;
+        }
+
+        .story-page.active {
+            display: block;
+            animation: fadeInPage 0.35s ease;
+        }
+
+        .quiz-page {
+            display: none;
+        }
+
+        .quiz-page.active {
+            display: block;
+            animation: fadeInPage 0.35s ease;
+        }
+
+        .quiz-header {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(139, 90, 43, 0.5);
+            text-align: center;
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-sm);
+            border-bottom: 2px solid rgba(139, 90, 43, 0.15);
+        }
+
+        .quiz-page .mcq-section {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================
+           MCQ SECTION
+           ============================================ */
+        .mcq-section {
+            margin-top: var(--space-xl);
+            padding-top: var(--space-lg);
+            border-top: 2px solid rgba(139, 90, 43, 0.15);
+        }
+
+        .mcq-section-title {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(139, 90, 43, 0.5);
+            margin-bottom: var(--space-lg);
+            text-align: center;
+        }
+
+        .mcq-block {
+            margin-bottom: var(--space-xl);
+        }
+
+        .mcq-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .mcq-block.mcq-hidden {
+            display: none;
+        }
+
+        .mcq-block.mcq-revealing {
+            animation: mcqReveal 0.4s ease-out forwards;
+        }
+
+        @keyframes mcqReveal {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mcq-question {
+            font-family: 'Libre Baskerville', serif;
+            font-size: var(--text-base);
+            font-weight: 700;
+            color: #2c2416;
+            margin-bottom: var(--space-sm);
+            line-height: 1.7;
+        }
+
+        .mcq-question .q-number {
+            color: #CC1B1B;
+            font-weight: 700;
+        }
+
+        .mcq-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .mcq-option {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-md);
+            min-height: 56px;
+            background: rgba(139, 90, 43, 0.04);
+            border: 2px solid rgba(139, 90, 43, 0.15);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, transform 0.1s;
+            font-family: 'Libre Baskerville', serif;
+            font-size: var(--text-base);
+            color: #2c2416;
+            line-height: 1.65;
+            position: relative;
+        }
+
+        .mcq-option:hover {
+            border-color: rgba(139, 90, 43, 0.35);
+            background: rgba(139, 90, 43, 0.08);
+        }
+
+        .mcq-option.selected {
+            border-color: #B8860B;
+            background: rgba(184, 134, 11, 0.08);
+        }
+
+        .mcq-option.correct {
+            border-color: #2d8a4e;
+            background: rgba(45, 138, 78, 0.1);
+            cursor: default;
+        }
+
+        .mcq-option.incorrect {
+            border-color: #CC1B1B;
+            background: rgba(204, 27, 27, 0.06);
+            cursor: default;
+            opacity: 0.7;
+        }
+
+        .mcq-option.disabled {
+            cursor: default;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .mcq-option input[type="radio"] {
+            display: none;
+        }
+
+        .mcq-option-letter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border-radius: 50%;
+            border: 2px solid rgba(139, 90, 43, 0.3);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: #8B5A2B;
+            background: rgba(255, 255, 255, 0.5);
+            transition: all 0.2s;
+            margin-top: 2px;
+        }
+
+        .mcq-option.correct .mcq-option-letter {
+            background: #2d8a4e;
+            color: white;
+            border-color: #2d8a4e;
+        }
+
+        .mcq-option.incorrect .mcq-option-letter {
+            background: #CC1B1B;
+            color: white;
+            border-color: #CC1B1B;
+        }
+
+        .mcq-feedback {
+            margin-top: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            line-height: 1.6;
+            display: none;
+        }
+
+        .mcq-feedback.show {
+            display: block;
+            animation: fadeInPage 0.25s ease;
+        }
+
+        .mcq-feedback.correct {
+            background: rgba(45, 138, 78, 0.1);
+            border: 1px solid rgba(45, 138, 78, 0.3);
+            color: #1a6b36;
+        }
+
+        .mcq-feedback.incorrect {
+            background: rgba(204, 27, 27, 0.06);
+            border: 1px solid rgba(204, 27, 27, 0.2);
+            color: #8b1a1a;
+        }
+
+        .mcq-feedback-icon {
+            font-weight: 700;
+            margin-right: var(--space-xs);
+        }
+
+        /* ============================================
+           PAGE NAVIGATION BUTTONS
+           ============================================ */
+        .page-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--space-md);
+            margin-top: var(--space-xl);
+            padding-top: var(--space-lg);
+            border-top: 1px solid rgba(139, 90, 43, 0.15);
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            min-height: 56px;
+            font-family: 'Libre Baskerville', serif;
+            font-size: var(--text-base);
+            color: #4a3520;
+            text-decoration: none;
+            background: linear-gradient(135deg, #F5E6D0, #E8D4B8);
+            border: 2px solid #B8860B;
+            border-radius: 3px;
+            box-shadow:
+                3px 3px 0 rgba(139, 90, 43, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            transition: transform 0.15s, box-shadow 0.15s, background 0.2s, opacity 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            transform: translate(-2px, -2px);
+            box-shadow:
+                5px 5px 0 rgba(139, 90, 43, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            background: linear-gradient(135deg, #F9ECD8, #ECD9C0);
+        }
+
+        .nav-btn:active:not(:disabled) {
+            transform: translate(1px, 1px);
+            box-shadow:
+                1px 1px 0 rgba(139, 90, 43, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            filter: grayscale(0.5);
+        }
+
+        .nav-btn:focus-visible {
+            outline: 3px solid #FFD700;
+            outline-offset: 3px;
+        }
+
+        .nav-btn-spacer {
+            flex: 1;
+        }
+
+        .nav-btn .nav-arrow {
+            font-size: var(--text-base);
+            line-height: 1;
+        }
+
+        .nav-btn.finish-btn {
+            background: linear-gradient(135deg, #CC1B1B, #a01515);
+            color: #F5E6D0;
+            border-color: #800000;
+            box-shadow:
+                3px 3px 0 rgba(80, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-btn.finish-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #dd2222, #b01818);
+            box-shadow:
+                5px 5px 0 rgba(80, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        /* Lock message */
+        .nav-lock-msg {
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            color: rgba(139, 90, 43, 0.5);
+            margin-top: var(--space-sm);
+            font-style: italic;
+            transition: opacity 0.3s;
+        }
+
+        .nav-lock-msg.hidden {
+            opacity: 0;
+        }
+
+        /* ============================================
+           RETURN LINK
+           ============================================ */
+        .return-section {
+            text-align: center;
+            margin-top: var(--space-xl);
+            padding-top: var(--space-lg);
+        }
+
+        .return-link {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            color: rgba(245, 230, 208, 0.45);
+            text-decoration: none;
+            transition: color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .return-link:hover,
+        .return-link:focus-visible {
+            color: rgba(245, 230, 208, 0.8);
+        }
+
+        .return-link:focus-visible {
+            outline: 2px solid #FFD700;
+            outline-offset: 3px;
+            border-radius: 3px;
+        }
+
+        /* ============================================
+           RESPONSIVE - scale down for smaller screens
+           ============================================ */
+        @media (max-width: 600px) {
+            .page-wrapper {
+                padding: var(--space-md) var(--space-sm) var(--space-xl);
+            }
+
+            .parchment {
+                padding: var(--space-lg) var(--space-md);
+            }
+
+            .story-text .letter {
+                margin-left: var(--space-sm); /* stylelint-disable-line scale-unlimited/declaration-strict-value */
+            }
+
+            .download-btn {
+                padding: var(--space-sm) var(--space-md);
+                font-size: var(--text-sm);
+            }
+
+            .nav-btn {
+                padding: var(--space-sm) var(--space-md);
+                font-size: var(--text-sm);
+            }
+
+            .page-nav {
+                flex-wrap: wrap;
+            }
+
+            .progress-container {
+                flex-wrap: wrap;
+                gap: var(--space-xs);
+            }
+
+            .progress-dots {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media print {
+            .top-nav,
+            .download-section,
+            .return-section,
+            .mcq-section,
+            .quiz-page,
+            .page-nav,
+            .nav-lock-msg,
+            .progress-container { display: none; }
+
+            body { background: white; }
+
+            .parchment {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+            }
+
+            .story-page,
+            .quiz-page {
+                display: block !important;
+            }
+
+            .story-text p { font-size: 11pt; /* stylelint-disable-line scale-unlimited/declaration-strict-value */ }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+         TOP NAVIGATION
+         ========================================== -->
+    <nav class="top-nav" aria-label="Page navigation">
+        <a href="index.html">
+            <span class="back-arrow" aria-hidden="true">&#8592;</span>
+            Back to Super-Toys
+        </a>
+    </nav>
+
+    <!-- ==========================================
+         PAGE CONTENT
+         ========================================== -->
+    <main class="page-wrapper">
+
+        <!-- Story Header - Index Page Logo Style -->
+        <header class="story-header">
+            <h1 class="logo-title">SUPER-TOYS</h1>
+            <span class="logo-cursive">last all summer long</span>
+            <p class="story-author">Brian Aldiss</p>
+            <p class="story-publication">First published in Harper&rsquo;s Bazaar, 1969</p>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-container" aria-live="polite">
+            <span class="progress-label" id="progress-label">Page 1 of 8</span>
+            <div class="progress-bar-track" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="8">
+                <div class="progress-bar-fill" id="progress-fill" style="width: 12.5%"></div>
+            </div>
+            <div class="progress-dots" id="progress-dots">
+                <div class="progress-dot active" data-dot="1"></div>
+                <div class="progress-dot" data-dot="2"></div>
+                <div class="progress-dot" data-dot="3"></div>
+                <div class="progress-dot" data-dot="4"></div>
+                <div class="progress-dot" data-dot="5"></div>
+                <div class="progress-dot" data-dot="6"></div>
+                <div class="progress-dot" data-dot="7"></div>
+                <div class="progress-dot" data-dot="8"></div>
+            </div>
+        </div>
+
+        <!-- Download PDF - Top -->
+        <div class="download-section download-section-top">
+            <a href="Super-Toys-Last-All-Summer-Long.pdf"
+               class="download-btn"
+               download
+               aria-label="Download the story as a PDF file">
+                <span class="download-icon" aria-hidden="true">&#8681;</span>
+                Download PDF
+            </a>
+        </div>
+
+        <!-- Parchment Content Area -->
+        <article class="parchment" aria-label="Full text of the short story">
+
+            <!-- ==========================================
+                 PAGE 1: The Garden
+                 ========================================== -->
+            <section class="story-page active" data-page="1">
+                <div class="story-text">
+
+                    <p>In Mrs. Swinton&rsquo;s garden, it was always summer. The lovely almond trees stood about it in perpetual leaf. Monica Swinton plucked a saffron-colored rose and showed it to David.</p>
+
+                    <p class="dialogue">&ldquo;Isn&rsquo;t it lovely?&rdquo; she said.</p>
+
+                    <p>David looked up at her and grinned without replying. Seizing the flower, he ran with it across the lawn and disappeared behind the kennel where the mowervator crouched, ready to cut or sweep or roll when the moment dictated. She stood alone on her impeccable plastic gravel path.</p>
+
+                    <p>She had tried to love him.</p>
+
+                    <p>When she made up her mind to follow the boy, she found him in the courtyard floating the rose in his paddling pool. He stood in the pool engrossed, still wearing his sandals.</p>
+
+                    <p class="dialogue">&ldquo;David, darling, do you have to be so awful? Come in at once and change your shoes and socks.&rdquo;</p>
+
+                    <p>He went with her without protest into the house, his dark head bobbing at the level of her waist. At the age of three, he showed no fear of the ultrasonic dryer in the kitchen. But before his mother could reach for a pair of slippers, he wriggled away and was gone into the silence of the house.</p>
+
+                    <p>He would probably be looking for Teddy.</p>
+
+                    <p>Monica Swinton, twenty-nine, of graceful shape and lambent eye, went and sat in her living room, arranging her limbs with taste. She began by sitting and thinking; soon she was just sitting. Time waited on her shoulder with the maniac slowth it reserves for children, the insane, and wives whose husbands are away improving the world. Almost by reflex, she reached out and changed the wavelength of her windows. The garden faded; in its place, the city center rose by her left hand, full of crowding people, blowboats, and buildings (but she kept the sound down). She remained alone. An overcrowded world is the ideal place in which to be lonely.</p>
+
+                </div>
+
+                <!-- Page Nav -->
+                <div class="page-nav">
+                    <div class="nav-btn-spacer"></div>
+                    <button class="nav-btn next-btn" data-target="1q">
+                        Questions <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="quiz-page" data-quiz="1">
+                <div class="quiz-header">Page 1 &mdash; Comprehension Check</div>
+                <div class="mcq-section">
+                    <!-- Q1 -->
+                    <div class="mcq-block" data-question="1-1" data-correct="B">
+                        <div class="mcq-question"><span class="q-number">Q1.</span> What does David do with the saffron rose Monica shows him?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q1-1" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>He smells it and hands it back</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q1-1" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>He floats it in his paddling pool</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q1-1" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>He puts it on the kitchen table</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q1-1" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>He gives it to Teddy</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-1-1"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="mcq-block" data-question="1-2" data-correct="C">
+                        <div class="mcq-question"><span class="q-number">Q2.</span> What does Monica do when she is alone in the living room?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q1-2" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>She calls Henry on the phone</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q1-2" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>She goes upstairs to find David</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q1-2" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>She changes the wavelength of her windows to show the city</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q1-2" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>She turns on the television</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-1-2"></div>
+                    </div>
+                </div>
+
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn" data-target="1">
+                        <span class="nav-arrow" aria-hidden="true">&#8592;</span> Back to Text
+                    </button>
+                    <button class="nav-btn next-btn" data-target="2" disabled>
+                        Next Page <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+                <div class="nav-lock-msg" data-quiz-lock="1">Answer both questions correctly to continue</div>
+            </section>
+
+            <!-- ==========================================
+                 PAGE 2: The Synthank Luncheon
+                 ========================================== -->
+            <section class="story-page" data-page="2">
+                <div class="story-text">
+
+                    <div class="section-break" role="separator" aria-label="Scene break"><div class="section-break-dots"><span></span><span></span><span></span></div></div>
+
+                    <p>The directors of Synthank were eating an enormous luncheon to celebrate the launching of their new product. Some of them wore the plastic face-masks popular at the time. All were elegantly slender, despite the rich food and drink they were putting away. Their wives were elegantly slender, despite the food and drink they too were putting away. An earlier and less sophisticated generation would have regarded them as beautiful people, apart from their eyes.</p>
+
+                    <p>Henry Swinton, Managing Director of Synthank, was about to make a speech.</p>
+
+                    <p class="dialogue">&ldquo;I&rsquo;m sorry your wife couldn&rsquo;t be with us to hear you,&rdquo; his neighbor said.</p>
+
+                    <p class="dialogue">&ldquo;Monica prefers to stay at home thinking beautiful thoughts,&rdquo; said Swinton, maintaining a smile.</p>
+
+                    <p class="dialogue">&ldquo;One would expect such a beautiful woman to have beautiful thoughts,&rdquo; said the neighbor.</p>
+
+                    <p><em>Take your mind off my wife, you bastard,</em> thought Swinton, still smiling.</p>
+
+                    <p>He rose to make his speech amid applause.</p>
+
+                    <p>After a couple of jokes, he said, &ldquo;Today marks a real breakthrough for the company. It is now almost ten years since we put our first synthetic life-forms on the world market. You all know what a success they have been, particularly the miniature dinosaurs. But none of them had intelligence.</p>
+
+                    <p class="dialogue">&ldquo;It seems like a paradox that in this day and age we can create life but not intelligence. Our first selling line, the Crosswell Tape, sells best of all, and is the most stupid of all.&rdquo; Everyone laughed.</p>
+
+                    <p class="dialogue">&ldquo;Though three-quarters of the overcrowded world are starving, we are lucky here to have more than enough, thanks to population control. Obesity&rsquo;s our problem, not malnutrition. I guess there&rsquo;s nobody round this table who doesn&rsquo;t have a Crosswell working for him in the small intestine, a perfectly safe parasite tapeworm that enables its host to eat up to fifty percent more food and still keep his or her figure. Right?&rdquo; General nods of agreement.</p>
+
+                    <p class="dialogue">&ldquo;Our miniature dinosaurs are almost equally stupid. Today, we launch an intelligent synthetic life-form &mdash; a full-size serving-man.</p>
+
+                    <p class="dialogue">&ldquo;Not only does he have intelligence, he has a controlled amount of intelligence. We believe people would be afraid of a being with a human brain. Our serving-man has a small computer in his cranium.</p>
+
+                    <p class="dialogue">&ldquo;There have been mechanicals on the market with mini-computers for brains &mdash; plastic things without life, super-toys &mdash; but we have at last found a way to link computer circuitry with synthetic flesh.&rdquo;</p>
+
+                </div>
+
+                <!-- Page Nav -->
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn" data-target="1">
+                        <span class="nav-arrow" aria-hidden="true">&#8592;</span> Previous
+                    </button>
+                    <button class="nav-btn next-btn" data-target="2q">
+                        Questions <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="quiz-page" data-quiz="2">
+                <div class="quiz-header">Page 2 &mdash; Comprehension Check</div>
+                <div class="mcq-section">
+                    <!-- Q1 -->
+                    <div class="mcq-block" data-question="2-1" data-correct="B">
+                        <div class="mcq-question"><span class="q-number">Q1.</span> What is the Crosswell Tape?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q2-1" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>A recording device for synthetic life-forms</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q2-1" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>A parasite tapeworm that lets people eat more without gaining weight</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q2-1" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>A computer program that controls serving-men</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q2-1" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>A tape used to bind synthetic flesh to metal</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-2-1"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="mcq-block" data-question="2-2" data-correct="C">
+                        <div class="mcq-question"><span class="q-number">Q2.</span> What does Henry say is the key difference between the new serving-man and previous &ldquo;super-toys&rdquo;?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q2-2" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>The serving-man is much larger</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q2-2" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>The serving-man can speak multiple languages</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q2-2" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>The serving-man links computer circuitry with synthetic flesh</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q2-2" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>The serving-man can reproduce</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-2-2"></div>
+                    </div>
+                </div>
+
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn" data-target="2">
+                        <span class="nav-arrow" aria-hidden="true">&#8592;</span> Back to Text
+                    </button>
+                    <button class="nav-btn next-btn" data-target="3" disabled>
+                        Next Page <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+                <div class="nav-lock-msg" data-quiz-lock="2">Answer both questions correctly to continue</div>
+            </section>
+
+            <!-- ==========================================
+                 PAGE 3: David and Teddy
+                 ========================================== -->
+            <section class="story-page" data-page="3">
+                <div class="story-text">
+
+                    <div class="section-break" role="separator" aria-label="Scene break"><div class="section-break-dots"><span></span><span></span><span></span></div></div>
+
+                    <p>David sat by the long window of his nursery, wrestling with paper and pencil. Finally, he stopped writing and began to roll the pencil up and down the slope of the desk-lid.</p>
+
+                    <p class="dialogue">&ldquo;Teddy!&rdquo; he said.</p>
+
+                    <p>Teddy lay on the bed against the wall, under a book with moving pictures and a giant plastic soldier. The speech-pattern of his master&rsquo;s voice activated him and he sat up.</p>
+
+                    <p class="dialogue">&ldquo;Teddy, I can&rsquo;t think what to say!&rdquo;</p>
+
+                    <p>Climbing off the bed, the bear walked stiffly over to cling to the boy&rsquo;s leg. David lifted him and set him on the desk.</p>
+
+                    <p class="dialogue">&ldquo;What have you said so far?&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;I&rsquo;ve said &mdash;&rdquo; He picked up his letter and stared hard at it. &ldquo;I&rsquo;ve said, &lsquo;Dear Mummy, I hope you&rsquo;re well just now. I love you&hellip;&rsquo;&rdquo;</p>
+
+                    <p>There was a long silence, until the bear said, &ldquo;That sounds fine. Go downstairs and give it to her.&rdquo;</p>
+
+                    <p>Another long silence.</p>
+
+                    <p class="dialogue">&ldquo;It isn&rsquo;t quite right. She won&rsquo;t understand.&rdquo;</p>
+
+                    <p>Inside the bear, a small computer worked through its program of possibilities. &ldquo;Why not do it again in crayon?&rdquo;</p>
+
+                    <p>When David did not answer, the bear repeated his suggestion. &ldquo;Why not do it again in crayon?&rdquo;</p>
+
+                    <p>David was staring out of the window. &ldquo;Teddy, you know what I was thinking? How do you tell what are real things from what aren&rsquo;t real things?&rdquo;</p>
+
+                    <p>The bear shuffled its alternatives. &ldquo;Real things are good.&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;I wonder if time is good. I don&rsquo;t think Mummy likes time very much. The other day, lots of days ago, she said that time went by her. Is time real, Teddy?&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;Clocks tell the time. Clocks are real. Mummy has clocks so she must like them. She has a clock on her wrist next to her dial.&rdquo;</p>
+
+                    <p>David started to draw a jumbo jet on the back of his letter. &ldquo;You and I are real, Teddy, aren&rsquo;t we?&rdquo;</p>
+
+                    <p>The bear&rsquo;s eyes regarded the boy unflinchingly. &ldquo;You and I are real, David.&rdquo; It specialized in comfort.</p>
+
+                </div>
+
+                <!-- Page Nav -->
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn" data-target="2">
+                        <span class="nav-arrow" aria-hidden="true">&#8592;</span> Previous
+                    </button>
+                    <button class="nav-btn next-btn" data-target="3q">
+                        Questions <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="quiz-page" data-quiz="3">
+                <div class="quiz-header">Page 3 &mdash; Comprehension Check</div>
+                <div class="mcq-section">
+                    <!-- Q1 -->
+                    <div class="mcq-block" data-question="3-1" data-correct="B">
+                        <div class="mcq-question"><span class="q-number">Q1.</span> When David asks Teddy how to tell real things from things that aren&rsquo;t real, how does Teddy respond?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q3-1" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>&ldquo;You&rsquo;ll understand when you&rsquo;re older&rdquo;</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q3-1" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>&ldquo;Real things are good&rdquo;</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q3-1" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>&ldquo;Ask your Mummy&rdquo;</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q3-1" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>&ldquo;I don&rsquo;t know what real means&rdquo;</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-3-1"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="mcq-block" data-question="3-2" data-correct="B">
+                        <div class="mcq-question"><span class="q-number">Q2.</span> What detail reveals that Teddy is not a real bear?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q3-2" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>He speaks in complete sentences</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q3-2" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>A small computer worked through its program of possibilities</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q3-2" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>He walks on two legs</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q3-2" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>He can read David&rsquo;s letters</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-3-2"></div>
+                    </div>
+                </div>
+
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn" data-target="3">
+                        <span class="nav-arrow" aria-hidden="true">&#8592;</span> Back to Text
+                    </button>
+                    <button class="nav-btn next-btn" data-target="4" disabled>
+                        Next Page <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+                <div class="nav-lock-msg" data-quiz-lock="3">Answer both questions correctly to continue</div>
+            </section>
+
+            <!-- ==========================================
+                 PAGE 4: Monica Alone
+                 ========================================== -->
+            <section class="story-page" data-page="4">
+                <div class="story-text">
+
+                    <div class="section-break" role="separator" aria-label="Scene break"><div class="section-break-dots"><span></span><span></span><span></span></div></div>
+
+                    <p>Monica walked slowly about the house. It was almost time for the afternoon post to come over the wire. She punched the Post Office number on the dial on her wrist but nothing came through. A few minutes more.</p>
+
+                    <p>She could take up her painting. Or she could dial her friends. Or she could wait till Henry came home. Or she could go up and play with David&hellip;.</p>
+
+                    <p>She walked out into the hall and to the bottom of the stairs.</p>
+
+                    <p class="dialogue">&ldquo;David!&rdquo;</p>
+
+                    <p>No answer. She called again and a third time.</p>
+
+                    <p class="dialogue">&ldquo;Teddy!&rdquo; she called, in sharper tones.</p>
+
+                    <p class="dialogue">&ldquo;Yes, Mummy!&rdquo; After a moment&rsquo;s pause, Teddy&rsquo;s head of golden fur appeared at the top of the stairs.</p>
+
+                    <p class="dialogue">&ldquo;Is David in his room, Teddy?&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;David went into the garden, Mummy.&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;Come down here, Teddy!&rdquo;</p>
+
+                    <p>She stood impassively, watching the little furry figure as it climbed down from step to step on its stubby limbs. When it reached the bottom, she picked it up and carried it into the living room. It lay unmoving in her arms, staring up at her. She could feel just the slightest vibration from its motor.</p>
+
+                    <p class="dialogue">&ldquo;Stand there, Teddy. I want to talk to you.&rdquo; She set him down on a tabletop, and he stood as she requested, arms set forward and open in the eternal gesture of embrace.</p>
+
+                    <p class="dialogue">&ldquo;Teddy, did David tell you to tell me he had gone into the garden?&rdquo;</p>
+
+                    <p>The circuits of the bear&rsquo;s brain were too simple for artifice. &ldquo;Yes, Mummy.&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;So you lied to me.&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;Yes, Mummy.&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;Stop calling me Mummy! Why is David avoiding me? He&rsquo;s not afraid of me, is he?&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;No. He loves you.&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;Why can&rsquo;t we communicate?&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;David&rsquo;s upstairs.&rdquo;</p>
+
+                    <p>The answer stopped her dead. Why waste time talking to this machine? Why not simply go upstairs and scoop David into her arms and talk to him, as a loving mother should to a loving son? She heard the sheer weight of silence in the house, with a different quality of silence pouring out of every room. On the upper landing, something was moving very silently &mdash; David, trying to hide away from her&hellip;.</p>
+
+                </div>
+
+                <!-- Page Nav -->
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn" data-target="3">
+                        <span class="nav-arrow" aria-hidden="true">&#8592;</span> Previous
+                    </button>
+                    <button class="nav-btn next-btn" data-target="4q">
+                        Questions <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="quiz-page" data-quiz="4">
+                <div class="quiz-header">Page 4 &mdash; Comprehension Check</div>
+                <div class="mcq-section">
+                    <!-- Q1 -->
+                    <div class="mcq-block" data-question="4-1" data-correct="B">
+                        <div class="mcq-question"><span class="q-number">Q1.</span> Why does Teddy lie to Monica about David being in the garden?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q4-1" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>Teddy&rsquo;s circuits are too simple to understand lying</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q4-1" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>David told Teddy to say he was in the garden</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q4-1" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>Teddy wanted to protect David from punishment</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q4-1" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>Teddy malfunctioned and gave incorrect information</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-4-1"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="mcq-block" data-question="4-2" data-correct="B">
+                        <div class="mcq-question"><span class="q-number">Q2.</span> What does Monica&rsquo;s reaction to Teddy calling her &ldquo;Mummy&rdquo; reveal about her feelings?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q4-2" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>She finds it endearing and comforting</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q4-2" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>She is frustrated because it blurs the line between real and artificial relationships</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q4-2" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>She thinks it&rsquo;s funny</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q4-2" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>She doesn&rsquo;t react to it at all</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-4-2"></div>
+                    </div>
+                </div>
+
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn" data-target="4">
+                        <span class="nav-arrow" aria-hidden="true">&#8592;</span> Back to Text
+                    </button>
+                    <button class="nav-btn next-btn" data-target="5" disabled>
+                        Next Page <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+                <div class="nav-lock-msg" data-quiz-lock="4">Answer both questions correctly to continue</div>
+            </section>
+
+            <!-- ==========================================
+                 PAGE 5: Henry's Speech Continues + David's Window
+                 ========================================== -->
+            <section class="story-page" data-page="5">
+                <div class="story-text">
+
+                    <div class="section-break" role="separator" aria-label="Scene break"><div class="section-break-dots"><span></span><span></span><span></span></div></div>
+
+                    <p>He was nearing the end of his speech now. The guests were attentive; so was the Press, lining two walls of the banqueting chamber, recording Henry&rsquo;s words and occasionally photographing him.</p>
+
+                    <p class="dialogue">&ldquo;Our serving-man will be, in many senses, a product of the computer. Without computers, we could never have worked through the sophisticated biochemics that go into synthetic flesh. The serving-man will also be an extension of the computer &mdash; for he will contain a computer in his own head, a microminiaturized computer capable of dealing with almost any situation he may encounter in the home. With reservations, of course.&rdquo; Laughter at this; many of those present knew the heated debate that had engulfed the Synthank boardroom before the decision had finally been taken to leave the serving-man neuter under his flawless uniform.</p>
+
+                    <p class="dialogue">&ldquo;Amid all the triumphs of our civilization &mdash; yes, and amid the crushing problems of overpopulation too &mdash; it is sad to reflect how many millions of people suffer from increasing loneliness and isolation. Our serving-man will be a boon to them; he will always answer, and the most vapid conversation cannot bore him.</p>
+
+                    <p class="dialogue">&ldquo;For the future, we plan more models, male and female &mdash; some of them without the limitations of this first one, I promise you! &mdash; of more advanced design, true bio-electronic beings.</p>
+
+                    <p class="dialogue">&ldquo;Not only will they possess their own computer, capable of individual programming; they will be linked to the World Data Network. Thus everyone will be able to enjoy the equivalent of an Einstein in their own homes. Personal isolation will then be banished forever!&rdquo;</p>
+
+                    <p>He sat down to enthusiastic applause. Even the synthetic serving-man, sitting at the table dressed in an unostentatious suit, applauded with gusto.</p>
+
+                    <div class="section-break" role="separator" aria-label="Scene break"><div class="section-break-dots"><span></span><span></span><span></span></div></div>
+
+                    <p>Dragging his satchel, David crept round the side of the house. He climbed on to the ornamental seat under the living-room window and peeped cautiously in.</p>
+
+                    <p>His mother stood in the middle of the room. Her face was blank; its lack of expression scared him. He watched fascinated. He did not move; she did not move. Time might have stopped, as it had stopped in the garden.</p>
+
+                    <p>At last she turned and left the room. After waiting a moment, David tapped on the window. Teddy looked round, saw him, tumbled off the table, and came over to the window. Fumbling with his paws, he eventually got it open.</p>
+
+                    <p>They looked at each other.</p>
+
+                    <p class="dialogue">&ldquo;I&rsquo;m no good, Teddy. Let&rsquo;s run away!&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;You&rsquo;re a very good boy. Your Mummy loves you.&rdquo;</p>
+
+                    <p>Slowly, he shook his head. &ldquo;If she loved me, then why can&rsquo;t I talk to her?&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;You&rsquo;re being silly, David. Mummy&rsquo;s lonely. That&rsquo;s why she had you.&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;She&rsquo;s got Daddy. I&rsquo;ve got nobody &rsquo;cept you, and I&rsquo;m lonely.&rdquo;</p>
+
+                    <p>Teddy gave him a friendly cuff over the head. &ldquo;If you feel so bad, you&rsquo;d better go to the psychiatrist again.&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;I hate that old psychiatrist &mdash; he makes me feel I&rsquo;m not real.&rdquo; He started to run across the lawn. The bear toppled out of the window and followed as fast as its stubby legs would allow.</p>
+
+                </div>
+
+                <!-- Page Nav -->
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn" data-target="4">
+                        <span class="nav-arrow" aria-hidden="true">&#8592;</span> Previous
+                    </button>
+                    <button class="nav-btn next-btn" data-target="5q">
+                        Questions <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="quiz-page" data-quiz="5">
+                <div class="quiz-header">Page 5 &mdash; Comprehension Check</div>
+                <div class="mcq-section">
+                    <!-- Q1 -->
+                    <div class="mcq-block" data-question="5-1" data-correct="B">
+                        <div class="mcq-question"><span class="q-number">Q1.</span> What does Henry promise the serving-man&rsquo;s future models will be connected to?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q5-1" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>The Ministry of Population</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q5-1" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>The World Data Network</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q5-1" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>Synthank&rsquo;s central computer</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q5-1" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>Each other</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-5-1"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="mcq-block" data-question="5-2" data-correct="C">
+                        <div class="mcq-question"><span class="q-number">Q2.</span> When David says &ldquo;I&rsquo;m no good, Teddy. Let&rsquo;s run away!&rdquo;, what has he just seen through the window?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q5-2" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>Monica crying over his letters</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q5-2" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>The serving-man entering the house</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q5-2" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>His mother standing motionless with a blank, expressionless face</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q5-2" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>His parents arguing about him</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-5-2"></div>
+                    </div>
+                </div>
+
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn" data-target="5">
+                        <span class="nav-arrow" aria-hidden="true">&#8592;</span> Back to Text
+                    </button>
+                    <button class="nav-btn next-btn" data-target="6" disabled>
+                        Next Page <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+                <div class="nav-lock-msg" data-quiz-lock="5">Answer both questions correctly to continue</div>
+            </section>
+
+            <!-- ==========================================
+                 PAGE 6: The Letters
+                 ========================================== -->
+            <section class="story-page" data-page="6">
+                <div class="story-text">
+
+                    <div class="section-break" role="separator" aria-label="Scene break"><div class="section-break-dots"><span></span><span></span><span></span></div></div>
+
+                    <p>Monica Swinton was up in the nursery. She called to her son once and then stood there, undecided. All was silent.</p>
+
+                    <p>Crayons lay on his desk. Obeying a sudden impulse, she went over to the desk and opened it. Dozens of pieces of paper lay inside. Many of them were written in crayon in David&rsquo;s clumsy writing, with each letter picked out in a color different from the letter preceding it. None of the messages was finished.</p>
+
+                    <p class="letter"><em>&ldquo;My dear Mummy, How are you really, do you love me as much &mdash;&rdquo;</em></p>
+                    <p class="letter"><em>&ldquo;Dear Mummy, I love you and Daddy and the sun is shining &mdash;&rdquo;</em></p>
+                    <p class="letter"><em>&ldquo;Dear dear Mummy, Teddy&rsquo;s helping me write to you. I love you and Teddy &mdash;&rdquo;</em></p>
+                    <p class="letter"><em>&ldquo;Darling Mummy, I&rsquo;m your one and only son and I love you so much that sometimes &mdash;&rdquo;</em></p>
+                    <p class="letter"><em>&ldquo;Dear Mummy, you&rsquo;re really my Mummy and I hate Teddy &mdash;&rdquo;</em></p>
+                    <p class="letter"><em>&ldquo;Darling Mummy, guess how much I love &mdash;&rdquo;</em></p>
+                    <p class="letter"><em>&ldquo;Dear Mummy, I&rsquo;m your little boy not Teddy and I love you but Teddy &mdash;&rdquo;</em></p>
+                    <p class="letter"><em>&ldquo;Dear Mummy, this is a letter to you just to say how much how ever so much &mdash;&rdquo;</em></p>
+
+                    <p>Monica dropped the pieces of paper and burst out crying. In their gay inaccurate colors, the letters fanned out and settled on the floor.</p>
+
+                </div>
+
+                <!-- Page Nav -->
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn" data-target="5">
+                        <span class="nav-arrow" aria-hidden="true">&#8592;</span> Previous
+                    </button>
+                    <button class="nav-btn next-btn" data-target="6q">
+                        Questions <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="quiz-page" data-quiz="6">
+                <div class="quiz-header">Page 6 &mdash; Comprehension Check</div>
+                <div class="mcq-section">
+                    <!-- Q1 -->
+                    <div class="mcq-block" data-question="6-1" data-correct="B">
+                        <div class="mcq-question"><span class="q-number">Q1.</span> What is unusual about the way David&rsquo;s letters are written?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q6-1" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>They are written in code</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q6-1" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>Each letter of the alphabet is a different color crayon</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q6-1" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>They are written backwards</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q6-1" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>They are typed on a computer</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-6-1"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="mcq-block" data-question="6-2" data-correct="C">
+                        <div class="mcq-question"><span class="q-number">Q2.</span> What do ALL of David&rsquo;s letters have in common?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q6-2" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>They all mention Teddy</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q6-2" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>They all say &ldquo;I love you&rdquo;</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q6-2" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>None of them are finished</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q6-2" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>They all ask the same question</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-6-2"></div>
+                    </div>
+                </div>
+
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn" data-target="6">
+                        <span class="nav-arrow" aria-hidden="true">&#8592;</span> Back to Text
+                    </button>
+                    <button class="nav-btn next-btn" data-target="7" disabled>
+                        Next Page <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+                <div class="nav-lock-msg" data-quiz-lock="6">Answer both questions correctly to continue</div>
+            </section>
+
+            <!-- ==========================================
+                 PAGE 7: Henry Comes Home
+                 ========================================== -->
+            <section class="story-page" data-page="7">
+                <div class="story-text">
+
+                    <div class="section-break" role="separator" aria-label="Scene break"><div class="section-break-dots"><span></span><span></span><span></span></div></div>
+
+                    <p>Henry Swinton caught the express home in high spirits, and occasionally said a word to the synthetic serving-man he was taking home with him. The serving-man answered politely and punctually, although his answers were not always entirely relevant by human standards.</p>
+
+                    <p>The Swintons lived in one of the ritziest city-blocks, half a kilometer above the ground. Embedded in other apartments, their apartment had no windows to the outside; nobody wanted to see the overcrowded external world. Henry unlocked the door with his retina pattern-scanner and walked in, followed by the serving-man.</p>
+
+                    <p>At once, Henry was surrounded by the friendly illusion of gardens set in eternal summer. It was amazing what Whologram could do to create huge mirages in small spaces. Behind its roses and wisteria stood their house; the deception was complete: a Georgian mansion appeared to welcome him.</p>
+
+                    <p class="dialogue">&ldquo;How do you like it?&rdquo; he asked the serving-man.</p>
+
+                    <p class="dialogue">&ldquo;Roses occasionally suffer from black spot.&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;These roses are guaranteed free from any imperfections.&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;It is always advisable to purchase goods with guarantees, even if they cost slightly more.&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;Thanks for the information,&rdquo; Henry said dryly. Synthetic life-forms were less than ten years old, the old android mechanicals less than sixteen; the faults of their systems were still being ironed out, year by year.</p>
+
+                    <p>He opened the door and called to Monica.</p>
+
+                    <p>She came out of the sitting-room immediately and flung her arms round him, kissing him ardently on cheek and lips. Henry was amazed.</p>
+
+                    <p>Pulling back to look at her face, he saw how she seemed to generate light and beauty. It was months since he had seen her so excited. Instinctively, he clasped her tighter.</p>
+
+                    <p class="dialogue">&ldquo;Darling, what&rsquo;s happened?&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;Henry, Henry &mdash; oh, my darling, I was in despair&hellip; but I&rsquo;ve just dialed the afternoon post and &mdash; you&rsquo;ll never believe it! Oh, it&rsquo;s wonderful!&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;For heaven&rsquo;s sake, woman, what&rsquo;s wonderful?&rdquo;</p>
+
+                    <p>He caught a glimpse of the heading on the photostat in her hand, still moist from the wall-receiver: <em>Ministry of Population.</em> He felt the color drain from his face in sudden shock and hope.</p>
+
+                    <p class="dialogue">&ldquo;Monica&hellip; oh&hellip; Don&rsquo;t tell me our number&rsquo;s come up!&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;Yes, my darling, yes, we&rsquo;ve won this week&rsquo;s parenthood lottery! We can go ahead and conceive a child at once!&rdquo;</p>
+
+                    <p>He let out a yell of joy. They danced round the room. Pressure of population was such that reproduction had to be strict, controlled. Childbirth required government permission. For this moment, they had waited four years. Incoherently they cried their delight.</p>
+
+                </div>
+
+                <!-- Page Nav -->
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn" data-target="6">
+                        <span class="nav-arrow" aria-hidden="true">&#8592;</span> Previous
+                    </button>
+                    <button class="nav-btn next-btn" data-target="7q">
+                        Questions <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="quiz-page" data-quiz="7">
+                <div class="quiz-header">Page 7 &mdash; Comprehension Check</div>
+                <div class="mcq-section">
+                    <!-- Q1 -->
+                    <div class="mcq-block" data-question="7-1" data-correct="B">
+                        <div class="mcq-question"><span class="q-number">Q1.</span> When the serving-man says &ldquo;Roses occasionally suffer from black spot,&rdquo; what does this reveal about him?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q7-1" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>He has expert knowledge about gardening</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q7-1" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>He is trying to be helpful but his responses aren&rsquo;t always relevant</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q7-1" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>He is warning Henry about a problem with the garden</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q7-1" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>He is malfunctioning</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-7-1"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="mcq-block" data-question="7-2" data-correct="B">
+                        <div class="mcq-question"><span class="q-number">Q2.</span> What news does Monica receive from the Ministry of Population?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q7-2" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>David must be returned to the factory</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q7-2" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>They have won the parenthood lottery and can conceive a child</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q7-2" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>Their apartment is being reassigned</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q7-2" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>Population restrictions have been lifted</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-7-2"></div>
+                    </div>
+                </div>
+
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn" data-target="7">
+                        <span class="nav-arrow" aria-hidden="true">&#8592;</span> Back to Text
+                    </button>
+                    <button class="nav-btn next-btn" data-target="8" disabled>
+                        Next Page <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+                <div class="nav-lock-msg" data-quiz-lock="7">Answer both questions correctly to continue</div>
+            </section>
+
+            <!-- ==========================================
+                 PAGE 8: The Revelation
+                 ========================================== -->
+            <section class="story-page" data-page="8">
+                <div class="story-text">
+
+                    <div class="section-break" role="separator" aria-label="Scene break"><div class="section-break-dots"><span></span><span></span><span></span></div></div>
+
+                    <p>They paused at last, gasping, and stood in the middle of the room to laugh at each other&rsquo;s happiness. When she had come down from the nursery, Monica had de-opaqued the windows, so that they now revealed the vista of garden beyond. Artificial sunlight was growing long and golden across the lawn &mdash; and David and Teddy were staring through the window at them.</p>
+
+                    <p>Seeing their faces, Henry and his wife grew serious.</p>
+
+                    <p class="dialogue">&ldquo;What do we do about them?&rdquo; Henry asked.</p>
+
+                    <p class="dialogue">&ldquo;Teddy&rsquo;s no trouble. He works well.&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;Is David malfunctioning?&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;His verbal communication-center is still giving trouble. I think he&rsquo;ll have to go back to the factory again.&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;Okay. We&rsquo;ll see how he does before the baby&rsquo;s born. Which reminds me &mdash; I have a surprise for you: help just when help is needed! Come into the hall and see what I&rsquo;ve got.&rdquo;</p>
+
+                    <p>As the two adults disappeared from the room, boy and bear sat down beneath the standard roses.</p>
+
+                    <p class="dialogue">&ldquo;Teddy &mdash; I suppose Mummy and Daddy are real, aren&rsquo;t they?&rdquo;</p>
+
+                    <p>Teddy said, &ldquo;You ask such silly questions, David. Nobody knows what &lsquo;real&rsquo; really means. Let&rsquo;s go indoors.&rdquo;</p>
+
+                    <p class="dialogue">&ldquo;First I&rsquo;m going to have another rose!&rdquo; Plucking a bright pink flower, he carried it with him into the house. It could lie on the pillow as he went to sleep. Its beauty and softness reminded him of Mummy.</p>
+
+                    <div class="story-end">&mdash; END &mdash;</div>
+
+                </div>
+
+                <!-- Page Nav -->
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn" data-target="7">
+                        <span class="nav-arrow" aria-hidden="true">&#8592;</span> Previous
+                    </button>
+                    <button class="nav-btn next-btn" data-target="8q">
+                        Questions <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="quiz-page" data-quiz="8">
+                <div class="quiz-header">Page 8 &mdash; Comprehension Check</div>
+                <div class="mcq-section">
+                    <!-- Q1 -->
+                    <div class="mcq-block" data-question="8-1" data-correct="C">
+                        <div class="mcq-question"><span class="q-number">Q1.</span> When Monica says David&rsquo;s &ldquo;verbal communication-center is still giving trouble,&rdquo; what does this confirm about David?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q8-1" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>He has a speech impediment</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q8-1" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>He is shy and introverted</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q8-1" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>He is a synthetic child, not a real boy</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q8-1" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>He needs new software installed</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-8-1"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="mcq-block" data-question="8-2" data-correct="C">
+                        <div class="mcq-question"><span class="q-number">Q2.</span> What is the last thing David does in the story?</div>
+                        <div class="mcq-options">
+                            <label class="mcq-option" data-value="A">
+                                <input type="radio" name="q8-2" value="A">
+                                <span class="mcq-option-letter">A</span>
+                                <span>He runs away from home</span>
+                            </label>
+                            <label class="mcq-option" data-value="B">
+                                <input type="radio" name="q8-2" value="B">
+                                <span class="mcq-option-letter">B</span>
+                                <span>He writes another letter to Monica</span>
+                            </label>
+                            <label class="mcq-option" data-value="C">
+                                <input type="radio" name="q8-2" value="C">
+                                <span class="mcq-option-letter">C</span>
+                                <span>He plucks a pink rose to take to bed because it reminds him of Mummy</span>
+                            </label>
+                            <label class="mcq-option" data-value="D">
+                                <input type="radio" name="q8-2" value="D">
+                                <span class="mcq-option-letter">D</span>
+                                <span>He asks Teddy if his parents are real</span>
+                            </label>
+                        </div>
+                        <div class="mcq-feedback" id="feedback-8-2"></div>
+                    </div>
+                </div>
+
+                <div class="page-nav">
+                    <button class="nav-btn prev-btn" data-target="8">
+                        <span class="nav-arrow" aria-hidden="true">&#8592;</span> Back to Text
+                    </button>
+                    <button class="nav-btn finish-btn" data-target="finish" disabled>
+                        Return to Super-Toys <span class="nav-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+                <div class="nav-lock-msg" data-quiz-lock="8">Answer both questions correctly to finish</div>
+            </section>
+
+        </article>
+
+        <!-- Download PDF - Bottom -->
+        <div class="download-section download-section-bottom">
+            <a href="Super-Toys-Last-All-Summer-Long.pdf"
+               class="download-btn"
+               download
+               aria-label="Download the story as a PDF file">
+                <span class="download-icon" aria-hidden="true">&#8681;</span>
+                Download PDF
+            </a>
+        </div>
+
+        <!-- Return Link -->
+        <div class="return-section">
+            <a href="index.html" class="return-link">
+                <span aria-hidden="true">&#8592;</span>
+                Return to Super-Toys
+            </a>
+        </div>
+
+    </main>
+
+    <!-- ==========================================
+         JAVASCRIPT: Page Navigation + MCQ Engine
+         ========================================== -->
+    <script>
+    (function() {
+        'use strict';
+
+        const TOTAL_PAGES = 8;
+        const STORAGE_KEY = 'supertoys-story-progress';
+
+        const FEEDBACK = {
+            '1-1': {
+                correct: 'Correct! David runs off with the rose and floats it in his paddling pool.',
+                incorrect: 'Not quite. Re-read the second paragraph carefully -- what does David do after seizing the flower?'
+            },
+            '1-2': {
+                correct: 'Correct! Monica changes the wavelength of her windows to see the city.',
+                incorrect: 'Look again at the last paragraph of this section. What does Monica do "almost by reflex"?'
+            },
+            '2-1': {
+                correct: 'Correct! The Crosswell Tape is a parasite tapeworm that lets people eat more and keep their figure.',
+                incorrect: 'Re-read Henry\'s speech about the Crosswell Tape. He describes it as "a perfectly safe parasite tapeworm."'
+            },
+            '2-2': {
+                correct: 'Correct! The breakthrough is linking computer circuitry with synthetic flesh.',
+                incorrect: 'Look at the last line of Henry\'s speech on this page. What has Synthank "at last found a way" to do?'
+            },
+            '3-1': {
+                correct: 'Correct! Teddy\'s programmed response is "Real things are good."',
+                incorrect: 'Find where David asks about real things. The bear "shuffled its alternatives" and gave a simple answer.'
+            },
+            '3-2': {
+                correct: 'Correct! The narrator reveals "a small computer worked through its program of possibilities" inside the bear.',
+                incorrect: 'Look for the sentence that describes what is happening inside the bear when he thinks of what to say.'
+            },
+            '4-1': {
+                correct: 'Correct! When Monica asks directly, Teddy confirms David told him to say he was in the garden.',
+                incorrect: 'Re-read Monica\'s direct question: "Teddy, did David tell you to tell me he had gone into the garden?"'
+            },
+            '4-2': {
+                correct: 'Correct! Her outburst "Stop calling me Mummy!" shows her frustration at the artificial intimacy.',
+                incorrect: 'Consider Monica\'s sharp reaction when Teddy calls her "Mummy." What does her outburst suggest about her feelings?'
+            },
+            '5-1': {
+                correct: 'Correct! Henry says future models will be linked to the World Data Network.',
+                incorrect: 'Re-read the end of Henry\'s speech. He mentions a specific global network by name.'
+            },
+            '5-2': {
+                correct: 'Correct! David sees his mother standing motionless with a blank, expressionless face.',
+                incorrect: 'Look at what David sees when he peeps through the window. How is Monica described at that moment?'
+            },
+            '6-1': {
+                correct: 'Correct! Each letter of the alphabet is picked out in a different color crayon.',
+                incorrect: 'The text describes David\'s writing style specifically -- look at how each letter relates to color.'
+            },
+            '6-2': {
+                correct: 'Correct! The text states explicitly that "None of the messages was finished" -- they all end with dashes.',
+                incorrect: 'Look at the narrator\'s description of the letters, and notice how every single one ends.'
+            },
+            '7-1': {
+                correct: 'Correct! The serving-man\'s responses are polite but not always contextually relevant, showing the limits of his programming.',
+                incorrect: 'Think about whether the serving-man\'s comment about black spot actually answers Henry\'s question. What does this pattern suggest?'
+            },
+            '7-2': {
+                correct: 'Correct! They have won the parenthood lottery and can conceive a real child.',
+                incorrect: 'Look at the photostat heading and Monica\'s excited announcement. What specific permission have they been granted?'
+            },
+            '8-1': {
+                correct: 'Correct! The phrase "verbal communication-center" reveals David is a synthetic being -- a machine with components, not a human child.',
+                incorrect: 'Think about what kind of being has a "verbal communication-center" that can be sent "back to the factory."'
+            },
+            '8-2': {
+                correct: 'Correct! David plucks a bright pink rose because its beauty and softness remind him of Mummy.',
+                incorrect: 'Read the very last paragraph of the story. What does David do before going inside?'
+            }
+        };
+
+        let currentPage = 1;
+        let currentView = 'text';
+        let answeredCorrectly = {};
+
+        function loadProgress() {
+            try {
+                var saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    var data = JSON.parse(saved);
+                    currentPage = data.currentPage || 1;
+                    currentView = data.currentView || 'text';
+                    answeredCorrectly = data.answeredCorrectly || {};
+                }
+            } catch(e) {}
+        }
+
+        function saveProgress() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    currentPage: currentPage,
+                    currentView: currentView,
+                    answeredCorrectly: answeredCorrectly
+                }));
+            } catch(e) {}
+        }
+
+        function hideAll() {
+            document.querySelectorAll('.story-page, .quiz-page').forEach(function(el) {
+                el.classList.remove('active');
+            });
+        }
+
+        function showTextPage(pageNum) {
+            pageNum = Math.max(1, Math.min(TOTAL_PAGES, pageNum));
+            currentPage = pageNum;
+            currentView = 'text';
+            hideAll();
+            var el = document.querySelector('.story-page[data-page="' + pageNum + '"]');
+            if (el) el.classList.add('active');
+            updateProgress();
+            scrollToTop();
+            saveProgress();
+        }
+
+        function showQuizPage(pageNum) {
+            pageNum = Math.max(1, Math.min(TOTAL_PAGES, pageNum));
+            currentPage = pageNum;
+            currentView = 'quiz';
+            hideAll();
+            var el = document.querySelector('.quiz-page[data-quiz="' + pageNum + '"]');
+            if (el) el.classList.add('active');
+            restoreMCQStates(pageNum);
+            initMCQVisibility(pageNum);
+            updateQuizNavButtons(pageNum);
+            updateProgress();
+            scrollToTop();
+            saveProgress();
+        }
+
+        function scrollToTop() {
+            var p = document.querySelector('.parchment');
+            if (p) p.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function updateProgress() {
+            var label = document.getElementById('progress-label');
+            var fill = document.getElementById('progress-fill');
+
+            if (label) {
+                label.textContent = currentView === 'quiz'
+                    ? 'Page ' + currentPage + ' \u2014 Questions'
+                    : 'Page ' + currentPage + ' of ' + TOTAL_PAGES;
+            }
+
+            if (fill) {
+                var pct = Math.max(((currentPage - 1 + (currentView === 'quiz' ? 0.5 : 0)) / TOTAL_PAGES) * 100, 6.25);
+                fill.style.width = pct + '%';
+            }
+
+            document.querySelectorAll('.progress-dot').forEach(function(dot) {
+                var dp = parseInt(dot.getAttribute('data-dot'));
+                dot.classList.remove('active', 'completed');
+                if (dp === currentPage) dot.classList.add('active');
+                else if (isQuizComplete(dp) && dp < currentPage) dot.classList.add('completed');
+            });
+        }
+
+        function isQuizComplete(pageNum) {
+            return answeredCorrectly[pageNum + '-1'] === true && answeredCorrectly[pageNum + '-2'] === true;
+        }
+
+        function updateQuizNavButtons(pageNum) {
+            var quiz = document.querySelector('.quiz-page[data-quiz="' + pageNum + '"]');
+            if (!quiz) return;
+            var btn = quiz.querySelector('.next-btn, .finish-btn');
+            var lock = document.querySelector('[data-quiz-lock="' + pageNum + '"]');
+            if (btn) {
+                btn.disabled = !isQuizComplete(pageNum);
+                if (lock) lock.classList.toggle('hidden', isQuizComplete(pageNum));
+            }
+        }
+
+        function restoreMCQStates(pageNum) {
+            var quiz = document.querySelector('.quiz-page[data-quiz="' + pageNum + '"]');
+            if (!quiz) return;
+            quiz.querySelectorAll('.mcq-block').forEach(function(block) {
+                var qKey = block.getAttribute('data-question');
+                var correctVal = block.getAttribute('data-correct');
+                if (answeredCorrectly[qKey] !== undefined) {
+                    block.querySelectorAll('.mcq-option').forEach(function(opt) {
+                        opt.classList.add('disabled');
+                        if (opt.getAttribute('data-value') === correctVal) opt.classList.add('correct');
+                    });
+                    var fb = block.querySelector('.mcq-feedback');
+                    if (fb && answeredCorrectly[qKey]) {
+                        fb.className = 'mcq-feedback show correct';
+                        fb.innerHTML = '<span class="mcq-feedback-icon">&#10003;</span> ' + FEEDBACK[qKey].correct;
+                    }
+                }
+            });
+        }
+
+        function initMCQVisibility(pageNum) {
+            var quiz = document.querySelector('.quiz-page[data-quiz="' + pageNum + '"]');
+            if (!quiz) return;
+            var blocks = quiz.querySelectorAll('.mcq-block');
+            if (blocks.length < 2) return;
+            if (answeredCorrectly[pageNum + '-1'] === true) {
+                blocks[1].classList.remove('mcq-hidden', 'mcq-revealing');
+            } else {
+                blocks[1].classList.add('mcq-hidden');
+                blocks[1].classList.remove('mcq-revealing');
+            }
+        }
+
+        function revealNextQuestion(block) {
+            var section = block.closest('.mcq-section');
+            if (!section) return;
+            var blocks = section.querySelectorAll('.mcq-block');
+            var idx = Array.prototype.indexOf.call(blocks, block);
+            if (idx < blocks.length - 1) {
+                var next = blocks[idx + 1];
+                if (next.classList.contains('mcq-hidden')) {
+                    next.classList.remove('mcq-hidden');
+                    next.classList.add('mcq-revealing');
+                    next.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }
+
+        function handleMCQClick(option) {
+            var block = option.closest('.mcq-block');
+            if (!block) return;
+            var qKey = block.getAttribute('data-question');
+            var correctVal = block.getAttribute('data-correct');
+            var selectedVal = option.getAttribute('data-value');
+            var fb = block.querySelector('.mcq-feedback');
+
+            if (answeredCorrectly[qKey] === true) return;
+
+            var radio = option.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+
+            block.querySelectorAll('.mcq-option').forEach(function(opt) {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            if (selectedVal === correctVal) {
+                option.classList.add('correct');
+                answeredCorrectly[qKey] = true;
+                block.querySelectorAll('.mcq-option').forEach(function(opt) { opt.classList.add('disabled'); });
+                if (fb) {
+                    fb.className = 'mcq-feedback show correct';
+                    fb.innerHTML = '<span class="mcq-feedback-icon">&#10003;</span> ' + FEEDBACK[qKey].correct;
+                }
+            } else {
+                option.classList.add('incorrect');
+                block.querySelectorAll('.mcq-option').forEach(function(opt) {
+                    if (opt.getAttribute('data-value') === correctVal) opt.classList.add('correct');
+                    opt.classList.add('disabled');
+                });
+                answeredCorrectly[qKey] = true;
+                if (fb) {
+                    fb.className = 'mcq-feedback show incorrect';
+                    fb.innerHTML = '<span class="mcq-feedback-icon">&#10007;</span> ' + FEEDBACK[qKey].incorrect;
+                }
+            }
+
+            revealNextQuestion(block);
+            var pageNum = parseInt(block.closest('.quiz-page').getAttribute('data-quiz'));
+            updateQuizNavButtons(pageNum);
+            saveProgress();
+
+            // After Q2 is answered, scroll to top so students can continue reading
+            if (isQuizComplete(pageNum)) {
+                setTimeout(function() { scrollToTop(); }, 800);
+            }
+        }
+
+        function navigate(target) {
+            if (target === 'finish') { window.location.href = 'index.html'; return; }
+            if (target.endsWith('q')) {
+                showQuizPage(parseInt(target));
+            } else {
+                showTextPage(parseInt(target));
+            }
+        }
+
+        function init() {
+            loadProgress();
+            document.addEventListener('click', function(e) {
+                var opt = e.target.closest('.mcq-option');
+                if (opt && !opt.classList.contains('disabled')) { handleMCQClick(opt); return; }
+                var btn = e.target.closest('.nav-btn');
+                if (btn && !btn.disabled) {
+                    var t = btn.getAttribute('data-target');
+                    if (t) navigate(t);
+                }
+            });
+            if (currentView === 'quiz') showQuizPage(currentPage);
+            else showTextPage(currentPage);
+        }
+
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+        else init();
+    })();
+    </script>
+
+</body>
+</html>

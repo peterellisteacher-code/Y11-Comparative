@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intertextual Study: Monologue | 11ESH</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 32px;
+            --space-xl: 48px;
+            --space-2xl: 64px;
+            --space-3xl: 96px;
+            --text-sm: 14px;
+            --text-base: 18px;
+            --text-lg: 24px;
+            --text-xl: 32px;
+            --text-2xl: 43px;
+            --text-3xl: 57px;
+
+            --ink-deep: #0d0b08;
+            --ink-slate: #1a1a1f;
+            --ink-panel: #14120e;
+            --paper: #e8ddc9;
+            --paper-soft: rgba(232, 221, 201, 0.7);
+            --paper-dim: rgba(232, 221, 201, 0.65);
+            --paper-faint: rgba(232, 221, 201, 0.12);
+            --copper: #a88862;
+            --copper-bright: #c9a661;
+            --copper-dim: rgba(168, 136, 98, 0.5);
+            --copper-hairline: rgba(168, 136, 98, 0.3);
+
+            --tint-arrival: #7db8c4;
+            --tint-supertoys: #9bb085;
+            --tint-singers: #e0a85a;
+
+            /* Square tile size — responsive to viewport height, capped at 440px.
+               Formula: fit two rows + caption/chrome inside the viewport height. */
+            --tile: min(440px, calc((100dvh - 200px) / 2), calc((100vw - 160px) / 3));
+
+            /* Tile-relative tokens used by the title overlay */
+            --text-tile: clamp(14px, calc(var(--tile) * 0.08), 32px);
+            --space-tile-gradient: calc(var(--tile) * 0.18);
+            --space-tile-bottom:   calc(var(--tile) * 0.05);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            height: 100dvh;
+            overflow: hidden;
+            background: var(--ink-deep);
+            color: var(--paper);
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: var(--text-base);
+            line-height: 1.5;
+        }
+
+        /* Paper-grain texture overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                radial-gradient(ellipse at 25% 15%, rgba(168, 136, 98, 0.05) 0%, transparent 60%),
+                radial-gradient(ellipse at 75% 85%, rgba(125, 184, 196, 0.03) 0%, transparent 55%),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent 0,
+                    transparent 2px,
+                    rgba(232, 221, 201, 0.01) 2px,
+                    rgba(232, 221, 201, 0.01) 4px
+                );
+        }
+
+        /* ==============================================
+           PAGE SHELL
+           ============================================== */
+        .page-shell {
+            position: relative;
+            z-index: 1;
+            height: 100dvh;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            max-width: 1760px;
+            margin: 0 auto;
+        }
+
+        /* ==============================================
+           HEADER — compact
+           ============================================== */
+        .hub-header {
+            text-align: center;
+            padding-bottom: var(--space-xs);
+            border-bottom: 1px solid var(--copper-hairline);
+            display: grid;
+            justify-items: center;
+            gap: var(--space-xs);
+        }
+        .hub-plate {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--copper);
+        }
+        .hub-title {
+            font-family: 'Libre Baskerville', serif;
+            font-size: var(--text-xl);
+            font-weight: 400;
+            color: var(--paper);
+            line-height: 1.1;
+            letter-spacing: 0.02em;
+            font-style: italic;
+        }
+        .hub-title em {
+            font-style: normal;
+            color: var(--copper-bright);
+        }
+        .hub-subtitle {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 400;
+            color: var(--paper-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+        }
+
+        /* ==============================================
+           CABINET — content grows naturally, centred in 1fr
+           ============================================== */
+        .cabinet {
+            display: grid;
+            grid-template-rows: auto auto;
+            align-content: center;
+            gap: var(--space-md);
+            overflow: hidden;
+        }
+
+        .cabinet-row {
+            display: grid;
+            gap: var(--space-md);
+            justify-content: center;
+        }
+        /* Tile size via --tile token; always square via aspect-ratio on artifact-window */
+        .cabinet-row--narratives  { grid-template-columns: repeat(3, var(--tile)); }
+        .cabinet-row--assessments { grid-template-columns: repeat(2, var(--tile)); }
+
+        /* ==============================================
+           PLATE — archival frame with corner brackets
+           ============================================== */
+        .plate {
+            display: flex;
+            flex-direction: column;
+            align-self: start;
+            background:
+                linear-gradient(var(--copper), var(--copper)) left 6px top 6px / 14px 1px no-repeat,
+                linear-gradient(var(--copper), var(--copper)) left 6px top 6px / 1px 14px no-repeat,
+                linear-gradient(var(--copper), var(--copper)) right 6px top 6px / 14px 1px no-repeat,
+                linear-gradient(var(--copper), var(--copper)) right 6px top 6px / 1px 14px no-repeat,
+                linear-gradient(var(--copper), var(--copper)) left 6px bottom 6px / 14px 1px no-repeat,
+                linear-gradient(var(--copper), var(--copper)) left 6px bottom 6px / 1px 14px no-repeat,
+                linear-gradient(var(--copper), var(--copper)) right 6px bottom 6px / 14px 1px no-repeat,
+                linear-gradient(var(--copper), var(--copper)) right 6px bottom 6px / 1px 14px no-repeat,
+                var(--ink-panel);
+            border: 1px solid var(--copper-hairline);
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .plate:hover:not(.plate--locked) {
+            border-color: var(--copper-bright);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--copper-dim);
+        }
+        .plate:focus-visible {
+            outline: 2px solid var(--copper-bright);
+            outline-offset: 2px;
+        }
+
+        /* ==============================================
+           ARTIFACT WINDOW — grid-stacked layers
+           ============================================== */
+        .artifact-window {
+            display: grid;
+            grid-template-areas: "stack";
+            grid-template-columns: 100%;
+            grid-template-rows: 100%;
+            background: var(--ink-deep);
+            overflow: hidden;
+        }
+        .artifact-window > * {
+            grid-area: stack;
+        }
+
+        /* 16:9 boxes — wide pixel art is letterboxed inside, like a film frame in a slide mount */
+        .plate--narrative .artifact-window,
+        .plate--assessment .artifact-window {
+            aspect-ratio: 1 / 1;
+            background: var(--ink-deep);
+        }
+
+        /* Base image behaviour — every artifact is pixel art */
+        .artifact-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            filter: brightness(0.9) contrast(1.06) saturate(0.95);
+            transition: filter 0.6s ease, transform 0.6s ease;
+        }
+        .plate:hover:not(.plate--locked) .artifact-img {
+            filter: brightness(0.95) contrast(1.08) saturate(1.05);
+        }
+
+        /* ==============================================
+           ARRIVAL — Heptapod creatures looming in fog
+           Cinematic still + CSS fog drift + breathing glow
+           ============================================== */
+        .plate--arrival .artifact-img {
+            animation: arrival-breathe 14s ease-in-out infinite alternate;
+        }
+        .plate--arrival:hover:not(.plate--locked) .artifact-img {
+            filter: brightness(1) contrast(1.15) saturate(1);
+        }
+        @keyframes arrival-breathe {
+            0%   { filter: brightness(0.82) contrast(1.08) saturate(0.9); }
+            100% { filter: brightness(0.92) contrast(1.12) saturate(0.95); }
+        }
+
+        /* Drifting fog layer across the heptapods */
+        .arrival-fog {
+            width: 140%;
+            height: 100%;
+            justify-self: start;
+            background:
+                radial-gradient(ellipse 40% 80% at 30% 50%, rgba(232, 221, 201, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 90% at 70% 40%, rgba(125, 184, 196, 0.08) 0%, transparent 60%);
+            mix-blend-mode: screen;
+            pointer-events: none;
+            animation: fog-sweep 18s ease-in-out infinite alternate;
+        }
+        @keyframes fog-sweep {
+            0%   { transform: translateX(-15%); opacity: 0.6; }
+            100% { transform: translateX(0%); opacity: 1; }
+        }
+
+        /* Subtle cyan vignette pulse */
+        .arrival-glow {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 50%, rgba(125, 184, 196, 0.18) 100%);
+            mix-blend-mode: screen;
+            pointer-events: none;
+            animation: cyan-pulse 8s ease-in-out infinite alternate;
+        }
+        @keyframes cyan-pulse {
+            0%   { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        /* ==============================================
+           SUPER-TOYS — Ken Burns zoom + uncanny glitch pulse
+           ============================================== */
+        .plate--supertoys .artifact-img {
+            animation: david-breathe 16s ease-in-out infinite alternate;
+        }
+        @keyframes david-breathe {
+            0%   { filter: brightness(0.82) contrast(1.05) saturate(0.9); }
+            100% { filter: brightness(0.92) contrast(1.08) saturate(1); }
+        }
+
+        .uncanny-glitch {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                rgba(155, 176, 133, 0.15) 0%,
+                transparent 40%,
+                transparent 60%,
+                rgba(220, 180, 190, 0.12) 100%);
+            mix-blend-mode: screen;
+            opacity: 0;
+            animation: glitch-flicker 7s infinite;
+            pointer-events: none;
+        }
+        @keyframes glitch-flicker {
+            0%, 94%, 100% { opacity: 0; transform: translateX(0); }
+            95%           { opacity: 0.8; transform: translateX(3px); filter: hue-rotate(20deg); }
+            95.6%         { opacity: 0.3; transform: translateX(-4px); }
+            96%           { opacity: 0.7; transform: translateX(1px); filter: hue-rotate(-15deg); }
+            96.5%         { opacity: 0; transform: translateX(0); }
+        }
+
+        /* Green synthetic tint wash */
+        .supertoys-tint {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 60% 50%,
+                transparent 30%,
+                rgba(155, 176, 133, 0.12) 100%);
+            pointer-events: none;
+        }
+
+        /* ==============================================
+           SINGERS — Spotlight sweep across silhouettes
+           ============================================== */
+        .plate--singers .artifact-img {
+            animation: singers-breathe 18s ease-in-out infinite alternate;
+        }
+        @keyframes singers-breathe {
+            0%   { filter: brightness(0.82) contrast(1.05) saturate(0.95); }
+            100% { filter: brightness(0.95) contrast(1.1) saturate(1.05); }
+        }
+
+        .singers-spotlight {
+            width: 28%;
+            height: 100%;
+            justify-self: start;
+            background: radial-gradient(ellipse at center,
+                rgba(255, 200, 110, 0.4) 0%,
+                rgba(255, 200, 110, 0.15) 40%,
+                transparent 65%);
+            mix-blend-mode: screen;
+            pointer-events: none;
+            animation: spotlight-sweep 9s ease-in-out infinite;
+        }
+        @keyframes spotlight-sweep {
+            0%   { transform: translateX(-40%); opacity: 0.3; }
+            20%  { transform: translateX(30%);  opacity: 1; }
+            40%  { transform: translateX(130%); opacity: 1; }
+            60%  { transform: translateX(230%); opacity: 1; }
+            80%  { transform: translateX(330%); opacity: 1; }
+            100% { transform: translateX(400%); opacity: 0.3; }
+        }
+
+        /* ==============================================
+           ASSESSMENT COVER — desaturated to mark "task in progress"
+           ============================================== */
+        .plate--assessment .artifact-img {
+            filter: brightness(0.65) contrast(1) saturate(0.5) grayscale(0.4);
+            transition: filter 0.6s ease;
+        }
+
+        /* Locked overlay for "coming soon" plates — subtle corner tag, not a full veil */
+        .plate--locked { cursor: default; }
+        .locked-veil {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            padding: var(--space-sm);
+            background: linear-gradient(180deg,
+                rgba(13, 11, 8, 0) 0%,
+                rgba(13, 11, 8, 0.3) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .locked-veil-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--copper-bright);
+            padding: var(--space-xs) var(--space-sm);
+            border: 1px solid var(--copper);
+            background: rgba(13, 11, 8, 0.85);
+        }
+
+        /* ==============================================
+           PLATE TITLE — single-word label sitting over the image
+           ============================================== */
+        .plate-title {
+            align-self: end;
+            justify-self: stretch;
+            text-align: center;
+            font-family: 'Libre Baskerville', serif;
+            /* Scales with tile size: ~8% of tile width, clamped between 14px and 32px */
+            font-size: var(--text-tile);
+            font-weight: 700;
+            font-style: italic;
+            color: var(--paper);
+            letter-spacing: 0.01em;
+            padding: var(--space-tile-gradient) var(--space-sm) var(--space-tile-bottom);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background: linear-gradient(180deg,
+                rgba(13, 11, 8, 0) 0%,
+                rgba(13, 11, 8, 0.55) 45%,
+                rgba(13, 11, 8, 0.92) 100%);
+            z-index: 3;
+            pointer-events: none;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+            transition: color 0.3s ease, letter-spacing 0.3s ease;
+        }
+        .plate:hover:not(.plate--locked) .plate-title {
+            color: var(--copper-bright);
+            letter-spacing: 0.04em;
+        }
+
+        /* ==============================================
+           FOOTER — compact
+           ============================================== */
+        .hub-footer {
+            text-align: center;
+            padding-top: var(--space-xs);
+            border-top: 1px solid var(--copper-hairline);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: var(--text-sm);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--paper-dim);
+        }
+        .hub-footer span { color: var(--copper); }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+
+        <header class="hub-header">
+            <h1 class="hub-title">Intertextual Study: <em>Monologue</em></h1>
+            <p class="hub-subtitle">SACE Stage 1 English</p>
+        </header>
+
+        <main class="cabinet">
+
+            <!-- NARRATIVE ROW — three cinematic artifacts with CSS animations -->
+            <div class="cabinet-row cabinet-row--narratives" role="list">
+
+                <a href="arrival/index.html" class="plate plate--narrative plate--arrival" role="listitem" aria-label="Arrival">
+                    <div class="artifact-window">
+                        <img class="artifact-img" src="generated-images/hub/rd_pixelate_1776507645_sq.png" alt="Pixel-art still of two heptapod creatures looming through fog with a logogram forming between them" />
+                        <div class="arrival-fog" aria-hidden="true"></div>
+                        <div class="arrival-glow" aria-hidden="true"></div>
+                        <span class="plate-title">Arrival</span>
+                    </div>
+                </a>
+
+                <a href="supertoys/index.html" class="plate plate--narrative plate--supertoys" role="listitem" aria-label="Super-Toys">
+                    <div class="artifact-window">
+                        <img class="artifact-img" src="generated-images/hub/rd_pixelate_1776512161_sq.png" alt="Pixel-art still of a small boy in a sailor outfit standing among synthetic tulips in a greenhouse" />
+                        <div class="supertoys-tint" aria-hidden="true"></div>
+                        <div class="uncanny-glitch" aria-hidden="true"></div>
+                        <span class="plate-title">Super-Toys</span>
+                    </div>
+                </a>
+
+                <a href="singers/index.html" class="plate plate--narrative plate--singers" role="listitem" aria-label="The Singers">
+                    <div class="artifact-window">
+                        <img class="artifact-img" src="generated-images/hub/rd_pixelate_1776580361_sq.png" alt="Pixel-art close-up of a bearded man in a red beanie smoking a cigarette in dim amber light" />
+                        <div class="singers-spotlight" aria-hidden="true"></div>
+                        <span class="plate-title">The Singers</span>
+                    </div>
+                </a>
+
+            </div>
+
+            <!-- ASSESSMENT ROW — two cinematic documents-in-progress -->
+            <div class="cabinet-row cabinet-row--assessments" role="list">
+
+                <div class="plate plate--assessment" role="listitem" aria-label="Monologues">
+                    <div class="artifact-window">
+                        <img class="artifact-img" src="generated-images/hub/rd_pixelate_1776514298_sq.png" alt="Pixel-art still of a single wooden chair in a pool of amber spotlight on a dark empty stage" />
+                        <span class="plate-title">Monologues</span>
+                    </div>
+                </div>
+
+                <a href="resources.html" class="plate plate--resources" role="listitem" aria-label="Resources">
+                    <div class="artifact-window">
+                        <img class="artifact-img" src="generated-images/hub/rd_pixelate_1776514433_sq.png" alt="Pixel-art still of a vintage typewriter with a draft page curling out on a wooden desk" />
+                        <span class="plate-title">Resources</span>
+                    </div>
+                </a>
+
+            </div>
+
+        </main>
+
+        <footer class="hub-footer">
+            <span>&mdash;</span>&nbsp;&nbsp;An Intertextual Archive&nbsp;&nbsp;<span>&mdash;</span>
+        </footer>
+
+    </div>
+</body>
+</html>

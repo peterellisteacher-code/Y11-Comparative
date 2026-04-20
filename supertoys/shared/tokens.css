@@ -1,0 +1,32 @@
+/* ==============================
+   DESIGN TOKENS — Single source of truth
+   Perfect Fourth scale from 18px base.
+   Desktop-first: 1920x1080 classroom displays.
+   ============================== */
+:root {
+    /* Typography scale */
+    --text-sm: 14px;
+    --text-base: 18px;
+    --text-lg: 24px;
+    --text-xl: 32px;
+    --text-2xl: 43px;
+    --text-3xl: 57px;
+
+    /* 8px spacing grid */
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 24px;
+    --space-lg: 32px;
+    --space-xl: 48px;
+    --space-2xl: 64px;
+    --space-3xl: 96px;
+}
+
+/* ==============================
+   UNIVERSAL RESET
+   ============================== */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}

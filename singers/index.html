@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Singers | 11ESH Intertextual Study</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 32px;
+            --space-xl: 48px;
+            --space-2xl: 64px;
+            --space-3xl: 96px;
+            --text-sm: 14px;
+            --text-base: 18px;
+            --text-lg: 24px;
+            --text-xl: 32px;
+            --text-2xl: 43px;
+            --text-3xl: 57px;
+
+            --bar-dark: #0A0704;
+            --bar-amber: #D4943A;
+            --bar-crimson: #C41E1E;
+            --bar-text: #E8DDD0;
+        }
+
+        /* === RESET === */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100dvh; overflow: hidden; background: var(--bar-dark); }
+        body { font-family: 'Inter', sans-serif; font-size: var(--text-base); color: var(--bar-text); }
+        #app { position: relative; width: 100vw; height: 100dvh; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
+
+        /* === BACKGROUND — Smoky dive bar atmosphere === */
+        .bg-container { position: fixed; inset: 0; z-index: 0; background: var(--bar-dark); overflow: hidden; }
+
+        /* Warm ambient light pools */
+        .bg-glow {
+            position: absolute; border-radius: 50%;
+            opacity: 0; filter: blur(80px);
+            transition: opacity 3s ease;
+        }
+        .bg-glow.visible { opacity: 1; }
+        .bg-glow-1 {
+            width: 700px; height: 500px; top: 8%; left: 18%;
+            background: radial-gradient(ellipse, rgba(212, 148, 58, 0.28), transparent 70%);
+            animation: barFlicker 8s ease-in-out infinite;
+        }
+        .bg-glow-2 {
+            width: 600px; height: 400px; top: 25%; right: 12%;
+            background: radial-gradient(ellipse, rgba(196, 30, 30, 0.18), transparent 70%);
+        }
+        .bg-glow-3 {
+            width: 900px; height: 380px; bottom: 12%; left: 25%;
+            background: radial-gradient(ellipse, rgba(212, 148, 58, 0.22), transparent 60%);
+        }
+
+        @keyframes barFlicker {
+            0%, 100% { opacity: 1; }
+            92% { opacity: 1; }
+            93% { opacity: 0.8; }
+            94% { opacity: 1; }
+            97% { opacity: 0.85; }
+            98% { opacity: 1; }
+        }
+
+        /* Smoke layers — blue-gray wisps drifting through warm light */
+        .bg-smoke {
+            position: absolute; inset: -30%; width: 160%; height: 160%;
+            opacity: 0; transition: opacity 4s ease;
+        }
+        .bg-smoke.visible { opacity: 1; }
+        .bg-smoke-1 {
+            background:
+                radial-gradient(ellipse at 25% 40%, rgba(160, 175, 190, 0.13) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 55%, rgba(140, 155, 170, 0.10) 0%, transparent 45%);
+            animation: smokeDrift1 30s ease-in-out infinite;
+        }
+        .bg-smoke-2 {
+            background:
+                radial-gradient(ellipse at 55% 35%, rgba(180, 190, 200, 0.11) 0%, transparent 40%),
+                radial-gradient(ellipse at 20% 60%, rgba(160, 170, 180, 0.08) 0%, transparent 35%);
+            animation: smokeDrift2 25s ease-in-out infinite;
+        }
+        .bg-smoke-3 {
+            background:
+                radial-gradient(ellipse at 60% 50%, rgba(200, 200, 210, 0.07) 0%, transparent 30%);
+            animation: smokeDrift3 20s ease-in-out infinite;
+        }
+        @keyframes smokeDrift1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(3%,-4%) scale(1.08); } }
+        @keyframes smokeDrift2 { 0%,100% { transform: translate(0,0) scale(1.03); } 50% { transform: translate(-5%,3%) scale(0.97); } }
+        @keyframes smokeDrift3 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(4%,-2%); } }
+
+        /* 35mm film grain overlay — canvas-based for performance */
+        .bg-grain {
+            position: absolute; inset: 0;
+            opacity: 0.06; pointer-events: none; mix-blend-mode: overlay;
+        }
+
+        /* Deep vignette — edges dissolve into darkness */
+        .bg-vignette {
+            position: absolute; inset: 0; z-index: 1;
+            background: radial-gradient(ellipse at 50% 50%, transparent 0%, transparent 25%, rgba(10, 7, 4, 0.45) 60%, rgba(10, 7, 4, 0.92) 100%);
+        }
+
+        /* === BAR ATMOSPHERE — Silhouette elements === */
+        .bar-elements { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+
+        /* Brick wall texture — upper two-thirds */
+        .bar-brick {
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 65%;
+            background-image:
+                repeating-linear-gradient(0deg,
+                    transparent 0px, transparent 19px,
+                    rgba(6, 4, 1, 0.40) 19px, rgba(6, 4, 1, 0.40) 21px
+                ),
+                repeating-linear-gradient(90deg,
+                    transparent 0px, transparent 56px,
+                    rgba(6, 4, 1, 0.22) 56px, rgba(6, 4, 1, 0.22) 58px
+                );
+            opacity: 0.7;
+        }
+
+        /* Back bar mirror — dark glass behind the bottles */
+        .bar-mirror {
+            position: absolute;
+            top: 5%; left: 12%; right: 12%; height: 40%;
+            background: linear-gradient(148deg, #1D1509 0%, #0F0C05 42%, #151108 75%, #1D1509 100%);
+            border: 1px solid rgba(70, 50, 18, 0.35);
+            box-shadow:
+                0 0 0 4px rgba(22, 15, 6, 0.8),
+                0 0 0 6px rgba(50, 35, 14, 0.25),
+                inset 0 0 120px rgba(0, 0, 0, 0.72),
+                0 12px 40px rgba(0, 0, 0, 0.6);
+        }
+        /* Amber light sweep across mirror surface */
+        .bar-mirror::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(110deg,
+                transparent 0%, transparent 18%,
+                rgba(212,148,58,0.04) 35%, rgba(255,200,100,0.08) 50%,
+                rgba(212,148,58,0.04) 65%, transparent 82%, transparent 100%
+            );
+            animation: mirrorShimmer 16s ease-in-out infinite;
+        }
+        @keyframes mirrorShimmer {
+            0%, 100% { transform: translateX(-10%) skewX(-2deg); opacity: 0.8; }
+            50% { transform: translateX(10%) skewX(2deg); opacity: 1; }
+        }
+
+        /* Bottle shelf — the wood ledge at mirror base */
+        .bar-shelf {
+            position: absolute; top: 44%; left: 50%; transform: translateX(-50%);
+            width: 78%; height: 6px;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(58, 36, 12, 0.55) 10%,
+                rgba(82, 52, 18, 0.90) 28%,
+                rgba(90, 58, 22, 0.96) 50%,
+                rgba(82, 52, 18, 0.90) 72%,
+                rgba(58, 36, 12, 0.55) 90%,
+                transparent);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.55), 0 -1px 0 rgba(212,148,58,0.14);
+            border-radius: 1px;
+        }
+
+        /* Bottle silhouettes — sitting on the shelf */
+        .bar-bottles {
+            position: absolute; top: 24%; left: 50%; transform: translateX(-50%);
+            width: 72%; height: 115px; opacity: 0.50;
+            background:
+                linear-gradient(to top, #2A1808 0%, #2A1808 100%) no-repeat 3%  25px / 10px 90px,
+                linear-gradient(to top, #2A1808 0%, #2A1808 100%) no-repeat calc(3% + 1px) 15px / 7px 12px,
+                radial-gradient(ellipse at 50% 65%, #2E1A08 0%, #2E1A08 78%, transparent 79%) no-repeat 11% 38px / 22px 75px,
+                linear-gradient(to top, #1E1410 0%, #1E1410 100%) no-repeat 19% 18px / 9px 97px,
+                linear-gradient(to top, #1E1410 0%, #1E1410 100%) no-repeat calc(19% + 1px) 10px / 6px 10px,
+                linear-gradient(to top, #3C2010 0%, #3C2010 100%) no-repeat 28% 28px / 18px 87px,
+                linear-gradient(to top, #3C2010 0%, #3C2010 100%) no-repeat calc(28% + 4px) 18px / 10px 12px,
+                linear-gradient(to top, #2A1808 0%, #2A1808 100%) no-repeat 38% 32px / 12px 83px,
+                linear-gradient(to top, #2A1808 0%, #2A1808 100%) no-repeat calc(38% + 1px) 22px / 9px 12px,
+                linear-gradient(to top, #1A1208 0%, #1A1208 100%) no-repeat 48% 20px / 8px 95px,
+                linear-gradient(to top, #1A1208 0%, #1A1208 100%) no-repeat calc(48% + 0.5px) 12px / 5px 10px,
+                radial-gradient(ellipse at 50% 68%, #281606 0%, #281606 72%, transparent 73%) no-repeat 56% 42px / 20px 72px,
+                linear-gradient(to top, #2A1808 0%, #2A1808 100%) no-repeat 65% 22px / 11px 93px,
+                linear-gradient(to top, #2A1808 0%, #2A1808 100%) no-repeat calc(65% + 1px) 13px / 8px 11px,
+                linear-gradient(to top, #1E1410 0%, #1E1410 100%) no-repeat 74% 18px / 9px 97px,
+                linear-gradient(to top, #1E1410 0%, #1E1410 100%) no-repeat calc(74% + 0.5px) 10px / 6px 10px,
+                linear-gradient(to top, #3C2010 0%, #3C2010 100%) no-repeat 83% 35px / 14px 80px,
+                linear-gradient(to top, #3C2010 0%, #3C2010 100%) no-repeat calc(83% + 3px) 25px / 8px 12px,
+                linear-gradient(to top, #2A1808 0%, #2A1808 100%) no-repeat 91% 40px / 11px 75px;
+        }
+
+        /* Neon sign — upper left, vivid crimson */
+        .bar-neon {
+            position: absolute; top: 7%; left: 5%;
+            width: 148px; height: 66px;
+            border: 2px solid rgba(196, 30, 30, 0.60);
+            border-radius: 10px;
+            box-shadow:
+                0 0 8px rgba(196,30,30,0.40),
+                0 0 28px rgba(196,30,30,0.22),
+                0 0 60px rgba(196,30,30,0.12),
+                inset 0 0 22px rgba(196,30,30,0.10);
+            animation: neonPulse 4s ease-in-out infinite;
+        }
+        .bar-neon::before {
+            content: ''; position: absolute; inset: 5px;
+            border: 1px solid rgba(196,30,30,0.22);
+            border-radius: 6px;
+        }
+        .bar-neon::after {
+            content: ''; position: absolute; inset: 4px;
+            border: 1px solid rgba(212, 148, 58, 0.10);
+            border-radius: 7px;
+        }
+        @keyframes neonPulse {
+            0%, 100% { opacity: 0.85; }
+            50%  { opacity: 0.55; }
+            85%  { opacity: 0.85; }
+            87%  { opacity: 0.30; }
+            89%  { opacity: 0.85; }
+        }
+
+        /* Second neon — upper right, amber tint */
+        .bar-neon-2 {
+            position: absolute; top: 8%; right: 5%;
+            width: 110px; height: 52px;
+            border: 2px solid rgba(212, 148, 58, 0.45);
+            border-radius: 8px;
+            box-shadow:
+                0 0 6px rgba(212,148,58,0.30),
+                0 0 22px rgba(212,148,58,0.16),
+                0 0 50px rgba(212,148,58,0.08),
+                inset 0 0 18px rgba(212,148,58,0.08);
+            animation: neonPulse 6s ease-in-out 1.5s infinite;
+        }
+        .bar-neon-2::after {
+            content: ''; position: absolute; inset: 5px;
+            border: 1px solid rgba(212,148,58,0.18);
+            border-radius: 4px;
+        }
+
+        /* === PENDANT LIGHTS — Edison bulbs hanging from ceiling === */
+        /* CSS custom properties drive cord height; all children use calc(). */
+        .pendant {
+            --cord-h: 125px;
+            --flicker-delay: 0s;
+            position: absolute; top: 0;
+            transform: translateX(-50%);
+            pointer-events: none; z-index: 3;
+        }
+        .p-cord {
+            position: absolute; top: 0; left: -1px;
+            width: 2px; height: var(--cord-h);
+            background: linear-gradient(180deg, rgba(28,18,7,0.88), rgba(50,33,13,0.72));
+        }
+        .p-shade {
+            position: absolute;
+            top: calc(var(--cord-h) - 3px); left: -22px;
+            width: 44px; height: 26px;
+            background: linear-gradient(180deg, #181008 0%, #0C0804 100%);
+            clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+            filter:
+                drop-shadow(0 5px 18px rgba(212,148,58,0.65))
+                drop-shadow(0 10px 40px rgba(212,148,58,0.32));
+        }
+        .p-glow {
+            position: absolute;
+            top: calc(var(--cord-h) + 18px); left: -5px;
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: rgba(255,228,115,0.98);
+            box-shadow:
+                0 0 8px  rgba(255,220,90,0.95),
+                0 0 22px rgba(230,175,55,0.78),
+                0 0 55px rgba(212,148,38,0.48),
+                0 0 100px rgba(200,130,30,0.22);
+            animation: bulbFlicker 9s ease-in-out var(--flicker-delay) infinite;
+        }
+        .p-cone {
+            position: absolute;
+            top: calc(var(--cord-h) + 23px); left: -230px;
+            width: 460px; height: 620px;
+            background: linear-gradient(180deg,
+                rgba(212,148,58,0.24) 0%,
+                rgba(212,148,58,0.12) 14%,
+                rgba(212,148,58,0.06) 32%,
+                rgba(212,148,58,0.02) 52%,
+                transparent 70%);
+            clip-path: polygon(44% 0%, 56% 0%, 100% 100%, 0% 100%);
+        }
+        @keyframes bulbFlicker {
+            0%,100% { opacity: 1; }
+            89% { opacity: 1; }
+            91% { opacity: 0.60; }
+            92% { opacity: 1; }
+            95% { opacity: 0.78; }
+            96% { opacity: 1; }
+        }
+
+        /* === BAR FLOOR — warm wooden planks === */
+        .bar-floor {
+            position: absolute;
+            bottom: 0; left: 0; right: 0; height: 26%;
+            background:
+                repeating-linear-gradient(0deg,
+                    transparent 0px, transparent 23px,
+                    rgba(8, 5, 1, 0.58) 23px, rgba(8, 5, 1, 0.58) 25px
+                ),
+                linear-gradient(180deg,
+                    rgba(30,17,5,0) 0%,
+                    rgba(42,24,8,0.52) 55%,
+                    rgba(26,13,3,0.75) 100%);
+        }
+
+        /* === STAGE SPOTLIGHT — warm ellipse at performer position === */
+        .stage-spot {
+            position: absolute;
+            bottom: 7%; left: 50%; transform: translateX(-50%);
+            width: 58%; max-width: 880px; height: 90px;
+            background: radial-gradient(ellipse at 50% 55%,
+                rgba(212,148,58,0.26) 0%,
+                rgba(212,148,58,0.13) 28%,
+                rgba(212,148,58,0.04) 54%,
+                transparent 72%);
+            border-radius: 50%;
+            animation: spotPulse 7s ease-in-out infinite;
+            z-index: 1;
+        }
+        @keyframes spotPulse {
+            0%, 100% { opacity: 1; transform: translateX(-50%) scaleX(1); }
+            50% { opacity: 0.70; transform: translateX(-50%) scaleX(0.94); }
+        }
+
+        /* Bar counter — solid wood surface */
+        .bar-counter {
+            position: absolute; bottom: 11%; left: 4%; right: 4%;
+            height: 10px;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(50, 30, 10, 0.68) 8%,
+                rgba(75, 48, 18, 0.90) 24%,
+                rgba(82, 54, 20, 0.96) 50%,
+                rgba(75, 48, 18, 0.90) 76%,
+                rgba(50, 30, 10, 0.68) 92%,
+                transparent 100%);
+            border-radius: 2px;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.50), 0 -1px 0 rgba(212,148,58,0.16);
+        }
+        .bar-counter::before {
+            content: ''; position: absolute; top: -2px; left: 5%; right: 5%;
+            height: 2px;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(212,148,58,0.20) 22%,
+                rgba(248,178,72,0.32) 50%,
+                rgba(212,148,58,0.20) 78%,
+                transparent);
+            filter: blur(0.5px);
+        }
+
+        /* Bar stools — flanking the stage */
+        .bar-stool {
+            position: absolute; bottom: 13%; width: 22px; height: 44px; opacity: 0.30;
+        }
+        .bar-stool::before {
+            content: ''; position: absolute; top: 0; left: 2px; right: 2px;
+            height: 9px; background: #3A2010; border-radius: 3px;
+        }
+        .bar-stool::after {
+            content: ''; position: absolute; top: 9px; left: 50%; transform: translateX(-50%);
+            width: 4px; height: 35px; background: #1A1010;
+        }
+        .bar-stool-1 { left: 7%; }
+        .bar-stool-2 { left: 13%; }
+        .bar-stool-3 { right: 7%; }
+        .bar-stool-4 { right: 13%; }
+
+        /* === CONTENT === */
+        .content {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100dvh; width: 100%;
+            padding: var(--space-lg) var(--space-lg) var(--space-sm);
+            gap: var(--space-md);
+        }
+
+        /* === LOGO — Crimson blackletter === */
+        .logo-area {
+            text-align: center; flex-shrink: 0;
+            display: flex; flex-direction: column; align-items: center;
+            margin-bottom: var(--space-xs);
+        }
+        .logo-main {
+            font-family: 'UnifrakturMaguntia', serif;
+            font-size: var(--text-3xl);
+            color: var(--bar-crimson);
+            line-height: 1;
+            text-shadow:
+                0 0 40px rgba(196, 30, 30, 0.4),
+                0 0 80px rgba(196, 30, 30, 0.15),
+                0 4px 0 #600808;
+            letter-spacing: 0.04em;
+            opacity: 0;
+        }
+        .logo-main.revealed {
+            animation: titleReveal 2s ease-out forwards;
+        }
+        @keyframes titleReveal {
+            0%   { opacity: 0; filter: blur(12px); transform: scale(1.3); }
+            40%  { opacity: 0.7; filter: blur(4px); }
+            100% { opacity: 1; filter: blur(0); transform: scale(1); }
+        }
+
+        .logo-sub {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 400;
+            color: rgba(212, 148, 58, 0.55);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-top: var(--space-xs);
+            opacity: 0;
+        }
+        .logo-sub.revealed { animation: fadeUp 1.5s ease-out 1s forwards; }
+
+        .logo-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: var(--text-lg);
+            font-style: italic;
+            color: rgba(232, 221, 208, 0.45);
+            margin-top: var(--space-sm);
+            max-width: 700px;
+            opacity: 0;
+        }
+        .logo-quote.revealed { animation: fadeUp 1.5s ease-out 1.8s forwards; }
+
+        @keyframes fadeUp {
+            0%   { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === CHARACTER STAGE — Ground-line aligned bar patrons === */
+        .character-stage {
+            position: relative;
+            flex: 1 1 auto;
+            display: flex; align-items: flex-end; justify-content: center;
+            gap: var(--space-xl);
+            width: 100%; max-width: 1400px;
+            margin: 0 auto;
+            padding-bottom: var(--space-lg);
+            overflow: visible;
+        }
+
+        /* Amber bar counter glow line */
+        .character-stage::after {
+            content: ''; position: absolute; bottom: var(--space-md); left: 5%; right: 5%;
+            height: 3px;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(212, 148, 58, 0.2) 15%,
+                rgba(212, 148, 58, 0.45) 50%,
+                rgba(212, 148, 58, 0.2) 85%,
+                transparent);
+            border-radius: 2px;
+            filter: blur(1px);
+        }
+
+        .character {
+            display: flex; flex-direction: column; align-items: center;
+            cursor: pointer; opacity: 0;
+            transition: transform 0.3s ease;
+            text-decoration: none; color: inherit;
+            flex-shrink: 0;
+        }
+        .character:hover { transform: translateY(-4px); }
+        .character:hover .char-name { color: var(--bar-amber); }
+        .character:hover .char-canvas {
+            filter: drop-shadow(0 0 20px rgba(212, 148, 58, 0.5));
+        }
+        .character.entered {
+            animation: charEnter 0.8s ease-out forwards;
+        }
+        @keyframes charEnter {
+            0%   { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .char-canvas {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            width: 128px;
+            height: 192px;
+            filter: drop-shadow(0 0 12px rgba(212, 148, 58, 0.25));
+            transition: filter 0.3s;
+        }
+
+        .char-name {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            font-weight: 600;
+            color: var(--bar-text);
+            margin-top: var(--space-xs);
+            transition: color 0.3s;
+            text-align: center;
+        }
+        .char-role {
+            font-family: 'Playfair Display', serif;
+            font-size: var(--text-sm);
+            font-style: italic;
+            color: rgba(212, 148, 58, 0.45);
+            text-align: center;
+        }
+
+        /* === NAVIGATION === */
+        .nav-bar {
+            flex-shrink: 0;
+            padding: var(--space-xs) 0;
+        }
+        .nav-back {
+            font-size: var(--text-base);
+            font-weight: 500;
+            color: rgba(232, 221, 208, 0.7);
+            text-decoration: none;
+            transition: color 0.2s;
+            padding: var(--space-xs) var(--space-sm);
+            border: 1px solid rgba(232, 221, 208, 0.15);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .nav-back:hover {
+            color: var(--bar-amber);
+            border-color: rgba(212, 148, 58, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* === REPLAY BUTTON === */
+        .replay-btn {
+            position: fixed; top: var(--space-sm); right: var(--space-sm); z-index: 50;
+            display: none;
+            background: rgba(10, 7, 4, 0.85);
+            backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(212, 148, 58, 0.4);
+            border-radius: 6px;
+            color: rgba(212, 148, 58, 0.8);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            padding: var(--space-xs) var(--space-sm);
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .replay-btn:hover {
+            color: var(--bar-amber);
+            border-color: rgba(212, 148, 58, 0.7);
+            background: rgba(10, 7, 4, 0.95);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- ==============================
+             ATMOSPHERIC BACKGROUND
+             ============================== -->
+        <div class="bg-container">
+            <div class="bg-glow bg-glow-1"></div>
+            <div class="bg-glow bg-glow-2"></div>
+            <div class="bg-glow bg-glow-3"></div>
+            <div class="bg-smoke bg-smoke-1"></div>
+            <div class="bg-smoke bg-smoke-2"></div>
+            <div class="bg-smoke bg-smoke-3"></div>
+            <canvas class="bg-grain" id="grain"></canvas>
+            <div class="bg-vignette"></div>
+            <!-- Bar atmosphere silhouettes -->
+            <div class="bar-elements">
+                <!-- Wall texture + back bar mirror -->
+                <div class="bar-brick"></div>
+                <div class="bar-mirror"></div>
+                <!-- Bottles + shelf sitting in front of mirror -->
+                <div class="bar-bottles"></div>
+                <div class="bar-shelf"></div>
+                <!-- Neon signs -->
+                <div class="bar-neon"></div>
+                <div class="bar-neon-2"></div>
+                <!-- Pendant lights: 5 Edison bulbs at varied cord heights -->
+                <div class="pendant" style="left:17%;--cord-h:118px;--flicker-delay:0s">
+                    <div class="p-cord"></div><div class="p-shade"></div>
+                    <div class="p-glow"></div><div class="p-cone"></div>
+                </div>
+                <div class="pendant" style="left:31%;--cord-h:102px;--flicker-delay:1.8s">
+                    <div class="p-cord"></div><div class="p-shade"></div>
+                    <div class="p-glow"></div><div class="p-cone"></div>
+                </div>
+                <div class="pendant" style="left:50%;--cord-h:135px;--flicker-delay:3.4s">
+                    <div class="p-cord"></div><div class="p-shade"></div>
+                    <div class="p-glow"></div><div class="p-cone"></div>
+                </div>
+                <div class="pendant" style="left:69%;--cord-h:108px;--flicker-delay:0.9s">
+                    <div class="p-cord"></div><div class="p-shade"></div>
+                    <div class="p-glow"></div><div class="p-cone"></div>
+                </div>
+                <div class="pendant" style="left:83%;--cord-h:122px;--flicker-delay:2.6s">
+                    <div class="p-cord"></div><div class="p-shade"></div>
+                    <div class="p-glow"></div><div class="p-cone"></div>
+                </div>
+                <!-- Floor + stage spotlight -->
+                <div class="bar-floor"></div>
+                <div class="stage-spot"></div>
+                <!-- Counter + stools -->
+                <div class="bar-counter"></div>
+                <div class="bar-stool bar-stool-1"></div>
+                <div class="bar-stool bar-stool-2"></div>
+                <div class="bar-stool bar-stool-3"></div>
+                <div class="bar-stool bar-stool-4"></div>
+            </div>
+        </div>
+
+        <!-- ==============================
+             MAIN CONTENT
+             ============================== -->
+        <main class="content">
+            <div class="logo-area">
+                <h1 class="logo-main">The Singers</h1>
+                <p class="logo-sub">Sam A. Davis, 2025 -- after Ivan Turgenev</p>
+                <p class="logo-quote">&ldquo;Free beer and $100 to the best singer in the bar tonight.&rdquo;</p>
+            </div>
+
+            <div class="character-stage" id="stage"></div>
+
+            <nav class="nav-bar">
+                <a href="../index.html" class="nav-back">&#8592; Back to Hub</a>
+            </nav>
+        </main>
+    </div>
+    <button class="replay-btn" id="replayBtn">&#9658; Replay Intro</button>
+
+    <script>
+    /* ==============================
+       CHARACTER DEFINITIONS
+       ============================== */
+    const CHARS = [
+        { id: 'bartender',        name: 'The Bartender',       role: 'The Bartender' },
+        { id: 'young-singer',     name: 'The Young Singer',    role: 'The Outsider' },
+        { id: 'captain',          name: 'The Old Singer',      role: 'The Legend' },
+        { id: 'bathroom-singer',  name: 'The Bathroom Singer', role: 'The Hidden Voice' },
+    ];
+
+    /* ==============================
+       PIXEL ART PALETTE
+       ============================== */
+    const C = {
+        skin:      '#D4A574',
+        skinDk:    '#B8895A',
+        skinDeep:  '#8B5A2B',
+        skinDeepDk:'#6B4226',
+        hair:      '#3A2A1A',
+        hairGray:  '#8A8A8A',
+        hairWhite: '#C0C0C0',
+        shirtDk:   '#1A1A2E',
+        olive:     '#3A4020',
+        brown:     '#4A3020',
+        red:       '#8B2020',
+        gray:      '#3A3A3A',
+        grayLt:    '#505050',
+        blue:      '#1A2A4A',
+        apron:     '#D0C8B8',
+        pants:     '#151520',
+        boot:      '#1A1010',
+        beanie:    '#8B1A1A',
+        tubes:     '#607080',
+        glass:     'rgba(180,210,230,0.55)',
+        flannel:   '#6A1010',
+        wood:      '#3A2510',
+        amber:     '#D4943A',
+    };
+
+    /* Filled rectangle helper */
+    function r(ctx, x, y, w, h, c) { ctx.fillStyle = c; ctx.fillRect(x, y, w, h); }
+
+    /* ==============================
+       CHARACTER DRAW FUNCTIONS
+       Each draws on a 32x48 canvas.
+       `f` = frame counter for idle animation.
+       ============================== */
+    const draw = {
+        'bartender': (ctx, f) => {
+            const b = f % 2 === 0 ? 0 : -1;     /* breathing bob */
+            const rag = f % 4 < 2 ? 0 : 1;      /* rag wipe cycle */
+            /* Head — bald, dark skin */
+            r(ctx, 13, 3+b, 6, 7, C.skinDeep);
+            r(ctx, 13, 3+b, 6, 1, C.skinDeepDk); /* bald crown highlight */
+            r(ctx, 14, 6+b, 1, 1, '#1a1a1a'); r(ctx, 17, 6+b, 1, 1, '#1a1a1a'); /* eyes */
+            r(ctx, 15, 9+b, 2, 1, C.skinDeepDk); /* goatee hint */
+            /* Torso — dark shirt, wider build */
+            r(ctx, 10, 10+b, 12, 14, C.shirtDk);
+            /* Apron */
+            r(ctx, 11, 14+b, 10, 10, C.apron);
+            /* Arms */
+            r(ctx, 8, 11+b, 2, 10, C.skinDeep);
+            r(ctx, 22, 11+b, 2, 10, C.skinDeep);
+            /* Glass in right hand */
+            r(ctx, 22, 15+b, 2, 5, C.glass);
+            r(ctx, 22, 14+b, 3, 1, C.glass);
+            /* Rag in left hand */
+            r(ctx, 6+rag, 18+b, 3, 3, C.apron);
+            /* Legs */
+            r(ctx, 11, 24, 5, 12, C.pants);
+            r(ctx, 17, 24, 5, 12, C.pants);
+            /* Feet */
+            r(ctx, 10, 36, 6, 3, C.boot);
+            r(ctx, 16, 36, 6, 3, C.boot);
+        },
+
+        'young-singer': (ctx, f) => {
+            const sway = [0, 0, 1, 1, 0, 0, -1, -1][f % 8]; /* subtle sway */
+            const arm = f % 6 < 3 ? 0 : -1; /* hand gesture */
+            /* Beanie — crimson */
+            r(ctx, 12, 1, 8, 3, C.beanie);
+            r(ctx, 11, 3, 10, 2, C.beanie);
+            /* Head */
+            r(ctx, 13, 5, 6, 6, C.skin);
+            r(ctx, 13, 9, 6, 2, C.skinDk); /* stubble */
+            r(ctx, 14, 7, 1, 1, '#1a1a1a'); r(ctx, 17, 7, 1, 1, '#1a1a1a');
+            /* Torso — brown jacket */
+            r(ctx, 11+sway, 11, 10, 13, C.brown);
+            r(ctx, 14+sway, 11, 4, 3, C.gray); /* t-shirt peek */
+            /* Arms */
+            r(ctx, 9+sway, 12, 2, 10, C.brown);
+            r(ctx, 9+sway, 20, 2, 3, C.skin);
+            r(ctx, 21+sway, 12, 2, 8+arm, C.brown);
+            r(ctx, 22+sway, 11+arm, 2, 3, C.skin); /* raised hand */
+            /* Legs — dark jeans */
+            r(ctx, 12, 24, 4, 12, C.blue);
+            r(ctx, 17, 24, 4, 12, C.blue);
+            /* Boots */
+            r(ctx, 11, 36, 5, 3, C.boot);
+            r(ctx, 16, 36, 5, 3, C.boot);
+        },
+
+        'captain': (ctx, f) => {
+            const b = [0, 0, -1, -1, 0][f % 5]; /* slow breathing */
+            /* White hair */
+            r(ctx, 12, 2+b, 8, 3, C.hairWhite);
+            /* Head */
+            r(ctx, 13, 4+b, 6, 7, C.skin);
+            r(ctx, 14, 7+b, 1, 1, '#1a1a1a'); r(ctx, 17, 7+b, 1, 1, '#1a1a1a');
+            /* Nasal cannula — tubes */
+            r(ctx, 12, 8+b, 8, 1, C.tubes);
+            r(ctx, 11, 8+b, 1, 6, C.tubes);
+            r(ctx, 20, 8+b, 1, 6, C.tubes);
+            /* Heavy coat */
+            r(ctx, 10, 11+b, 12, 14, C.gray);
+            /* Arms hanging */
+            r(ctx, 8, 12+b, 2, 11, C.gray);
+            r(ctx, 22, 12+b, 2, 11, C.gray);
+            r(ctx, 8, 21+b, 2, 3, C.skin);
+            r(ctx, 22, 21+b, 2, 3, C.skin);
+            /* Bar stool */
+            r(ctx, 9, 30, 14, 2, C.wood);
+            /* Legs — seated */
+            r(ctx, 11, 25, 5, 5, C.pants);
+            r(ctx, 16, 25, 5, 5, C.pants);
+            r(ctx, 12, 30, 4, 6, C.pants);
+            r(ctx, 17, 30, 4, 6, C.pants);
+            /* Feet */
+            r(ctx, 11, 36, 5, 2, C.boot);
+            r(ctx, 16, 36, 5, 2, C.boot);
+        },
+
+        'veteran': (ctx, f) => {
+            const b = f % 2 === 0 ? 0 : -1;
+            /* Close-cropped hair */
+            r(ctx, 13, 2+b, 6, 2, C.hair);
+            /* Head */
+            r(ctx, 13, 3+b, 6, 7, C.skin);
+            r(ctx, 14, 6+b, 1, 1, '#1a1a1a'); r(ctx, 17, 6+b, 1, 1, '#1a1a1a');
+            /* Olive jacket */
+            r(ctx, 11, 10+b, 10, 14, C.olive);
+            /* Dog tags */
+            r(ctx, 15, 12+b, 1, 1, '#888'); r(ctx, 16, 13+b, 1, 1, '#888');
+            /* Arms — crossed posture */
+            r(ctx, 9, 12+b, 2, 8, C.olive);
+            r(ctx, 21, 12+b, 2, 8, C.olive);
+            r(ctx, 11, 16+b, 10, 2, C.olive); /* overlap = crossed */
+            r(ctx, 11, 17+b, 3, 2, C.skin);
+            r(ctx, 18, 17+b, 3, 2, C.skin);
+            /* Beer bottle */
+            r(ctx, 8, 13+b, 2, 6, '#2A5A20');
+            r(ctx, 8, 12+b, 2, 1, '#888');
+            /* Legs */
+            r(ctx, 12, 24, 4, 12, C.olive);
+            r(ctx, 17, 24, 4, 12, C.olive);
+            /* Combat boots */
+            r(ctx, 11, 36, 5, 3, C.boot);
+            r(ctx, 16, 36, 5, 3, C.boot);
+        },
+
+        'muffin': (ctx, f) => {
+            const g = f % 3; /* gesture cycle */
+            /* Ball cap */
+            r(ctx, 11, 1, 10, 3, C.blue);
+            r(ctx, 10, 3, 12, 1, C.blue);
+            /* Head — ruddy, wider */
+            r(ctx, 12, 4, 8, 7, C.skin);
+            r(ctx, 13, 7, 6, 3, '#C87060'); /* red cheeks */
+            r(ctx, 14, 6, 1, 1, '#1a1a1a'); r(ctx, 18, 6, 1, 1, '#1a1a1a');
+            r(ctx, 15, 9, 3, 2, '#8A4030'); /* open mouth */
+            /* Flannel shirt — wider, heavyset */
+            r(ctx, 9, 11, 14, 14, C.red);
+            /* Flannel check pattern */
+            for (let i = 0; i < 14; i += 3) r(ctx, 9+i, 11, 1, 14, C.flannel);
+            for (let j = 0; j < 14; j += 4) r(ctx, 9, 11+j, 14, 1, C.flannel);
+            /* Arms — gesturing per frame */
+            if (g === 0) {
+                r(ctx, 7, 12, 2, 8, C.red); r(ctx, 23, 12, 2, 8, C.red);
+                r(ctx, 23, 12, 2, 3, C.skin); /* pointing right */
+            } else if (g === 1) {
+                r(ctx, 5, 10, 4, 3, C.red); r(ctx, 23, 10, 4, 3, C.red);
+                r(ctx, 4, 10, 2, 3, C.skin); r(ctx, 26, 10, 2, 3, C.skin); /* arms wide */
+            } else {
+                r(ctx, 7, 13, 2, 9, C.red); r(ctx, 23, 13, 2, 9, C.red);
+                r(ctx, 7, 20, 2, 3, C.skin); r(ctx, 23, 20, 2, 3, C.skin);
+            }
+            /* Legs */
+            r(ctx, 11, 25, 5, 11, C.pants);
+            r(ctx, 16, 25, 5, 11, C.pants);
+            /* Feet */
+            r(ctx, 10, 36, 6, 3, C.boot);
+            r(ctx, 16, 36, 6, 3, C.boot);
+        },
+
+        'bathroom-singer': (ctx, f) => {
+            const b = f % 2 === 0 ? 0 : -1;
+            /* Hood */
+            r(ctx, 12, 1+b, 8, 5, C.gray);
+            r(ctx, 11, 4+b, 10, 2, C.gray);
+            /* Head — partially hidden */
+            r(ctx, 13, 4+b, 6, 7, C.skin);
+            /* Eyes cast down */
+            r(ctx, 14, 8+b, 1, 1, '#1a1a1a'); r(ctx, 17, 8+b, 1, 1, '#1a1a1a');
+            /* Hoodie */
+            r(ctx, 10, 11+b, 12, 14, C.gray);
+            r(ctx, 12, 18+b, 8, 4, C.grayLt); /* pocket */
+            /* Arms — hands in pockets */
+            r(ctx, 8, 12+b, 2, 10, C.gray);
+            r(ctx, 22, 12+b, 2, 10, C.gray);
+            r(ctx, 12, 19+b, 3, 3, C.skin);
+            r(ctx, 17, 19+b, 3, 3, C.skin);
+            /* Legs */
+            r(ctx, 12, 25, 4, 11, C.pants);
+            r(ctx, 17, 25, 4, 11, C.pants);
+            /* Sneakers */
+            r(ctx, 11, 36, 5, 3, '#2A2A30');
+            r(ctx, 16, 36, 5, 3, '#2A2A30');
+        },
+    };
+
+    /* ==============================
+       BUILD STAGE
+       ============================== */
+    const stage = document.getElementById('stage');
+    const sprites = [];
+
+    CHARS.forEach((ch) => {
+        const a = document.createElement('a');
+        a.className = 'character';
+        a.href = 'characters/' + ch.id + '.html';
+
+        const canvas = document.createElement('canvas');
+        canvas.width = 32;
+        canvas.height = 48;
+        canvas.className = 'char-canvas';
+
+        const name = document.createElement('span');
+        name.className = 'char-name';
+        name.textContent = ch.name;
+
+        const role = document.createElement('span');
+        role.className = 'char-role';
+        role.textContent = ch.role;
+
+        a.append(canvas, name, role);
+        stage.appendChild(a);
+        sprites.push({ canvas, id: ch.id, frame: 0, el: a });
+    });
+
+    /* ==============================
+       ANIMATION LOOP
+       ============================== */
+    let prevTick = 0;
+
+    function tick(ts) {
+        if (ts - prevTick > 550) {
+            sprites.forEach(s => {
+                const ctx = s.canvas.getContext('2d');
+                ctx.clearRect(0, 0, 32, 48);
+                s.frame++;
+                draw[s.id](ctx, s.frame);
+            });
+            prevTick = ts;
+        }
+        requestAnimationFrame(tick);
+    }
+
+    /* ==============================
+       ENTRANCE SEQUENCE
+       ============================== */
+    function init() {
+        /* Background */
+        setTimeout(() => document.querySelectorAll('.bg-glow').forEach(el => el.classList.add('visible')), 300);
+        setTimeout(() => document.querySelectorAll('.bg-smoke').forEach(el => el.classList.add('visible')), 800);
+
+        /* Title */
+        setTimeout(() => document.querySelector('.logo-main').classList.add('revealed'), 500);
+        setTimeout(() => document.querySelector('.logo-sub').classList.add('revealed'), 1200);
+        setTimeout(() => document.querySelector('.logo-quote').classList.add('revealed'), 1800);
+
+        /* Characters — staggered entrance */
+        sprites.forEach((s, i) => {
+            const ctx = s.canvas.getContext('2d');
+            draw[s.id](ctx, 0);
+            setTimeout(() => s.el.classList.add('entered'), 2200 + i * 250);
+        });
+
+        /* Show replay button after intro completes */
+        const lastCharTime = 2200 + (sprites.length - 1) * 250 + 1200;
+        setTimeout(() => {
+            document.getElementById('replayBtn').style.display = 'block';
+            try { localStorage.setItem('singers_intro_seen', '1'); } catch(e) {}
+        }, lastCharTime);
+
+        requestAnimationFrame(tick);
+    }
+
+    /* ==============================
+       SKIP / INSTANT LOAD
+       ============================== */
+    function skipIntro() {
+        document.querySelectorAll('.bg-glow').forEach(el => { el.style.transition = 'none'; el.classList.add('visible'); });
+        document.querySelectorAll('.bg-smoke').forEach(el => { el.style.transition = 'none'; el.classList.add('visible'); });
+
+        const logoMain = document.querySelector('.logo-main');
+        logoMain.style.animation = 'none'; logoMain.style.opacity = '1';
+        logoMain.style.filter = 'none'; logoMain.style.transform = 'scale(1)';
+
+        const logoSub = document.querySelector('.logo-sub');
+        logoSub.style.animation = 'none'; logoSub.style.opacity = '1';
+
+        const logoQuote = document.querySelector('.logo-quote');
+        logoQuote.style.animation = 'none'; logoQuote.style.opacity = '1';
+
+        sprites.forEach(s => {
+            const ctx = s.canvas.getContext('2d');
+            draw[s.id](ctx, 0);
+            s.el.style.animation = 'none';
+            s.el.style.opacity = '1';
+        });
+
+        document.getElementById('replayBtn').style.display = 'block';
+        try { localStorage.setItem('singers_intro_seen', '1'); } catch(e) {}
+
+        requestAnimationFrame(tick);
+    }
+
+    /* ==============================
+       FILM GRAIN — small canvas, tiled via CSS
+       ============================== */
+    const grainEl = document.getElementById('grain');
+    grainEl.width = 128;
+    grainEl.height = 128;
+    const gCtx = grainEl.getContext('2d');
+    grainEl.style.width = '100%';
+    grainEl.style.height = '100%';
+    grainEl.style.imageRendering = 'auto';
+
+    function renderGrain() {
+        const d = gCtx.createImageData(128, 128);
+        for (let i = 0; i < d.data.length; i += 4) {
+            const v = Math.random() * 255;
+            d.data[i] = v; d.data[i+1] = v; d.data[i+2] = v; d.data[i+3] = 40;
+        }
+        gCtx.putImageData(d, 0, 0);
+    }
+    renderGrain();
+    setInterval(renderGrain, 200);
+
+    document.getElementById('replayBtn').addEventListener('click', () => {
+        try { localStorage.removeItem('singers_intro_seen'); } catch(e) {}
+        location.reload();
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        if (localStorage.getItem('singers_intro_seen')) {
+            skipIntro();
+        } else {
+            init();
+        }
+    });
+    </script>
+</body>
+</html>

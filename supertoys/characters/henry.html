@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Henry | Super-Toys Last All Summer Long</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/character-activities.css">
+  <style>
+    :root {
+      --cp: #3E567A;
+      --ca: #B8694A;
+    }
+  </style>
+</head>
+<body>
+
+<header class="top-bar">
+  <a href="../characters.html" class="back-link">← Characters</a>
+  <h1 class="page-title">Henry Swinton</h1>
+  <button id="pdf-btn" class="pdf-btn">↓ Save PDF</button>
+</header>
+
+<div class="page-body">
+
+  <!-- ── Character Panel ─────────────────────────────────── -->
+  <aside class="char-panel">
+    <img class="portrait" src="assets/henry_v4.png" alt="Henry at the podium">
+    <p class="char-name">Henry</p>
+    <div id="sprite-wrap"><img src="../sprites/henry/rotations/south.png" alt="Henry"></div>
+    <blockquote class="char-quote">"Today marks a real breakthrough for the company."</blockquote>
+  </aside>
+
+  <!-- ── Activities Panel ────────────────────────────────── -->
+  <div class="activities-panel">
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="activity1" aria-selected="true">Activity 1 — Word Bank</button>
+      <button class="tab-btn" data-tab="activity2" aria-selected="false">Activity 2 — Select Lines</button>
+      <button class="tab-btn" data-tab="activity3" aria-selected="false">Activity 3 — Why These Lines</button>
+      <button class="tab-btn" data-tab="activity4" aria-selected="false">Activity 4 — Monologue</button>
+    </nav>
+
+    <div class="tab-content">
+
+      <!-- ═══ ACTIVITY 1 ═════════════════════════════════════ -->
+      <section class="tab-panel active" id="activity1" aria-hidden="false">
+        <p class="act-title">Words Henry uses in the story</p>
+        <p class="act-desc">Henry has more words in the story than any other character. Every one of them is here, pulled from his Synthank luncheon speech and his dialogue at home. Click a word when you use it below.</p>
+
+        <div class="word-bank-grid">
+          <div>
+            <p class="word-col-header">Verbs</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="mark">mark</button>
+              <button class="chip" type="button" data-word="create">create</button>
+              <button class="chip" type="button" data-word="launch">launch</button>
+              <button class="chip" type="button" data-word="believe">believe</button>
+              <button class="chip" type="button" data-word="sell">sell</button>
+              <button class="chip" type="button" data-word="link">link</button>
+              <button class="chip" type="button" data-word="contain">contain</button>
+              <button class="chip" type="button" data-word="suffer">suffer</button>
+              <button class="chip" type="button" data-word="plan">plan</button>
+              <button class="chip" type="button" data-word="possess">possess</button>
+              <button class="chip" type="button" data-word="banish">banish</button>
+              <button class="chip" type="button" data-word="promise">promise</button>
+              <button class="chip" type="button" data-word="guarantee">guarantee</button>
+              <button class="chip" type="button" data-word="like">like</button>
+              <button class="chip" type="button" data-word="happen">happen</button>
+              <button class="chip" type="button" data-word="malfunction">malfunction</button>
+              <button class="chip" type="button" data-word="enjoy">enjoy</button>
+              <button class="chip" type="button" data-word="reflect">reflect</button>
+            </div>
+          </div>
+          <div>
+            <p class="word-col-header">Nouns</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="breakthrough">breakthrough</button>
+              <button class="chip" type="button" data-word="company">company</button>
+              <button class="chip" type="button" data-word="market">market</button>
+              <button class="chip" type="button" data-word="intelligence">intelligence</button>
+              <button class="chip" type="button" data-word="paradox">paradox</button>
+              <button class="chip" type="button" data-word="life">life</button>
+              <button class="chip" type="button" data-word="success">success</button>
+              <button class="chip" type="button" data-word="control">control</button>
+              <button class="chip" type="button" data-word="population">population</button>
+              <button class="chip" type="button" data-word="brain">brain</button>
+              <button class="chip" type="button" data-word="computer">computer</button>
+              <button class="chip" type="button" data-word="flesh">flesh</button>
+              <button class="chip" type="button" data-word="circuitry">circuitry</button>
+              <button class="chip" type="button" data-word="civilization">civilization</button>
+              <button class="chip" type="button" data-word="loneliness">loneliness</button>
+              <button class="chip" type="button" data-word="isolation">isolation</button>
+              <button class="chip" type="button" data-word="models">models</button>
+              <button class="chip" type="button" data-word="beings">beings</button>
+              <button class="chip" type="button" data-word="network">network</button>
+              <button class="chip" type="button" data-word="product">product</button>
+              <button class="chip" type="button" data-word="triumphs">triumphs</button>
+              <button class="chip" type="button" data-word="overpopulation">overpopulation</button>
+              <button class="chip" type="button" data-word="design">design</button>
+              <button class="chip" type="button" data-word="future">future</button>
+              <button class="chip" type="button" data-word="baby">baby</button>
+              <button class="chip" type="button" data-word="surprise">surprise</button>
+              <button class="chip" type="button" data-word="information">information</button>
+            </div>
+          </div>
+          <div>
+            <p class="word-col-header">Adjectives</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="synthetic">synthetic</button>
+              <button class="chip" type="button" data-word="intelligent">intelligent</button>
+              <button class="chip" type="button" data-word="controlled">controlled</button>
+              <button class="chip" type="button" data-word="stupid">stupid</button>
+              <button class="chip" type="button" data-word="safe">safe</button>
+              <button class="chip" type="button" data-word="sophisticated">sophisticated</button>
+              <button class="chip" type="button" data-word="sad">sad</button>
+              <button class="chip" type="button" data-word="increasing">increasing</button>
+              <button class="chip" type="button" data-word="vapid">vapid</button>
+              <button class="chip" type="button" data-word="advanced">advanced</button>
+              <button class="chip" type="button" data-word="bio-electronic">bio-electronic</button>
+              <button class="chip" type="button" data-word="personal">personal</button>
+              <button class="chip" type="button" data-word="free">free</button>
+              <button class="chip" type="button" data-word="wonderful">wonderful</button>
+              <button class="chip" type="button" data-word="human">human</button>
+              <button class="chip" type="button" data-word="lucky">lucky</button>
+              <button class="chip" type="button" data-word="guaranteed">guaranteed</button>
+              <button class="chip" type="button" data-word="male">male</button>
+              <button class="chip" type="button" data-word="female">female</button>
+              <button class="chip" type="button" data-word="capable">capable</button>
+              <button class="chip" type="button" data-word="individual">individual</button>
+            </div>
+          </div>
+          <div>
+            <p class="word-col-header">Adverbs</p>
+            <div class="chip-cloud">
+              <button class="chip" type="button" data-word="almost">almost</button>
+              <button class="chip" type="button" data-word="always">always</button>
+              <button class="chip" type="button" data-word="never">never</button>
+              <button class="chip" type="button" data-word="forever">forever</button>
+              <button class="chip" type="button" data-word="perfectly">perfectly</button>
+              <button class="chip" type="button" data-word="also">also</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="act-divider"></div>
+
+        <div class="analysis-section">
+          <p class="analysis-prompt">Based on Henry's word bank, describe his characteristics, desires, goals and fears. Click words above to mark the ones you're drawing on.</p>
+          <div class="analysis-grid">
+            <div class="analysis-box">
+              <span class="analysis-label">Characteristics</span>
+              <textarea data-save="a1-characteristics" placeholder="What kind of person is Henry? What do his words reveal about him?"></textarea>
+            </div>
+            <div class="analysis-box">
+              <span class="analysis-label">Desires</span>
+              <textarea data-save="a1-desires" placeholder="What does Henry want most?"></textarea>
+            </div>
+            <div class="analysis-box">
+              <span class="analysis-label">Goals</span>
+              <textarea data-save="a1-goals" placeholder="What is Henry trying to achieve or build?"></textarea>
+            </div>
+            <div class="analysis-box">
+              <span class="analysis-label">Fears</span>
+              <textarea data-save="a1-fears" placeholder="What does Henry fear -- or what should he fear?"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ ACTIVITY 2 — SELECT LINES ══════════════════════ -->
+      <section class="tab-panel" id="activity2" aria-hidden="true">
+        <p class="act-title">Every line Henry speaks in the story</p>
+        <p class="act-desc">Below is every line Henry says aloud across the story -- his Synthank speech and his dialogue at home. Choose <em>five</em> that feel most telling. Click a line to select or un-select it.</p>
+        <p class="line-counter" id="line-counter">0 of 5 selected</p>
+        <div class="line-list" id="line-list"></div>
+      </section>
+
+      <!-- ═══ ACTIVITY 3 — WHY THESE LINES ═══════════════════ -->
+      <section class="tab-panel" id="activity3" aria-hidden="true">
+        <p class="act-title">The heavy-lifting words in Henry's lines</p>
+        <p class="act-desc">Your five selected lines are shown below with the <em>verbs</em>, <em>nouns</em>, <em>adjectives</em>, and <em>adverbs</em> picked out. Beneath each line, write why this line matters to Henry.</p>
+        <div class="pos-legend">
+          <span><span class="legend-swatch-verb">verb</span></span>
+          <span><span class="legend-swatch-noun">noun</span></span>
+          <span><span class="legend-swatch-adj">adjective</span></span>
+          <span><span class="legend-swatch-adv">adverb</span></span>
+        </div>
+        <div class="a3-highlight-list" id="a3-highlight-list"></div>
+      </section>
+
+      <!-- ═══ ACTIVITY 4 — MONOLOGUE ═════════════════════════ -->
+      <section class="tab-panel" id="activity4" aria-hidden="true">
+        <div class="a4-layout">
+          <div class="a4-left">
+            <p class="a4-left-title">Your chosen lines &amp; reasons</p>
+            <div id="a4-lines"></div>
+          </div>
+          <div class="a4-right">
+            <div class="writing-prompt">
+              <p><strong>Write 4 sentences minimum of a monologue for this character, first explaining who they are delivering the monologue to.</strong></p>
+            </div>
+            <div class="writing-area">
+              <span class="writing-label">Your monologue -- work is saved automatically</span>
+              <textarea data-save="a4-monologue" placeholder="Begin Henry's monologue here…"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+    </div><!-- .tab-content -->
+  </div><!-- .activities-panel -->
+
+</div><!-- .page-body -->
+
+<script>
+  window.CHARACTER_LINES = [
+    "Monica prefers to stay at home thinking beautiful thoughts.",
+    "Today marks a real breakthrough for the company. It is now almost ten years since we put our first synthetic life-forms on the world market. You all know what a success they have been, particularly the miniature dinosaurs. But none of them had intelligence.",
+    "It seems like a paradox that in this day and age we can create life but not intelligence. Our first selling line, the Crosswell Tape, sells best of all, and is the most stupid of all.",
+    "Though three-quarters of the overcrowded world are starving, we are lucky here to have more than enough, thanks to population control. Obesity's our problem, not malnutrition. I guess there's nobody round this table who doesn't have a Crosswell working for him in the small intestine, a perfectly safe parasite tapeworm that enables its host to eat up to fifty percent more food and still keep his or her figure. Right?",
+    "Our miniature dinosaurs are almost equally stupid. Today, we launch an intelligent synthetic life-form — a full-size serving-man.",
+    "Not only does he have intelligence, he has a controlled amount of intelligence. We believe people would be afraid of a being with a human brain. Our serving-man has a small computer in his cranium.",
+    "There have been mechanicals on the market with mini-computers for brains — plastic things without life, super-toys — but we have at last found a way to link computer circuitry with synthetic flesh.",
+    "Our serving-man will be, in many senses, a product of the computer. Without computers, we could never have worked through the sophisticated biochemics that go into synthetic flesh. The serving-man will also be an extension of the computer — for he will contain a computer in his own head, a microminiaturized computer capable of dealing with almost any situation he may encounter in the home. With reservations, of course.",
+    "Amid all the triumphs of our civilization — yes, and amid the crushing problems of overpopulation too — it is sad to reflect how many millions of people suffer from increasing loneliness and isolation. Our serving-man will be a boon to them; he will always answer, and the most vapid conversation cannot bore him.",
+    "For the future, we plan more models, male and female — some of them without the limitations of this first one, I promise you! — of more advanced design, true bio-electronic beings.",
+    "Not only will they possess their own computer, capable of individual programming; they will be linked to the World Data Network. Thus everyone will be able to enjoy the equivalent of an Einstein in their own homes. Personal isolation will then be banished forever!",
+    "How do you like it?",
+    "These roses are guaranteed free from any imperfections.",
+    "Thanks for the information.",
+    "Darling, what's happened?",
+    "For heaven's sake, woman, what's wonderful?",
+    "Monica… oh… Don't tell me our number's come up!",
+    "What do we do about them?",
+    "Is David malfunctioning?",
+    "Okay. We'll see how he does before the baby's born. Which reminds me — I have a surprise for you: help just when help is needed! Come into the hall and see what I've got."
+  ];
+</script>
+<script src="../shared/character-activities.js"></script>
+<script>
+  initCharacterPage('henry');
+</script>
+</body>
+</html>

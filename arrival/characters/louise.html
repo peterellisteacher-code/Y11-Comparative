@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Louise Banks | Arrival | 11ESH</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 32px;
+            --space-xl: 48px;
+            --space-2xl: 64px;
+            --space-3xl: 96px;
+            --text-sm: 14px;
+            --text-base: 18px;
+            --text-lg: 24px;
+            --text-xl: 32px;
+            --text-2xl: 43px;
+            --text-3xl: 57px;
+        }
+
+        html, body {
+            height: 100dvh;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            color: #E8E4DF;
+            background: #0D1117;
+        }
+
+        /* === PAGE SHELL === */
+        .page-shell {
+            height: 100dvh;
+            display: grid;
+            grid-template-rows: auto auto 1fr;
+            overflow: hidden;
+        }
+
+        /* === COMPACT HEADER === */
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-xs) var(--space-md);
+            background: rgba(13,17,23,0.95);
+            border-bottom: 1px solid rgba(107,141,178,0.15);
+            backdrop-filter: blur(8px);
+        }
+        .page-header__back {
+            color: rgba(184,197,214,0.5);
+            text-decoration: none;
+            font-size: var(--text-sm);
+            transition: color 0.2s;
+            white-space: nowrap;
+            min-height: var(--space-xl);
+            display: flex;
+            align-items: center;
+            padding: 0 var(--space-xs);
+        }
+        .page-header__back:hover { color: #6B8DB2; }
+        .page-header__character {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            flex: 1;
+        }
+        .page-header__sprite {
+            height: 64px;
+            width: auto;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            filter: drop-shadow(0 0 8px rgba(107,141,178,0.35));
+        }
+        .page-header__name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-lg);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: #E8E4DF;
+            line-height: 1.1;
+        }
+        .page-header__role {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            font-style: italic;
+            color: #6B8DB2;
+            margin-top: var(--space-xs);
+        }
+
+        /* === TAB BAR === */
+        .tab-bar {
+            display: flex;
+            background: rgba(13,17,23,0.9);
+            border-bottom: 1px solid rgba(107,141,178,0.12);
+            padding: 0 var(--space-md);
+            gap: var(--space-xs);
+        }
+        .tab {
+            padding: var(--space-xs) var(--space-md);
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: rgba(184,197,214,0.45);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+            white-space: nowrap;
+            letter-spacing: 0.04em;
+        }
+        .tab:hover { color: rgba(184,197,214,0.75); }
+        .tab.active {
+            color: #6B8DB2;
+            border-bottom-color: #6B8DB2;
+        }
+
+        /* === CONTENT AREA === */
+        .tab-content {
+            display: flex;
+            overflow: hidden;
+        }
+        .tab-panel {
+            flex: 1 1 100%;
+            overflow-y: auto;
+            padding: var(--space-sm) var(--space-lg);
+        }
+        .tab-panel[hidden] { display: none; }
+        .tab-panel::-webkit-scrollbar { width: 6px; }
+        .tab-panel::-webkit-scrollbar-track { background: transparent; }
+        .tab-panel::-webkit-scrollbar-thumb { background: rgba(107,141,178,0.25); border-radius: 3px; }
+        .tab-panel::-webkit-scrollbar-thumb:hover { background: rgba(107,141,178,0.45); }
+
+        /* === PANEL HEADER === */
+        .panel-header {
+            margin-bottom: var(--space-sm);
+            padding-bottom: var(--space-xs);
+            border-bottom: 1px solid rgba(107,141,178,0.15);
+        }
+        .panel-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: #E8E4DF;
+            margin-bottom: var(--space-xs);
+        }
+        .panel-intro {
+            font-size: var(--text-base);
+            color: rgba(232,228,223,0.65);
+            line-height: 1.7;
+        }
+
+        /* === RESPONSE TEXTAREA (shared) === */
+        .response-textarea {
+            width: 100%;
+            background: rgba(13,17,23,0.6);
+            border: 1px solid rgba(107,141,178,0.15);
+            border-radius: 6px;
+            padding: var(--space-sm);
+            color: #E8E4DF;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            line-height: 1.6;
+            resize: vertical;
+            min-height: 60px;
+            transition: border-color 0.2s;
+        }
+        .response-textarea:focus {
+            outline: none;
+            border-color: rgba(107,141,178,0.4);
+        }
+        .response-textarea::placeholder {
+            color: rgba(184,197,214,0.25);
+        }
+
+        /* ==========================================
+           TAB 1: QUOTE DETECTIVE
+        ========================================== */
+        .quiz-container { max-width: 700px; margin: 0 auto; }
+        .quiz-progress {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+        .quiz-score {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: #6B8DB2;
+            min-width: 70px;
+        }
+        .quiz-bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(107,141,178,0.15);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .quiz-bar__fill {
+            height: 100%;
+            background: #6B8DB2;
+            border-radius: 2px;
+            transition: width 0.3s;
+            width: 0;
+        }
+        .quiz-card {
+            background: linear-gradient(135deg, rgba(26,35,50,0.8), rgba(13,17,23,0.9));
+            border: 1px solid rgba(107,141,178,0.15);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            text-align: center;
+        }
+        .quiz-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-lg);
+            font-style: italic;
+            color: #E8E4DF;
+            line-height: 1.6;
+            margin-bottom: var(--space-md);
+            min-height: 80px;
+        }
+        .quiz-buttons {
+            display: flex;
+            gap: var(--space-sm);
+            justify-content: center;
+        }
+        .quiz-btn {
+            padding: var(--space-sm) var(--space-lg);
+            min-height: var(--space-xl);
+            border-radius: 8px;
+            border: 1.5px solid;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+        }
+        .quiz-btn--louise {
+            border-color: rgba(107,141,178,0.4);
+            color: #6B8DB2;
+        }
+        .quiz-btn--louise:hover:not(:disabled) {
+            background: rgba(107,141,178,0.15);
+            border-color: #6B8DB2;
+        }
+        .quiz-btn--other {
+            border-color: rgba(212,149,106,0.4);
+            color: #D4956A;
+        }
+        .quiz-btn--other:hover:not(:disabled) {
+            background: rgba(212,149,106,0.15);
+            border-color: #D4956A;
+        }
+        .quiz-btn:disabled { opacity: 0.3; cursor: default; }
+        .quiz-feedback {
+            font-size: var(--text-base);
+            color: rgba(232,228,223,0.75);
+            line-height: 1.6;
+            margin-top: var(--space-md);
+            padding-left: var(--space-sm);
+            text-align: left;
+            display: none;
+        }
+        .quiz-feedback.visible { display: block; animation: fadeSlide 0.3s ease-out; }
+        .quiz-feedback.correct { border-left: 3px solid #7BA08E; }
+        .quiz-feedback.incorrect { border-left: 3px solid #C45A5A; }
+        .quiz-feedback.twist { border-left: 3px solid #D4956A; }
+        .quiz-next {
+            margin-top: var(--space-md);
+            padding: var(--space-xs) var(--space-lg);
+            min-height: var(--space-xl);
+            background: rgba(107,141,178,0.15);
+            border: 1.5px solid rgba(107,141,178,0.3);
+            border-radius: 8px;
+            color: #6B8DB2;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: none;
+        }
+        .quiz-next.visible { display: inline-block; }
+        .quiz-next:hover {
+            background: rgba(107,141,178,0.25);
+            border-color: #6B8DB2;
+        }
+        .quiz-results { text-align: center; padding: var(--space-lg); }
+        .quiz-results__title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-xl);
+            color: #E8E4DF;
+            margin-bottom: var(--space-sm);
+        }
+        .quiz-results__text {
+            font-size: var(--text-base);
+            color: rgba(232,228,223,0.65);
+            line-height: 1.6;
+            margin-bottom: var(--space-md);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ==========================================
+           TAB 2: LOUISE'S WORDS
+        ========================================== */
+        .scene-carousel {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            flex: 1;
+            min-height: 0;
+        }
+        /* Compact overrides — panel-words has more content sections than other panels */
+        #panel-words .panel-header { margin-bottom: var(--space-xs); }
+        #panel-words .words-prompt-block { padding: var(--space-sm); }
+        .scene-card {
+            display: none;
+            gap: var(--space-xl);
+            align-items: start;
+        }
+        .scene-card.active {
+            display: grid;
+            grid-template-columns: 480px 1fr;
+            flex: 1;
+            min-height: 0;
+        }
+        .scene-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-xs) 0;
+            border-top: 1px solid rgba(107,141,178,0.12);
+            border-bottom: 1px solid rgba(107,141,178,0.08);
+            margin-bottom: var(--space-xs);
+        }
+        .scene-nav-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            background: transparent;
+            border: 1px solid rgba(107,141,178,0.2);
+            border-radius: 6px;
+            color: rgba(107,141,178,0.55);
+            padding: var(--space-xs) var(--space-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .scene-nav-btn:hover:not(:disabled) { color: #6B8DB2; border-color: rgba(107,141,178,0.4); background: rgba(107,141,178,0.08); }
+        .scene-nav-btn:disabled { opacity: 0.25; cursor: default; }
+        .scene-nav-right { display: flex; gap: var(--space-sm); align-items: center; }
+        .scene-restart-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            background: transparent;
+            border: 1px dashed rgba(107,141,178,0.25);
+            border-radius: 6px;
+            color: rgba(107,141,178,0.5);
+            padding: var(--space-xs) var(--space-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .scene-restart-btn:hover { color: rgba(107,141,178,0.9); border-color: rgba(107,141,178,0.55); background: rgba(107,141,178,0.06); }
+        .scene-counter {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: rgba(107,141,178,0.45);
+        }
+        #panel-words .panel-title { font-size: var(--text-sm); }
+
+        .scene-image {
+            width: 408px;
+            height: 408px;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            border-radius: var(--space-xs);
+            border: 1px solid rgba(107,141,178,0.25);
+            object-fit: contain;
+            align-self: start;
+            filter: drop-shadow(0 0 var(--space-md) rgba(107,141,178,0.35));
+        }
+        .scene-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            overflow-y: auto;
+            padding-right: var(--space-xs);
+        }
+        .scene-label {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: rgba(107,141,178,0.6);
+            letter-spacing: 0.04em;
+        }
+        .scene-passage {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-lg);
+            color: rgba(232,228,223,0.9);
+            line-height: 1.7;
+        }
+        .fill-blank {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+        }
+        .fill-blank__input {
+            background: rgba(107,141,178,0.08);
+            border: none;
+            border-bottom: 2px solid rgba(107,141,178,0.4);
+            border-radius: 2px 2px 0 0;
+            color: #E8E4DF;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-lg);
+            font-style: italic;
+            width: 130px;
+            padding: 0 var(--space-xs);
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .fill-blank__input:focus { border-bottom-color: #6B8DB2; background: rgba(107,141,178,0.12); }
+        .fill-blank__input.correct { border-bottom-color: #7BA08E; background: rgba(123,160,142,0.1); color: #7BA08E; }
+        .fill-blank__badge {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: rgba(107,141,178,0.45);
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color 0.2s;
+            user-select: none;
+        }
+        .fill-blank__badge:hover { color: #6B8DB2; }
+        .scene-bank {
+            display: none;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            padding: var(--space-xs) 0;
+            animation: fadeSlide 0.2s ease-out;
+        }
+        .scene-bank.open { display: flex; }
+        .scene-bank-pill {
+            display: inline-block;
+            background: rgba(107,141,178,0.1);
+            border: 1px solid rgba(107,141,178,0.2);
+            color: rgba(232,228,223,0.75);
+            font-size: var(--text-sm);
+            padding: 0 var(--space-xs);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+            font-family: 'Inter', sans-serif;
+        }
+        .scene-bank-pill:hover { background: rgba(107,141,178,0.22); border-color: rgba(107,141,178,0.45); color: #E8E4DF; }
+        .scene-reveal-btn {
+            align-self: flex-start;
+            padding: var(--space-xs) var(--space-md);
+            min-height: 36px;
+            background: transparent;
+            border: 1px solid rgba(107,141,178,0.25);
+            border-radius: 6px;
+            color: rgba(107,141,178,0.55);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .scene-reveal-btn:hover { background: rgba(107,141,178,0.1); color: #6B8DB2; border-color: rgba(107,141,178,0.4); }
+        .scene-reveal-note {
+            display: none;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            color: rgba(232,228,223,0.65);
+            line-height: 1.7;
+            border-left: 2px solid rgba(107,141,178,0.3);
+            padding-left: var(--space-sm);
+            animation: fadeSlide 0.3s ease-out;
+        }
+        .scene-reveal-note.open { display: block; }
+        .scene-reveal-note strong { color: #7BA08E; }
+        .scene-reference {
+            border-top: 1px solid rgba(107,141,178,0.1);
+            padding-top: var(--space-xs);
+            margin-bottom: var(--space-xs);
+        }
+        .scene-reference__heading {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: rgba(107,141,178,0.4);
+            margin-bottom: var(--space-xs);
+            display: block;
+        }
+        .scene-reference__list {
+            list-style: decimal;
+            padding-left: var(--space-md);
+        }
+        .scene-reference__list li {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-sm);
+            color: rgba(232,228,223,0.45);
+            font-style: italic;
+            line-height: 1.5;
+        }
+        /* Scene 6 — writing slide: full-width single column, no image column */
+        .scene-card--writing.active {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+        .words-prompts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+        }
+        .words-prompt-block {
+            background: rgba(26,35,50,0.4);
+            border: 1px solid rgba(107,141,178,0.1);
+            border-radius: 8px;
+            padding: var(--space-md);
+        }
+        .words-prompt-label {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: #6B8DB2;
+            margin-bottom: var(--space-xs);
+            display: block;
+        }
+        .words-prompt-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            font-style: italic;
+            color: rgba(232,228,223,0.6);
+            line-height: 1.6;
+            margin-bottom: var(--space-sm);
+        }
+
+        /* ==========================================
+           TAB 3: WHAT WOULD LOUISE SAY?
+        ========================================== */
+        .scenarios-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+        .scenario-card {
+            border: 1.5px solid rgba(107,141,178,0.2);
+            background: linear-gradient(135deg, rgba(26,35,50,0.6), rgba(13,17,23,0.9));
+            border-radius: 8px;
+            padding: var(--space-md);
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+        .scenario-card:hover {
+            border-color: rgba(107,141,178,0.45);
+            box-shadow: 0 0 16px rgba(107,141,178,0.08);
+        }
+        .scenario-card.active {
+            border-color: #6B8DB2;
+            box-shadow: 0 0 20px rgba(107,141,178,0.15);
+        }
+        .scenario-card.collapsed {
+            padding: var(--space-xs) var(--space-md);
+        }
+        .scenario-card.collapsed .scenario-card-subtitle { display: none; }
+        .scenario-card.collapsed .scenario-card-title {
+            font-size: var(--text-base);
+            margin-bottom: 0;
+        }
+        .scenario-card.collapsed .scenario-card-letter { margin-bottom: 0; }
+        .scenario-card-letter {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: rgba(107,141,178,0.5);
+            margin-bottom: var(--space-xs);
+        }
+        .scenario-card.active .scenario-card-letter { color: #6B8DB2; }
+        .scenario-card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-lg);
+            font-weight: 700;
+            color: #E8E4DF;
+            margin-bottom: var(--space-xs);
+            line-height: 1.3;
+        }
+        .scenario-card-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            font-style: italic;
+            color: rgba(184,197,214,0.55);
+            line-height: 1.5;
+        }
+
+        /* === ACTIVITY 4: TWO-VIEW LAYOUT === */
+        #monologue-choose {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+        .monologue-choose-intro {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            font-style: italic;
+            color: rgba(232,228,223,0.65);
+            line-height: 1.7;
+        }
+        #monologue-choose .scenario-card {
+            padding: var(--space-lg);
+        }
+        #monologue-choose .scenario-card-title {
+            font-size: var(--text-xl);
+        }
+        #monologue-choose .scenario-card-subtitle {
+            font-size: var(--text-base);
+        }
+        .monologue-back-btn {
+            background: transparent;
+            border: none;
+            color: rgba(107,141,178,0.55);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            cursor: pointer;
+            padding: 0 0 var(--space-sm) 0;
+            display: block;
+            transition: color 0.2s;
+        }
+        .monologue-back-btn:hover { color: #6B8DB2; }
+        .complete-activity-btn {
+            display: block;
+            width: 100%;
+            margin-top: var(--space-lg);
+            padding: var(--space-md) var(--space-lg);
+            background: linear-gradient(135deg, #5A8A72, #3D6B55);
+            color: #E8E4DF;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-lg);
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            text-align: center;
+            text-transform: uppercase;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        .complete-activity-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .complete-activity-hint {
+            display: block;
+            font-size: var(--text-sm);
+            font-weight: 400;
+            opacity: 0.7;
+            margin-top: var(--space-xs);
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        /* === PRINT STYLES === */
+        @media print {
+            body { background: #fff !important; color: #000 !important; }
+            .page-header, .tab-bar, #monologue-choose, .monologue-back-btn,
+            .complete-activity-btn, .panel-next-btn, .word-bank-row { display: none !important; }
+            .page-shell { display: block !important; height: auto !important; overflow: visible !important; }
+            .tab-content { display: block !important; overflow: visible !important; }
+            .tab-panel { display: none !important; overflow: visible !important; }
+            #panel-monologue { display: block !important; }
+            #monologue-write { display: block !important; }
+            .scenario-context { font-style: italic; color: #555; margin-bottom: 12pt; }
+            .scenario-prompt { color: #333; margin-bottom: 12pt; }
+            textarea { display: none !important; }
+            .print-answer {
+                border: 1px solid #ccc;
+                min-height: 48pt;
+                padding: 6pt;
+                border-radius: 3pt;
+                font-family: Georgia, serif;
+                font-size: 11pt;
+                color: #000;
+                white-space: pre-wrap;
+            }
+        }
+
+        /* === NEXT BUTTON === */
+        .panel-next-btn {
+            display: block;
+            width: 100%;
+            margin-top: var(--space-lg);
+            padding: var(--space-sm) var(--space-lg);
+            background: #6B8DB2;
+            color: #0D1117;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            text-align: center;
+        }
+        .panel-next-btn:hover {
+            background: #8AAECF;
+            transform: translateY(-1px);
+        }
+
+        /* === WORD BANKS === */
+        .word-bank-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+        .word-bank {
+            background: rgba(26,35,50,0.4);
+            border: 1px solid rgba(107,141,178,0.12);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .word-bank-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            background: transparent;
+            border: none;
+            color: #6B8DB2;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+            letter-spacing: 0.04em;
+            transition: background 0.2s;
+        }
+        .word-bank-toggle:hover { background: rgba(107,141,178,0.06); }
+        .word-bank-toggle .caret { transition: transform 0.2s; display: inline-block; }
+        .word-bank-toggle[aria-expanded="true"] .caret { transform: rotate(90deg); }
+        .word-bank-content {
+            padding: 0 var(--space-md) var(--space-md);
+        }
+        .word-bank-instruction {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            color: rgba(232,228,223,0.45);
+            margin-bottom: var(--space-sm);
+            line-height: 1.5;
+        }
+        .word-bank-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: var(--space-sm);
+        }
+        .word-bank-pill {
+            display: inline-block;
+            background: rgba(107,141,178,0.1);
+            border: 1px solid rgba(107,141,178,0.2);
+            color: rgba(232,228,223,0.75);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            padding: 0 var(--space-xs);
+            border-radius: 4px;
+            line-height: 1.8;
+        }
+        .word-bank-phrases {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+        .word-bank-phrases li {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-sm);
+            font-style: italic;
+            color: rgba(232,228,223,0.5);
+            line-height: 1.6;
+            padding-left: var(--space-sm);
+            border-left: 2px solid rgba(107,141,178,0.25);
+        }
+
+        /* === SCENARIO WRITE AREA === */
+        .scenario-context {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: var(--text-base);
+            color: rgba(184,197,214,0.55);
+            margin-bottom: var(--space-sm);
+            line-height: 1.6;
+        }
+        .scenario-prompt {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            color: rgba(232,228,223,0.7);
+            margin-bottom: var(--space-sm);
+            line-height: 1.6;
+        }
+
+        /* === SHARED ANIMATIONS === */
+        @keyframes fadeSlide {
+            0%   { opacity: 0; transform: translateY(-8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+
+        <!-- COMPACT HEADER -->
+        <header class="page-header">
+            <a href="../index.html" class="page-header__back">&larr; Arrival</a>
+            <div class="page-header__character">
+                <div>
+                    <h1 class="page-header__name">Louise Banks</h1>
+                </div>
+            </div>
+        </header>
+
+        <!-- TAB BAR -->
+        <nav class="tab-bar" role="tablist">
+            <button class="tab active" role="tab" aria-selected="true" data-tab="quiz">1. Quote Detective</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="words">2. Louise's Words</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="monologue">3. What Would Louise Say?</button>
+        </nav>
+
+        <!-- CONTENT PANELS -->
+        <div class="tab-content">
+
+            <!-- ========================================================
+                 PANEL 1: QUOTE DETECTIVE
+            ======================================================== -->
+            <div class="tab-panel" id="panel-quiz" role="tabpanel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Quote Detective</h2>
+                    <p class="panel-intro">Ten quotes from the film are listed below. Some are Louise&rsquo;s and some belong to other characters. Your job is to identify her voice.</p>
+                </div>
+                <div class="quiz-container" id="quizContainer">
+                    <div class="quiz-progress">
+                        <span class="quiz-score" id="quizScore">0 / 0</span>
+                        <div class="quiz-bar"><div class="quiz-bar__fill" id="quizBarFill"></div></div>
+                    </div>
+                    <div class="quiz-card" id="quizCard">
+                        <p class="quiz-quote" id="quizQuote"></p>
+                        <div class="quiz-buttons" id="quizButtons">
+                            <button class="quiz-btn quiz-btn--louise" id="btnLouise">Louise said this</button>
+                            <button class="quiz-btn quiz-btn--other" id="btnOther">Someone else</button>
+                        </div>
+                        <div class="quiz-feedback" id="quizFeedback"></div>
+                        <button class="quiz-next" id="quizNext">Next</button>
+                    </div>
+                    <div class="quiz-results" id="quizResults" hidden>
+                        <h3 class="quiz-results__title" id="resultsTitle"></h3>
+                        <p class="quiz-results__text" id="resultsText"></p>
+                        <button class="quiz-next visible" id="quizRestart">Next Activity</button>
+                    </div>
+                </div>
+                <button class="panel-next-btn" id="next-btn-quiz" style="display:none" onclick="switchTab('words')">Next: 2. Louise's Words →</button>
+            </div>
+
+            <!-- ========================================================
+                 PANEL 2: LOUISE'S WORDS
+            ======================================================== -->
+            <div class="tab-panel" id="panel-words" role="tabpanel" hidden>
+                <div class="panel-header">
+                    <h2 class="panel-title">Louise's Words</h2>
+                    <p class="panel-intro">For Louise, word choice is character. Below are five moments from the film; fill in her exact words.</p>
+                </div>
+
+                <!-- SCENE CAROUSEL (one scene visible at a time) -->
+                <div class="scene-carousel">
+
+                    <!-- SCENE 1 -->
+                    <!-- SCENE 1 -->
+                    <div class="scene-card active">
+                        <img class="scene-image" src="../generated-images/pe_anim_1776217340.webp" alt="Louise standing at the lake house window">
+                        <div class="scene-body">
+                            <span class="scene-label">Beginnings and Endings</span>
+                            <p class="scene-passage">
+                                But now I&rsquo;m not so sure I believe in
+                                <span class="fill-blank"><input class="fill-blank__input" id="s1b1" type="text" data-answer="beginnings" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b1">NOUN ▾</span></span>
+                                and
+                                <span class="fill-blank"><input class="fill-blank__input" id="s1b2" type="text" data-answer="endings" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b2">NOUN ▾</span></span>.
+                                There are days that define your story beyond your
+                                <span class="fill-blank"><input class="fill-blank__input" id="s1b3" type="text" data-answer="life" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b3">NOUN ▾</span></span>.
+                            </p>
+                            <div id="bk-s1b1" class="scene-bank" data-category="nouns" data-input="s1b1"></div>
+                            <div id="bk-s1b2" class="scene-bank" data-category="nouns" data-input="s1b2"></div>
+                            <div id="bk-s1b3" class="scene-bank" data-category="nouns" data-input="s1b3"></div>
+                            <button class="scene-reveal-btn" data-scene="1">Stuck? Reveal Louise&rsquo;s words</button>
+                            <div class="scene-reveal-note" id="reveal-1"><strong>Beginnings / Endings / Life</strong> &mdash; The words &lsquo;beginnings&rsquo; and &lsquo;endings&rsquo; are no longer useful to Louise because she has started experiencing time non-linearly, so she doesn&rsquo;t trust language that assumes time moves in one direction. Her choice of &lsquo;life&rsquo; matters too: the scope she is thinking about is larger than one person&rsquo;s lifespan.</div>
+                        </div>
+                    </div>
+
+                    <!-- SCENE 2 -->
+                    <div class="scene-card">
+                        <img class="scene-image" src="../generated-images/pe_anim_1776217367.webp" alt="Louise playing with Hannah outdoors">
+                        <div class="scene-body">
+                            <span class="scene-label">A Moment with Hannah</span>
+                            <p class="scene-passage">
+                                Stick &lsquo;em up! Are you the
+                                <span class="fill-blank"><input class="fill-blank__input" id="s2b1" type="text" data-answer="sheriff" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s2b1">NOUN ▾</span></span>
+                                in this here town? These are my
+                                <span class="fill-blank"><input class="fill-blank__input" id="s2b2" type="text" data-answer="tickle" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s2b2">NOUN ▾</span></span>
+                                guns, and I&rsquo;m gonna getcha!
+                            </p>
+                            <div id="bk-s2b1" class="scene-bank" data-category="nouns" data-input="s2b1"></div>
+                            <div id="bk-s2b2" class="scene-bank" data-category="nouns" data-input="s2b2"></div>
+                            <button class="scene-reveal-btn" data-scene="2">Stuck? Reveal Louise&rsquo;s words</button>
+                            <div class="scene-reveal-note" id="reveal-2"><strong>Sheriff / Tickle</strong> &mdash; Louise is inventing a game with her daughter, and her word choice shows how easily she moves into Hannah&rsquo;s imagined world. &lsquo;Sheriff&rsquo; borrows a cowboy-film vocabulary that Hannah will find exciting, and &lsquo;tickle&rsquo; turns a toy gun into something safe and playful. The combination tells us Louise is a parent who builds language around her child, not the other way round.</div>
+                        </div>
+                    </div>
+
+                    <!-- SCENE 3 -->
+                    <div class="scene-card">
+                        <img class="scene-image" src="../generated-images/pe_anim_1776217393.webp" alt="Louise in hazmat suit holding a HUMAN sign">
+                        <div class="scene-body">
+                            <span class="scene-label">Into the Unknown</span>
+                            <p class="scene-passage">
+                                They need to
+                                <span class="fill-blank"><input class="fill-blank__input" id="s3b1" type="text" data-answer="see" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s3b1">VERB ▾</span></span>
+                                <span class="fill-blank"><input class="fill-blank__input" id="s3b2" type="text" data-answer="me" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s3b2">PRN ▾</span></span>.
+                            </p>
+                            <div id="bk-s3b1" class="scene-bank" data-category="verbs" data-input="s3b1"></div>
+                            <div id="bk-s3b2" class="scene-bank" data-category="pronouns" data-input="s3b2"></div>
+                            <button class="scene-reveal-btn" data-scene="3">Stuck? Reveal Louise&rsquo;s words</button>
+                            <div class="scene-reveal-note" id="reveal-3"><strong>See / Me</strong> &mdash; Louise refuses the hazmat helmet because she believes communication is more than the words exchanged. &lsquo;See&rsquo; insists on the physical fact of being looked at, and &lsquo;me&rsquo; makes the linguist herself part of the message. Her word choice shows that, for Louise, language begins with presence and trust before anything else.</div>
+                        </div>
+                    </div>
+
+                    <!-- SCENE 4 -->
+                    <div class="scene-card">
+                        <img class="scene-image" src="../generated-images/heptapod_C_option_b.webp" alt="Louise facing the heptapods in the mist">
+                        <div class="scene-body">
+                            <span class="scene-label">The Weapon or the Tool</span>
+                            <p class="scene-passage">
+                                We don&rsquo;t know if they understand the difference between a
+                                <span class="fill-blank"><input class="fill-blank__input" id="s4b1" type="text" data-answer="weapon" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s4b1">NOUN ▾</span></span>
+                                and a
+                                <span class="fill-blank"><input class="fill-blank__input" id="s4b2" type="text" data-answer="tool" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s4b2">NOUN ▾</span></span>.
+                                Our language, like our
+                                <span class="fill-blank"><input class="fill-blank__input" id="s4b3" type="text" data-answer="culture" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s4b3">NOUN ▾</span></span>,
+                                is messy, and sometimes, one can be both.
+                            </p>
+                            <div id="bk-s4b1" class="scene-bank" data-category="nouns" data-input="s4b1"></div>
+                            <div id="bk-s4b2" class="scene-bank" data-category="nouns" data-input="s4b2"></div>
+                            <div id="bk-s4b3" class="scene-bank" data-category="nouns" data-input="s4b3"></div>
+                            <button class="scene-reveal-btn" data-scene="4">Stuck? Reveal Louise&rsquo;s words</button>
+                            <div class="scene-reveal-note" id="reveal-4"><strong>Weapon / Tool / Culture</strong> &mdash; Louise&rsquo;s word choice here shows how carefully she is thinking as a linguist. &lsquo;Weapon&rsquo; and &lsquo;tool&rsquo; are not synonyms. They carry different assumptions about intent, so she refuses to collapse them. Her use of &lsquo;culture&rsquo; to describe language suggests that, for Louise, words are not just symbols; they carry the messiness of the people who use them.</div>
+                        </div>
+                    </div>
+
+                    <!-- SCENE 5 -->
+                    <div class="scene-card">
+                        <img class="scene-image" src="../generated-images/pe_anim_1776217446.webp" alt="Louise before the heptapod logogram inside the ship">
+                        <div class="scene-body">
+                            <span class="scene-label">Inside the Ship</span>
+                            <p class="scene-passage">
+                                I don&rsquo;t
+                                <span class="fill-blank"><input class="fill-blank__input" id="s5b1" type="text" data-answer="understand" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b1">VERB ▾</span></span>&hellip;
+                                Who is this
+                                <span class="fill-blank"><input class="fill-blank__input" id="s5b2" type="text" data-answer="child" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b2">NOUN ▾</span></span>?
+                            </p>
+                            <div id="bk-s5b1" class="scene-bank" data-category="verbs" data-input="s5b1"></div>
+                            <div id="bk-s5b2" class="scene-bank" data-category="nouns" data-input="s5b2"></div>
+                            <button class="scene-reveal-btn" data-scene="5">Stuck? Reveal Louise&rsquo;s words</button>
+                            <div class="scene-reveal-note" id="reveal-5"><strong>Understand / Child</strong> &mdash; Louise is watching a vision of her future daughter and her word choice betrays her confusion. &lsquo;Understand&rsquo; is the linguist&rsquo;s instinctive verb; she reaches for comprehension before emotion. Her use of &lsquo;child&rsquo; names the girl clinically because Louise does not yet know who she is. The words show us a scientist whose mind is racing to classify something her heart has not caught up with.</div>
+                        </div>
+                    </div>
+
+                    <!-- SCENE 6: YOUR ANALYSIS -->
+                    <div class="scene-card scene-card--writing">
+                        <!-- DIALOGUE REFERENCE -->
+                        <div class="scene-reference">
+                            <span class="scene-reference__heading">The five moments &mdash; for reference as you write:</span>
+                            <ol class="scene-reference__list">
+                                <li>&ldquo;But now I&rsquo;m not so sure I believe in <em>beginnings</em> and <em>endings</em>. There are days that define your story beyond your <em>life</em>.&rdquo;</li>
+                                <li>&ldquo;Stick &lsquo;em up! Are you the <em>sheriff</em> in this here town? These are my <em>tickle</em> guns, and I&rsquo;m gonna getcha!&rdquo;</li>
+                                <li>&ldquo;They need to <em>see</em> <em>me</em>.&rdquo;</li>
+                                <li>&ldquo;We don&rsquo;t know if they understand the difference between a <em>weapon</em> and a <em>tool</em>. Our language, like our <em>culture</em>, is messy, and sometimes, one can be both.&rdquo;</li>
+                                <li>&ldquo;I don&rsquo;t <em>understand</em>&hellip; Who is this <em>child</em>?&rdquo;</li>
+                            </ol>
+                        </div>
+                        <!-- WRITING PROMPTS -->
+                        <div class="words-prompts">
+                            <div class="words-prompt-block">
+                                <span class="words-prompt-label">Characteristics</span>
+                                <p class="words-prompt-text">Use Louise&rsquo;s word choices to describe who she is.</p>
+                                <textarea class="response-textarea" id="words-q1" rows="2"
+                                          placeholder="Write your response here..."
+                                          oninput="wordsPersist('1',this.value)"></textarea>
+                            </div>
+                            <div class="words-prompt-block">
+                                <span class="words-prompt-label">Desires</span>
+                                <p class="words-prompt-text">Louise&rsquo;s verbs and nouns are the clue. Use them to work out what she wants.</p>
+                                <textarea class="response-textarea" id="words-q2" rows="2"
+                                          placeholder="Write your response here..."
+                                          oninput="wordsPersist('2',this.value)"></textarea>
+                            </div>
+                            <div class="words-prompt-block">
+                                <span class="words-prompt-label">Internal Conflict</span>
+                                <p class="words-prompt-text">Storytelling is driven by characters facing and overcoming conflict. Describe Louise&rsquo;s.</p>
+                                <textarea class="response-textarea" id="words-q3" rows="2"
+                                          placeholder="Write your response here..."
+                                          oninput="wordsPersist('3',this.value)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /.scene-carousel -->
+
+                <!-- CAROUSEL NAV -->
+                <div class="scene-nav">
+                    <button class="scene-nav-btn" id="scene-prev" disabled>&#9664; Previous</button>
+                    <span class="scene-counter" id="scene-counter">Scene 1 of 5</span>
+                    <div class="scene-nav-right">
+                        <button class="scene-restart-btn" id="scene-restart" title="Clear all answers and start over">&#x21bb; Restart activity</button>
+                        <button class="scene-nav-btn" id="scene-next">Next &#9654;</button>
+                    </div>
+                </div>
+                <button class="panel-next-btn" id="next-btn-words" style="display:none" onclick="switchTab('monologue')">Next: 3. What Would Louise Say? →</button>
+            </div>
+
+            <!-- ========================================================
+                 PANEL 3: WHAT WOULD LOUISE SAY?
+            ======================================================== -->
+            <div class="tab-panel" id="panel-monologue" role="tabpanel" hidden>
+
+                <!-- VIEW 1: CHOOSE SCENARIO -->
+                <div id="monologue-choose">
+                    <div class="panel-header">
+                        <h2 class="panel-title">What Would Louise Say?</h2>
+                        <p class="panel-intro">Louise already knows how every conversation ends. Pick a scenario below and write her words using her vocabulary.</p>
+                    </div>
+                    <div class="scenarios-row">
+                        <div class="scenario-card" onclick="openScenario('a')">
+                            <div class="scenario-card-letter">Scenario A</div>
+                            <div class="scenario-card-title">Louise Tells Ian the Truth</div>
+                            <div class="scenario-card-subtitle">Hannah is a year old. Ian has been asking why Louise sometimes cries for no reason &mdash; why she watches Hannah as though memorising her. Tonight, she decides to tell him. Write the moment she begins.</div>
+                        </div>
+                        <div class="scenario-card" onclick="openScenario('b')">
+                            <div class="scenario-card-letter">Scenario B</div>
+                            <div class="scenario-card-title">Louise Tells Hannah About the Heptapods</div>
+                            <div class="scenario-card-subtitle">Hannah is about ten. She has found a folder in Louise&rsquo;s study &mdash; logograms, session notes, photographs. She asks: &ldquo;What actually happened?&rdquo; Write Louise&rsquo;s answer &mdash; how does she begin to explain something that has no single beginning?</div>
+                        </div>
+                        <div class="scenario-card" onclick="openScenario('c')">
+                            <div class="scenario-card-letter">Scenario C</div>
+                            <div class="scenario-card-title">Choose Your Own Scenario</div>
+                            <div class="scenario-card-subtitle">Write Louise speaking in any moment you choose: to Ian, to Hannah, to the heptapods, or to herself. You decide the time, the place, and the stakes.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 2: WRITE -->
+                <div id="monologue-write" style="display:none">
+                    <button class="monologue-back-btn" onclick="scenarioBack()">&larr; Back to scenarios</button>
+
+                    <!-- WORD BANKS -->
+                    <div class="word-bank-row">
+                        <div class="word-bank">
+                            <button class="word-bank-toggle" onclick="toggleBank(this)" aria-expanded="false">
+                                <span class="caret">&#9656;</span> Louise&rsquo;s Emotional Language
+                            </button>
+                            <div class="word-bank-content" style="display:none">
+                                <p class="word-bank-instruction">These are words for Louise&rsquo;s emotional register. Use the ones that fit your scenario.</p>
+                                <div class="word-bank-pills" id="emotional-pills"></div>
+                                <ul class="word-bank-phrases" id="emotional-phrases"></ul>
+                            </div>
+                        </div>
+                        <div class="word-bank">
+                            <button class="word-bank-toggle" onclick="toggleBank(this)" aria-expanded="false">
+                                <span class="caret">&#9656;</span> Louise&rsquo;s Scientific Language
+                            </button>
+                            <div class="word-bank-content" style="display:none">
+                                <p class="word-bank-instruction">These are words for Louise&rsquo;s analytical register. Mix them with the emotional words above.</p>
+                                <div class="word-bank-pills" id="scientific-pills"></div>
+                                <ul class="word-bank-phrases" id="scientific-phrases"></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SCENARIO CONTEXT + WRITING -->
+                    <p class="scenario-context" id="write-context"></p>
+                    <p class="scenario-prompt" id="write-prompt"></p>
+                    <textarea class="response-textarea" id="monologue-writing" rows="6"
+                              placeholder="Write as Louise..."
+                              oninput="monologuePersist()"></textarea>
+
+                    <button class="complete-activity-btn" onclick="savePdf()">
+                        &#8595; Save as PDF
+                    </button>
+                </div>
+
+            </div>
+
+        </div><!-- end .tab-content -->
+    </div><!-- end .page-shell -->
+
+    <script>
+    /* ============================================================
+       TAB SWITCHING
+    ============================================================ */
+    const tabs   = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    function switchTab(tabId) {
+        tabs.forEach(t => {
+            t.classList.toggle('active', t.dataset.tab === tabId);
+            t.setAttribute('aria-selected', t.dataset.tab === tabId);
+        });
+        panels.forEach(p => {
+            p.hidden = p.id !== 'panel-' + tabId;
+        });
+    }
+
+    tabs.forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
+
+    document.addEventListener('keydown', e => {
+        const active  = document.querySelector('.tab.active');
+        const allTabs = [...tabs];
+        const idx     = allTabs.indexOf(active);
+        if (e.key === 'ArrowRight' && idx < allTabs.length - 1) {
+            switchTab(allTabs[idx + 1].dataset.tab);
+            allTabs[idx + 1].focus();
+        }
+        if (e.key === 'ArrowLeft' && idx > 0) {
+            switchTab(allTabs[idx - 1].dataset.tab);
+            allTabs[idx - 1].focus();
+        }
+    });
+
+
+    /* ============================================================
+       TAB 1: QUOTE DETECTIVE
+    ============================================================ */
+    const quizData = [
+        {
+            quote: "I used to think this was the beginning of your story. Memory is a strange thing.",
+            isLouise: true,
+            feedback: "This is Louise\u2019s opening narration \u2014 she\u2019s already experiencing time non-linearly when she says this."
+        },
+        {
+            quote: "The cornerstone of civilisation isn\u2019t language, it\u2019s science.",
+            isLouise: false,
+            feedback: "This is Ian. His certainty about science is exactly what gets challenged by meeting Louise."
+        },
+        {
+            quote: "Despite knowing the journey and where it leads, I embrace it.",
+            isLouise: true,
+            feedback: "Louise\u2019s thesis statement \u2014 choosing love despite knowing the cost. The calm in this sentence IS her voice."
+        },
+        {
+            quote: "You know what surprised me the most? It wasn\u2019t meeting them. It was meeting you.",
+            isLouise: false,
+            twist: true,
+            feedback: "This is Ian speaking to Louise. But notice \u2014 it mirrors Louise\u2019s own journey. She discovered something extraordinary in Ian too. This line could almost be hers."
+        },
+        {
+            quote: "Language is the foundation of civilisation. It is the glue that holds people together.",
+            isLouise: true,
+            feedback: "From her lecture \u2014 the irony is that \u2018weapon\u2019 appears later in this speech and becomes the pivotal mistranslation."
+        },
+        {
+            quote: "Maybe I\u2019d say what I felt more often.",
+            isLouise: false,
+            twist: true,
+            feedback: "This is Ian\u2019s quiet confession. But it could also describe Louise \u2014 a woman who knows everything but struggles to say what she truly feels."
+        },
+        {
+            quote: "If you could see your whole life from start to finish, would you change things?",
+            isLouise: true,
+            feedback: "Louise asks this knowing she already has the answer. She wouldn\u2019t change a thing."
+        },
+        {
+            quote: "I\u2019m unstoppable?",
+            isLouise: false,
+            feedback: "This is Hannah \u2014 turning Louise\u2019s devastating diagnosis into something beautiful, without knowing it."
+        },
+        {
+            quote: "Hannah, this is where your story begins. The day they departed.",
+            isLouise: true,
+            feedback: "The closing line \u2014 \u2018beginning\u2019 and \u2018ending\u2019 have lost their meaning for Louise."
+        },
+        {
+            quote: "I\u2019ve had my head tilted up to the stars for as long as I can remember.",
+            isLouise: false,
+            feedback: "This is Ian \u2014 defining himself by looking outward. Louise taught him to look at what\u2019s right beside him."
+        }
+    ];
+
+    let quizState = { current: 0, score: 0, order: [] };
+
+    function shuffleArray(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    function initQuiz() {
+        quizState.order = shuffleArray(quizData.map((_, i) => i));
+        quizState.current = 0;
+        quizState.score = 0;
+        document.getElementById('quizResults').hidden = true;
+        document.getElementById('quizCard').hidden = false;
+        showQuizQuestion();
+    }
+
+    // Single delegated handler for all quiz button interactions
+    document.getElementById('panel-quiz').addEventListener('click', e => {
+        if (e.target.id === 'btnLouise')   answerQuiz(true);
+        else if (e.target.id === 'btnOther')    answerQuiz(false);
+        else if (e.target.id === 'quizNext')    nextQuiz();
+        else if (e.target.id === 'quizRestart') switchTab('words');
+    });
+
+    function showQuizQuestion() {
+        const q = quizData[quizState.order[quizState.current]];
+        document.getElementById('quizQuote').textContent = '\u201C' + q.quote + '\u201D';
+        document.getElementById('quizScore').textContent = quizState.score + ' / ' + quizState.current;
+        document.getElementById('quizBarFill').style.width = (quizState.current / quizData.length * 100) + '%';
+        document.getElementById('quizFeedback').className = 'quiz-feedback';
+        document.getElementById('quizNext').className = 'quiz-next';
+        document.getElementById('btnLouise').disabled = false;
+        document.getElementById('btnOther').disabled = false;
+    }
+
+    function answerQuiz(choseLouise) {
+        const q = quizData[quizState.order[quizState.current]];
+        const correct = choseLouise === q.isLouise;
+        if (correct) quizState.score++;
+
+        const fb = document.getElementById('quizFeedback');
+        let cls = 'quiz-feedback visible ';
+        if (q.twist && !correct) cls += 'twist';
+        else if (correct) cls += 'correct';
+        else cls += 'incorrect';
+        fb.className = cls;
+        fb.textContent = (correct ? '\u2713 ' : '\u2717 ') + q.feedback;
+
+        document.getElementById('btnLouise').disabled = true;
+        document.getElementById('btnOther').disabled = true;
+        document.getElementById('quizNext').className = 'quiz-next visible';
+        document.getElementById('quizScore').textContent = quizState.score + ' / ' + (quizState.current + 1);
+    }
+
+    function nextQuiz() {
+        quizState.current++;
+        if (quizState.current >= quizData.length) {
+            showQuizResults();
+        } else {
+            showQuizQuestion();
+        }
+    }
+
+    function showQuizResults() {
+        document.getElementById('quizCard').hidden = true;
+        const results = document.getElementById('quizResults');
+        results.hidden = false;
+        document.getElementById('quizBarFill').style.width = '100%';
+        document.getElementById('quizScore').textContent = quizState.score + ' / ' + quizData.length;
+
+        const pct = quizState.score / quizData.length;
+        let title, text;
+        if (pct >= 0.8) {
+            title = 'You know Louise\u2019s voice.';
+            text = 'You can distinguish her register, her syntax, her concerns. You\u2019re ready to write in her voice. Pay attention to the quotes you got wrong \u2014 they reveal where her voice overlaps with others, which is where the richest monologue material lives.';
+        } else if (pct >= 0.5) {
+            title = 'Getting closer.';
+            text = 'You caught some of Louise\u2019s voice but confused her with others. That\u2019s actually useful \u2014 the quotes you misattributed show where voices blur together. Try again to sharpen your ear.';
+        } else {
+            title = 'Louise is harder to pin down than you thought.';
+            text = 'That\u2019s the point. Louise\u2019s voice is precise, calm, analytical \u2014 until it breaks. Try again and pay attention to the difference between how Louise speaks and how Ian speaks about similar things.';
+        }
+
+        document.getElementById('resultsTitle').textContent = title;
+        document.getElementById('resultsText').textContent = text;
+        document.getElementById('next-btn-quiz').style.display = 'block';
+    }
+
+    initQuiz();
+
+
+    /* ============================================================
+       TAB 2: LOUISE'S WORDS
+    ============================================================ */
+    const WORD_LISTS = {
+        nouns:    ['beginnings', 'child', 'culture', 'endings', 'language', 'life', 'sheriff', 'tickle', 'tool', 'weapon'],
+        verbs:    ['believe', 'connect', 'feel', 'know', 'listen', 'remember', 'see', 'speak', 'translate', 'understand'],
+        pronouns: ['he', 'her', 'him', 'it', 'me', 'my', 'she', 'them', 'they', 'you']
+    };
+
+    // --- Carousel state ---
+    const sceneCards  = document.querySelectorAll('#panel-words .scene-card');
+    const totalScenes = sceneCards.length;
+    let   sceneIdx    = 0;
+    let   advanceTimer = null;
+
+    function showScene(n) {
+        if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
+        sceneCards.forEach((c, i) => c.classList.toggle('active', i === n));
+        sceneIdx = n;
+        document.getElementById('scene-counter').textContent = (n === totalScenes - 1) ? 'Your Analysis' : 'Scene ' + (n + 1) + ' of ' + (totalScenes - 1);
+        document.getElementById('scene-prev').disabled = (n === 0);
+        document.getElementById('scene-next').disabled = (n === totalScenes - 1);
+        document.querySelectorAll('.scene-bank.open').forEach(b => b.classList.remove('open'));
+        if (n === totalScenes - 1) document.getElementById('next-btn-words').style.display = 'block';
+    }
+
+    function sceneInputsFor(n) {
+        return [...document.querySelectorAll('.fill-blank__input')]
+            .filter(inp => inp.id.startsWith('s' + (n + 1) + 'b'));
+    }
+
+    function isSceneCorrect(n) {
+        const inputs = sceneInputsFor(n);
+        return inputs.length > 0 && inputs.every(inp =>
+            inp.value.trim().toLowerCase() === inp.dataset.answer.toLowerCase()
+        );
+    }
+
+    function markCorrectAndAdvance(n) {
+        sceneInputsFor(n).forEach(inp => {
+            inp.classList.add('correct');
+            inp.disabled = true;
+            saveBlank(inp);
+        });
+        const note = document.getElementById('reveal-' + (n + 1));
+        const btn  = document.querySelector('.scene-reveal-btn[data-scene="' + (n + 1) + '"]');
+        if (note) note.classList.add('open');
+        if (btn)  btn.style.display = 'none';
+        localStorage.setItem('arrival-louise-reveal-' + (n + 1), '1');
+        const delay = n < totalScenes - 1 ? 2500 : 3000;
+        advanceTimer = setTimeout(() => {
+            if (n < totalScenes - 1) {
+                showScene(n + 1);
+            } else {
+                document.getElementById('scene-counter').textContent = '\u2713 All scenes complete';
+            }
+        }, delay);
+    }
+
+    // Build scene-bank pills from WORD_LISTS
+    document.querySelectorAll('.scene-bank').forEach(bank => {
+        const words = WORD_LISTS[bank.dataset.category] || [];
+        words.forEach(word => {
+            const pill = document.createElement('span');
+            pill.className     = 'scene-bank-pill';
+            pill.textContent   = word;
+            pill.dataset.input = bank.dataset.input;
+            bank.appendChild(pill);
+        });
+    });
+
+    // Focus on a blank → open its word bank immediately
+    document.getElementById('panel-words').addEventListener('focusin', e => {
+        if (!e.target.classList.contains('fill-blank__input')) return;
+        const badge = e.target.closest('.fill-blank')?.querySelector('.fill-blank__badge');
+        if (!badge) return;
+        const bank = document.getElementById(badge.dataset.bank);
+        if (!bank) return;
+        const sceneBody = e.target.closest('.scene-body');
+        sceneBody.querySelectorAll('.scene-bank').forEach(b => {
+            if (b !== bank) b.classList.remove('open');
+        });
+        bank.classList.add('open');
+    });
+
+    // Auto-check on typing (input event — not a click, doesn't affect click count)
+    document.getElementById('panel-words').addEventListener('input', e => {
+        if (!e.target.classList.contains('fill-blank__input')) return;
+        saveBlank(e.target);
+        const correct = e.target.value.trim().toLowerCase() === e.target.dataset.answer.toLowerCase();
+        e.target.classList.toggle('correct', correct);
+        if (correct && isSceneCorrect(sceneIdx)) markCorrectAndAdvance(sceneIdx);
+    });
+
+    // Single delegated click handler (prev/next + badge + pill + reveal + restart)
+    document.getElementById('panel-words').addEventListener('click', e => {
+        // Restart activity
+        if (e.target.id === 'scene-restart') { restartLouiseWords(); return; }
+        // Prev / Next nav
+        if (e.target.id === 'scene-prev') { if (sceneIdx > 0) showScene(sceneIdx - 1); return; }
+        if (e.target.id === 'scene-next') { if (sceneIdx < totalScenes - 1) showScene(sceneIdx + 1); return; }
+        // Badge → toggle its bank, close siblings
+        if (e.target.classList.contains('fill-blank__badge')) {
+            const bank      = document.getElementById(e.target.dataset.bank);
+            const sceneBody = e.target.closest('.scene-body');
+            sceneBody.querySelectorAll('.scene-bank').forEach(b => {
+                if (b !== bank) b.classList.remove('open');
+            });
+            bank.classList.toggle('open');
+            return;
+        }
+        // Pill → fill input, check completion
+        if (e.target.classList.contains('scene-bank-pill')) {
+            const input = document.getElementById(e.target.dataset.input);
+            if (input && !input.disabled) {
+                input.value = e.target.textContent;
+                saveBlank(input);
+                const correct = input.value.trim().toLowerCase() === input.dataset.answer.toLowerCase();
+                input.classList.toggle('correct', correct);
+                if (correct && isSceneCorrect(sceneIdx)) markCorrectAndAdvance(sceneIdx);
+            }
+            document.querySelectorAll('.scene-bank.open').forEach(b => b.classList.remove('open'));
+            return;
+        }
+        // Reveal button → fill answers, then auto-advance after pause
+        if (e.target.classList.contains('scene-reveal-btn')) {
+            const n = parseInt(e.target.dataset.scene) - 1;
+            revealScene(e.target.dataset.scene);
+            localStorage.setItem('arrival-louise-reveal-' + e.target.dataset.scene, '1');
+            if (n < totalScenes - 1) {
+                advanceTimer = setTimeout(() => showScene(n + 1), 3000);
+            }
+            return;
+        }
+        // Anything else → close open banks (but not when clicking into an input — focusin handles that)
+        if (!e.target.classList.contains('fill-blank__input')) {
+            document.querySelectorAll('.scene-bank.open').forEach(b => b.classList.remove('open'));
+        }
+    });
+
+    function revealScene(n) {
+        document.querySelectorAll('.fill-blank__input').forEach(input => {
+            if (input.id.startsWith('s' + n + 'b')) {
+                input.value    = input.dataset.answer;
+                input.classList.add('correct');
+                input.disabled = true;
+                saveBlank(input);
+            }
+        });
+        const note = document.getElementById('reveal-' + n);
+        const btn  = document.querySelector('.scene-reveal-btn[data-scene="' + n + '"]');
+        if (note) note.classList.add('open');
+        if (btn)  btn.style.display = 'none';
+    }
+
+    function saveBlank(input) {
+        localStorage.setItem('arrival-louise-blank-' + input.id, input.value);
+    }
+
+    function restartLouiseWords() {
+        if (!confirm('Clear all your answers for Louise\u2019s Words and start over?')) return;
+        if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
+        try {
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                const k = localStorage.key(i);
+                if (k && (k.startsWith('arrival-louise-blank-') || k.startsWith('arrival-louise-reveal-'))) {
+                    localStorage.removeItem(k);
+                }
+            }
+        } catch(e) {}
+        document.querySelectorAll('#panel-words .fill-blank__input').forEach(inp => {
+            inp.value = '';
+            inp.classList.remove('correct');
+            inp.disabled = false;
+        });
+        document.querySelectorAll('#panel-words .scene-bank.open').forEach(b => b.classList.remove('open'));
+        document.querySelectorAll('#panel-words .scene-reveal-note.open').forEach(n => n.classList.remove('open'));
+        document.querySelectorAll('#panel-words .scene-reveal-btn').forEach(b => b.style.display = '');
+        const nextBtn = document.getElementById('next-btn-words');
+        if (nextBtn) nextBtn.style.display = 'none';
+        showScene(0);
+    }
+
+    // Restore saved blanks and revealed scenes, then start at first incomplete scene
+    document.querySelectorAll('.fill-blank__input').forEach(input => {
+        const saved = localStorage.getItem('arrival-louise-blank-' + input.id);
+        if (saved !== null) input.value = saved;
+    });
+    ['1','2','3','4','5'].forEach(n => {
+        if (localStorage.getItem('arrival-louise-reveal-' + n)) revealScene(n);
+    });
+    let startScene = 0;
+    for (let i = 0; i < totalScenes; i++) {
+        if (isSceneCorrect(i)) startScene = Math.min(i + 1, totalScenes - 1);
+        else break;
+    }
+    showScene(startScene);
+
+    function wordsPersist(num, val) {
+        localStorage.setItem('arrival-louise-words-' + num, val);
+    }
+
+    function wordsRestore() {
+        ['1','2','3'].forEach(n => {
+            const saved = localStorage.getItem('arrival-louise-words-' + n);
+            const el    = document.getElementById('words-q' + n);
+            if (saved && el) el.value = saved;
+        });
+    }
+
+    wordsRestore();
+
+
+    /* ============================================================
+       TAB 3: WHAT WOULD LOUISE SAY?
+    ============================================================ */
+    const SCENARIOS = {
+        a: {
+            title:   'Louise Tells Ian the Truth',
+            context: 'Hannah is a year old. Ian has been asking why Louise sometimes cries for no reason, and why she watches Hannah as though memorising her. Tonight, she decides to tell him. Write the moment she begins.',
+            prompt:  'Decide when and where this happens, and why she chooses this moment. Then write 3\u20134 sentences in her voice.'
+        },
+        b: {
+            title:   'Louise Tells Hannah About the Heptapods',
+            context: 'Hannah is about ten. She has found a folder in Louise\u2019s study full of logograms, session notes and photographs. She asks: \u201cWhat actually happened?\u201d Write Louise\u2019s answer.',
+            prompt:  'Decide how old Hannah is, what prompted the conversation, and how much Louise reveals. Then write 3\u20134 sentences in her voice.'
+        },
+        c: {
+            title:   'Choose Your Own Scenario',
+            context: 'Write Louise in any moment you like: speaking to Ian, to Hannah, to the heptapods, or to herself. You decide the situation.',
+            prompt:  'Decide who she is speaking to, when, and what is at stake. Then write 3\u20134 sentences in her voice.'
+        }
+    };
+
+    const WORD_BANKS = {
+        emotional: {
+            words: ['memory','story','beginning','ending','life','moment','choice','love','fault','dream','strange','bound','rare','embrace','welcome','define','believe','save','change','journey','time','together','forever','hold','wrong','unstoppable'],
+            phrases: [
+                'I used to think this was the beginning of your story. Memory is a strange thing. It doesn\u2019t work like I thought it did. We are so bound by time, by its order.',
+                'But now I\u2019m not so sure I believe in beginnings and endings. There are days that define your story beyond your life. Like the day they arrived.',
+                'Come back to me.',
+                'It\u2019s my fault. I told him something that he wasn\u2019t ready to hear.',
+                'Believe it or not, I know something that\u2019s going to happen. I can\u2019t explain how I know. I just do. And when I told your daddy, he got really mad. And he said I made the wrong choice.',
+                'It has to do with a really rare disease. And it\u2019s unstoppable.',
+                'Despite knowing the journey and where it leads, I embrace it. And I welcome every moment of it.'
+            ]
+        },
+        scientific: {
+            words: ['language','foundation','civilization','weapon','tool','culture','symbol','hypothesis','gift','nonlinear','Sanskrit','intent','conscious','instinctive','vocabulary','session','question'],
+            phrases: [
+                'Language is the foundation of civilization. It is the glue that holds a people together. It is the first weapon drawn in a conflict.',
+                'We don\u2019t know if they understand the difference between a weapon and a tool. Our language, like our culture, is messy. And sometimes, one can be both.',
+                'The Sapir-Whorf hypothesis. The theory that the language you speak determines how you think. It affects how you see everything.',
+                'It\u2019s not a weapon. It\u2019s a gift. The weapon is their language. They gave it to us.',
+                'It can\u2019t be random.',
+                'A desire for more cows.',
+                'It\u2019s a non-zero-sum game.'
+            ]
+        }
+    };
+
+    // Build word bank pills and phrases
+    function buildWordBanks() {
+        Object.entries(WORD_BANKS).forEach(([key, bank]) => {
+            const pillsEl = document.getElementById(key + '-pills');
+            const phrasesEl = document.getElementById(key + '-phrases');
+            bank.words.forEach(w => {
+                const span = document.createElement('span');
+                span.className = 'word-bank-pill';
+                span.textContent = w;
+                pillsEl.appendChild(span);
+            });
+            bank.phrases.forEach(p => {
+                const li = document.createElement('li');
+                li.textContent = '\u201C' + p + '\u201D';
+                phrasesEl.appendChild(li);
+            });
+        });
+    }
+    buildWordBanks();
+
+    function toggleBank(btn) {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', !expanded);
+        const content = btn.nextElementSibling;
+        content.style.display = expanded ? 'none' : 'block';
+    }
+
+    let activeScenario = null;
+
+    function openScenario(id) {
+        activeScenario = id;
+        const s = SCENARIOS[id];
+        document.getElementById('write-context').textContent = s.context;
+        document.getElementById('write-prompt').textContent = s.prompt;
+        document.getElementById('monologue-choose').style.display = 'none';
+        document.getElementById('monologue-write').style.display  = 'block';
+
+        // Restore saved text for this scenario
+        const saved = localStorage.getItem('arrival-louise-monologue-' + id);
+        document.getElementById('monologue-writing').value = saved || '';
+    }
+
+    function scenarioBack() {
+        document.getElementById('monologue-choose').style.display = '';
+        document.getElementById('monologue-write').style.display  = 'none';
+        activeScenario = null;
+    }
+
+    function monologuePersist() {
+        if (!activeScenario) return;
+        localStorage.setItem('arrival-louise-monologue-' + activeScenario,
+            document.getElementById('monologue-writing').value);
+    }
+
+    function buildPdf() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+        const charName      = document.querySelector('.page-header__name')?.textContent?.trim() || 'Louise Banks';
+        const scenarioTitle = (activeScenario && SCENARIOS[activeScenario]?.title) || '';
+        const prompt        = document.getElementById('write-prompt')?.textContent?.trim() || '';
+        const text          = document.getElementById('monologue-writing')?.value || '';
+        const W = 170;
+        let y = 20;
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        doc.setTextColor(110, 110, 110);
+        doc.text('ARRIVAL \u2014 CHARACTER STUDY', 20, y);
+        y += 8;
+
+        doc.setFontSize(20);
+        doc.setTextColor(30, 30, 30);
+        doc.text(charName, 20, y);
+        y += 6;
+
+        doc.setDrawColor(190, 190, 190);
+        doc.line(20, y, 190, y);
+        y += 8;
+
+        if (scenarioTitle) {
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(13);
+            doc.setTextColor(50, 50, 50);
+            doc.text(scenarioTitle, 20, y);
+            y += 7;
+        }
+
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(10);
+        doc.setTextColor(110, 110, 110);
+        const promptLines = doc.splitTextToSize(prompt, W);
+        doc.text(promptLines, 20, y);
+        y += promptLines.length * 5 + 8;
+
+        doc.setDrawColor(190, 190, 190);
+        doc.line(20, y, 190, y);
+        y += 8;
+
+        doc.setFont('times', 'normal');
+        doc.setFontSize(13);
+        doc.setTextColor(20, 20, 20);
+        const monoLines = doc.splitTextToSize(text || '(nothing written yet)', W);
+        if (y + monoLines.length * 6 > 270) { doc.addPage(); y = 20; }
+        doc.text(monoLines, 20, y);
+
+        const slug = charName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        doc.save(slug + '-monologue.pdf');
+    }
+    function savePdf() {
+        if (window.jspdf) { buildPdf(); return; }
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+        s.onload = buildPdf;
+        document.head.appendChild(s);
+    }
+
+    </script>
+</body>
+</html>

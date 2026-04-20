@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ian Donnelly | Arrival | 11ESH</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        /* === RESET & TOKENS === */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 32px;
+            --space-xl: 48px;
+            --space-2xl: 64px;
+            --space-3xl: 96px;
+            --text-sm: 14px;
+            --text-base: 18px;
+            --text-lg: 24px;
+            --text-xl: 32px;
+            --text-2xl: 43px;
+            --text-3xl: 57px;
+        }
+
+        html, body {
+            height: 100dvh;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            color: #E8E4DF;
+            background: #0D1117;
+        }
+
+        /* === PAGE SHELL === */
+        .page-shell {
+            display: grid;
+            grid-template-rows: auto auto 1fr;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        /* === COMPACT HEADER === */
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-xs) var(--space-md);
+            background: rgba(13,17,23,0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(123,160,142,0.15);
+            min-height: var(--space-xl);
+        }
+
+        .page-header__back {
+            color: rgba(184,197,214,0.5);
+            text-decoration: none;
+            font-size: var(--text-sm);
+            transition: color 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            padding: 0 var(--space-xs);
+            min-height: var(--space-xl);
+        }
+        .page-header__back:hover { color: #7BA08E; }
+
+        .page-header__character {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            flex: 1;
+        }
+
+        .page-header__sprite {
+            height: 64px;
+            width: auto;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            filter: drop-shadow(0 0 8px rgba(123,160,142,0.35));
+            flex-shrink: 0;
+        }
+
+        .page-header__name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-lg);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: #E8E4DF;
+            line-height: 1.1;
+        }
+
+        .page-header__role {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            font-style: italic;
+            color: #7BA08E;
+            margin-top: var(--space-xs);
+        }
+
+        /* === TAB BAR === */
+        .tab-bar {
+            display: flex;
+            align-items: stretch;
+            background: rgba(13,17,23,0.9);
+            border-bottom: 1px solid rgba(123,160,142,0.12);
+            padding: 0 var(--space-md);
+            gap: var(--space-xs);
+        }
+
+        .tab {
+            padding: var(--space-xs) var(--space-md);
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: rgba(184,197,214,0.45);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+            white-space: nowrap;
+            letter-spacing: 0.04em;
+        }
+        .tab:hover { color: rgba(184,197,214,0.75); }
+        .tab.active {
+            color: #7BA08E;
+            border-bottom-color: #7BA08E;
+        }
+
+        /* === CONTENT AREA === */
+        .tab-content {
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .tab-panel {
+            position: absolute;
+            inset: 0;
+            overflow-y: auto;
+            padding: var(--space-sm) var(--space-lg);
+        }
+        .tab-panel[hidden] { display: none; }
+
+        .tab-panel::-webkit-scrollbar { width: 6px; }
+        .tab-panel::-webkit-scrollbar-track { background: transparent; }
+        .tab-panel::-webkit-scrollbar-thumb { background: rgba(123,160,142,0.2); border-radius: 3px; }
+        .tab-panel::-webkit-scrollbar-thumb:hover { background: rgba(123,160,142,0.4); }
+
+        /* === SHARED PANEL HEADER === */
+        .panel-header {
+            margin-bottom: var(--space-sm);
+            padding-bottom: var(--space-xs);
+            border-bottom: 1px solid rgba(123,160,142,0.15);
+        }
+        .panel-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: #E8E4DF;
+            margin-bottom: var(--space-xs);
+        }
+        .panel-intro {
+            font-size: var(--text-base);
+            color: rgba(232,228,223,0.65);
+            line-height: 1.7;
+        }
+
+        /* === SHARED RESPONSE TEXTAREA === */
+        .response-textarea {
+            width: 100%;
+            background: rgba(13,17,23,0.7);
+            border: 1px solid rgba(123,160,142,0.15);
+            border-radius: var(--space-xs);
+            padding: var(--space-sm);
+            color: #E8E4DF;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            line-height: 1.65;
+            resize: vertical;
+            min-height: 80px;
+        }
+        .response-textarea:focus {
+            outline: none;
+            border-color: rgba(123,160,142,0.4);
+        }
+        .response-textarea::placeholder { color: rgba(232,228,223,0.3); }
+
+        /* === SHARED BUTTONS === */
+        .btn {
+            padding: var(--space-xs) var(--space-lg);
+            min-height: var(--space-xl);
+            border-radius: var(--space-xs);
+            border: 1.5px solid;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+        }
+        .btn-green {
+            border-color: rgba(123,160,142,0.4);
+            color: #7BA08E;
+        }
+        .btn-green:hover:not(:disabled) {
+            background: rgba(123,160,142,0.15);
+            border-color: #7BA08E;
+        }
+        .btn-ghost {
+            border-color: rgba(184,197,214,0.2);
+            color: rgba(184,197,214,0.45);
+        }
+        .btn-ghost:hover:not(:disabled) {
+            border-color: rgba(184,197,214,0.45);
+            color: rgba(184,197,214,0.75);
+        }
+        .btn:disabled { opacity: 0.3; cursor: default; }
+
+        /* === ANIMATIONS === */
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        /* ======================================================
+           TAB 1: QUOTE DETECTIVE
+        ====================================================== */
+        .quiz-container { max-width: 700px; margin: 0 auto; }
+
+        .quiz-progress {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+        .quiz-score {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: #7BA08E;
+            min-width: 70px;
+        }
+        .quiz-bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(123,160,142,0.15);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .quiz-bar__fill {
+            height: 100%;
+            background: #7BA08E;
+            border-radius: 2px;
+            transition: width 0.3s;
+            width: 0;
+        }
+
+        .quiz-card {
+            background: linear-gradient(135deg, rgba(26,35,50,0.8), rgba(13,17,23,0.9));
+            border: 1px solid rgba(123,160,142,0.15);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            text-align: center;
+        }
+        .quiz-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-xl);
+            font-style: italic;
+            color: #E8E4DF;
+            line-height: 1.6;
+            margin-bottom: var(--space-md);
+            min-height: 80px;
+        }
+        .quiz-buttons {
+            display: flex;
+            gap: var(--space-sm);
+            justify-content: center;
+        }
+        .quiz-btn {
+            padding: var(--space-sm) var(--space-lg);
+            min-height: var(--space-xl);
+            border-radius: var(--space-xs);
+            border: 1.5px solid;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+        }
+        .quiz-btn--ian {
+            border-color: rgba(123,160,142,0.4);
+            color: #7BA08E;
+        }
+        .quiz-btn--ian:hover:not(:disabled) {
+            background: rgba(123,160,142,0.15);
+            border-color: #7BA08E;
+        }
+        .quiz-btn--other {
+            border-color: rgba(212,149,106,0.4);
+            color: #D4956A;
+        }
+        .quiz-btn--other:hover:not(:disabled) {
+            background: rgba(212,149,106,0.15);
+            border-color: #D4956A;
+        }
+        .quiz-btn:disabled { opacity: 0.3; cursor: default; }
+
+        .quiz-feedback {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            color: rgba(232,228,223,0.75);
+            line-height: 1.65;
+            margin-top: var(--space-md);
+            padding-left: var(--space-sm);
+            text-align: left;
+            display: none;
+        }
+        .quiz-feedback.visible { display: block; animation: fadeSlide 0.3s ease-out; }
+        .quiz-feedback.correct { border-left: 3px solid #7BA08E; }
+        .quiz-feedback.incorrect { border-left: 3px solid #C45A5A; }
+        .quiz-feedback.twist { border-left: 3px solid #D4956A; }
+
+        .quiz-next {
+            margin-top: var(--space-md);
+            padding: var(--space-xs) var(--space-lg);
+            min-height: var(--space-xl);
+            background: rgba(123,160,142,0.15);
+            border: 1.5px solid rgba(123,160,142,0.3);
+            border-radius: var(--space-xs);
+            color: #7BA08E;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: none;
+        }
+        .quiz-next.visible { display: inline-block; }
+        .quiz-next:hover {
+            background: rgba(123,160,142,0.25);
+            border-color: #7BA08E;
+        }
+
+        .quiz-results { text-align: center; padding: var(--space-lg); }
+        .quiz-results__title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-xl);
+            color: #E8E4DF;
+            margin-bottom: var(--space-sm);
+        }
+        .quiz-results__text {
+            font-size: var(--text-base);
+            color: rgba(232,228,223,0.65);
+            line-height: 1.65;
+            margin-bottom: var(--space-md);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ======================================================
+           TAB 2: IAN'S WORDS — SCENE CAROUSEL
+        ====================================================== */
+        .scene-carousel {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            flex: 1;
+            min-height: 0;
+        }
+        /* Compact overrides */
+        #panel-words .panel-header { margin-bottom: var(--space-xs); }
+        #panel-words .panel-title { font-size: var(--text-sm); }
+        #panel-words .words-prompt-block { padding: var(--space-sm); }
+        .scene-card {
+            display: none;
+            gap: var(--space-xl);
+            align-items: start;
+        }
+        .scene-card.active {
+            display: grid;
+            grid-template-columns: 480px 1fr;
+            flex: 1;
+            min-height: 0;
+        }
+        .scene-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-xs) 0;
+            border-top: 1px solid rgba(123,160,142,0.12);
+            border-bottom: 1px solid rgba(123,160,142,0.08);
+            margin-bottom: var(--space-xs);
+        }
+        .scene-nav-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            background: transparent;
+            border: 1px solid rgba(123,160,142,0.2);
+            border-radius: 6px;
+            color: rgba(123,160,142,0.55);
+            padding: var(--space-xs) var(--space-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .scene-nav-btn:hover:not(:disabled) { color: #7BA08E; border-color: rgba(123,160,142,0.4); background: rgba(123,160,142,0.08); }
+        .scene-nav-btn:disabled { opacity: 0.25; cursor: default; }
+        .scene-nav-right { display: flex; gap: var(--space-sm); align-items: center; }
+        .scene-restart-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            background: transparent;
+            border: 1px dashed rgba(123,160,142,0.25);
+            border-radius: 6px;
+            color: rgba(123,160,142,0.5);
+            padding: var(--space-xs) var(--space-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .scene-restart-btn:hover { color: rgba(123,160,142,0.9); border-color: rgba(123,160,142,0.55); background: rgba(123,160,142,0.06); }
+        .scene-counter {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: rgba(123,160,142,0.45);
+        }
+        .scene-image {
+            width: 408px;
+            height: 408px;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            border-radius: var(--space-xs);
+            border: 1px solid rgba(123,160,142,0.25);
+            object-fit: contain;
+            align-self: start;
+            filter: drop-shadow(0 0 var(--space-md) rgba(123,160,142,0.35));
+            clip-path: inset(3px round var(--space-xs));
+        }
+        .scene-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            overflow-y: auto;
+            padding-right: var(--space-xs);
+        }
+        .scene-label {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: rgba(123,160,142,0.6);
+            letter-spacing: 0.04em;
+        }
+        .scene-passage {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-lg);
+            color: rgba(232,228,223,0.9);
+            line-height: 1.7;
+        }
+        .scene-speaker {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: #7BA08E;
+            margin-right: var(--space-xs);
+            letter-spacing: 0.04em;
+        }
+        .fill-blank {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+        }
+        .fill-blank__input {
+            background: rgba(123,160,142,0.08);
+            border: none;
+            border-bottom: 2px solid rgba(123,160,142,0.4);
+            border-radius: 2px 2px 0 0;
+            color: #E8E4DF;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-lg);
+            font-style: italic;
+            width: 130px;
+            padding: 0 var(--space-xs);
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .fill-blank__input:focus { border-bottom-color: #7BA08E; background: rgba(123,160,142,0.12); }
+        .fill-blank__input.correct { border-bottom-color: #7BA08E; background: rgba(123,160,142,0.1); color: #7BA08E; }
+        .fill-blank__badge {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: rgba(123,160,142,0.45);
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color 0.2s;
+            user-select: none;
+        }
+        .fill-blank__badge:hover { color: #7BA08E; }
+        .scene-bank {
+            display: none;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            padding: var(--space-xs) 0;
+            animation: fadeSlide 0.2s ease-out;
+        }
+        .scene-bank.open { display: flex; }
+        .scene-bank-pill {
+            display: inline-block;
+            background: rgba(123,160,142,0.1);
+            border: 1px solid rgba(123,160,142,0.2);
+            color: rgba(232,228,223,0.75);
+            font-size: var(--text-sm);
+            padding: 0 var(--space-xs);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+            font-family: 'Inter', sans-serif;
+        }
+        .scene-bank-pill:hover { background: rgba(123,160,142,0.22); border-color: rgba(123,160,142,0.45); color: #E8E4DF; }
+        .scene-reveal-btn {
+            align-self: flex-start;
+            padding: var(--space-xs) var(--space-md);
+            min-height: 36px;
+            background: transparent;
+            border: 1px solid rgba(123,160,142,0.25);
+            border-radius: 6px;
+            color: rgba(123,160,142,0.55);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .scene-reveal-btn:hover { background: rgba(123,160,142,0.1); color: #7BA08E; border-color: rgba(123,160,142,0.4); }
+        .scene-reveal-note {
+            display: none;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            color: rgba(232,228,223,0.65);
+            line-height: 1.7;
+            border-left: 2px solid rgba(123,160,142,0.3);
+            padding-left: var(--space-sm);
+            animation: fadeSlide 0.3s ease-out;
+        }
+        .scene-reveal-note.open { display: block; }
+        .scene-reveal-note strong { color: #7BA08E; }
+        .scene-reference {
+            border-top: 1px solid rgba(123,160,142,0.1);
+            padding-top: var(--space-xs);
+            margin-bottom: var(--space-xs);
+        }
+        .scene-reference__heading {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: rgba(123,160,142,0.4);
+            margin-bottom: var(--space-xs);
+            display: block;
+        }
+        .scene-reference__list {
+            list-style: decimal;
+            padding-left: var(--space-md);
+        }
+        .scene-reference__list li {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-sm);
+            color: rgba(232,228,223,0.45);
+            font-style: italic;
+            line-height: 1.5;
+        }
+        /* Scene 6 — writing slide: full-width single column */
+        .scene-card--writing.active {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+        .words-prompts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+        }
+        .words-prompt-block {
+            background: rgba(26,35,50,0.4);
+            border: 1px solid rgba(123,160,142,0.1);
+            border-radius: 8px;
+            padding: var(--space-md);
+        }
+        .words-prompt-label {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: #7BA08E;
+            margin-bottom: var(--space-xs);
+            display: block;
+        }
+        .words-prompt-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            font-style: italic;
+            color: rgba(232,228,223,0.6);
+            line-height: 1.6;
+            margin-bottom: var(--space-sm);
+        }
+
+        /* ======================================================
+           TAB 4: WHAT WOULD IAN SAY?
+        ====================================================== */
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+
+        .scenario-card {
+            border: 1.5px solid rgba(123,160,142,0.2);
+            background: linear-gradient(135deg, rgba(26,35,50,0.6), rgba(13,17,23,0.9));
+            border-radius: var(--space-xs);
+            padding: var(--space-md);
+            cursor: pointer;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+        .scenario-card:hover {
+            border-color: rgba(123,160,142,0.45);
+        }
+        .scenario-card.active {
+            border-color: #7BA08E;
+            box-shadow: 0 0 16px rgba(123,160,142,0.15);
+        }
+
+        .scenario-card__label {
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            color: rgba(123,160,142,0.6);
+            margin-bottom: var(--space-xs);
+            letter-spacing: 0.08em;
+        }
+        .scenario-card.active .scenario-card__label { color: #7BA08E; }
+
+        .scenario-card__title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-lg);
+            font-weight: 700;
+            color: #E8E4DF;
+            margin-bottom: var(--space-xs);
+            line-height: 1.3;
+        }
+
+        .scenario-card__subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            font-style: italic;
+            color: rgba(232,228,223,0.55);
+            line-height: 1.55;
+        }
+
+        .scenario-expand {
+            display: none;
+            animation: fadeSlide 0.35s ease-out;
+        }
+        .scenario-expand.visible { display: block; }
+
+        .scenario-context {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            font-style: italic;
+            color: rgba(184,197,214,0.5);
+            margin-bottom: var(--space-md);
+            padding: var(--space-sm) var(--space-md);
+            border-left: 2px solid rgba(123,160,142,0.25);
+            background: rgba(13,17,23,0.4);
+            border-radius: 0 var(--space-xs) var(--space-xs) 0;
+            line-height: 1.6;
+        }
+
+        .word-bank-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+
+        .word-bank {
+            background: rgba(26,35,50,0.4);
+            border: 1px solid rgba(123,160,142,0.12);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .word-bank-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            background: transparent;
+            border: none;
+            color: #7BA08E;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+            letter-spacing: 0.04em;
+        }
+
+        .word-bank-toggle .arrow { transition: transform 0.2s; }
+        .word-bank-toggle[aria-expanded="true"] .arrow { transform: rotate(90deg); }
+
+        .word-bank-body {
+            display: none;
+            padding: 0 var(--space-md) var(--space-md);
+        }
+        .word-bank-toggle[aria-expanded="true"] + .word-bank-body { display: block; }
+
+        .word-bank-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-sm);
+        }
+
+        .word-bank-pill {
+            display: inline-block;
+            background: rgba(123,160,142,0.1);
+            border: 1px solid rgba(123,160,142,0.2);
+            color: rgba(232,228,223,0.75);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            padding: 0 var(--space-xs);
+            border-radius: 4px;
+            line-height: 1.8;
+        }
+
+        .word-bank-phrases {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .word-bank-phrases li {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-sm);
+            font-style: italic;
+            color: rgba(232,228,223,0.5);
+            line-height: 1.6;
+            padding-left: var(--space-sm);
+            border-left: 2px solid rgba(123,160,142,0.25);
+        }
+
+        .word-bank-instruction {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            color: rgba(232,228,223,0.45);
+            margin-bottom: var(--space-sm);
+            line-height: 1.5;
+        }
+
+        .scenario-prompt {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            color: rgba(232,228,223,0.7);
+            margin-bottom: var(--space-sm);
+        }
+
+        .response-textarea {
+            width: 100%;
+            background: rgba(13,17,23,0.7);
+            border: 1px solid rgba(123,160,142,0.15);
+            border-radius: var(--space-xs);
+            padding: var(--space-sm);
+            color: #E8E4DF;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            line-height: 1.65;
+            resize: vertical;
+            min-height: 60px;
+        }
+        .response-textarea:focus {
+            outline: none;
+            border-color: rgba(123,160,142,0.4);
+        }
+        .response-textarea::placeholder { color: rgba(232,228,223,0.3); }
+
+        /* === PANEL NEXT BUTTON === */
+        .panel-next-btn {
+            display: block;
+            margin: var(--space-md) auto 0;
+            padding: var(--space-xs) var(--space-2xl);
+            min-height: var(--space-xl);
+            background: rgba(123,160,142,0.1);
+            border: 1.5px solid rgba(123,160,142,0.35);
+            border-radius: var(--space-xs);
+            color: #7BA08E;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.06em;
+        }
+        .panel-next-btn:hover {
+            background: rgba(123,160,142,0.2);
+            border-color: #7BA08E;
+        }
+
+        /* === TWO-VIEW MONOLOGUE (ACTIVITY 4) === */
+        .monologue-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            background: transparent;
+            border: none;
+            color: rgba(123,160,142,0.55);
+            font-size: var(--text-sm);
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            padding: 0 0 var(--space-sm);
+            transition: color 0.2s;
+        }
+        .monologue-back-btn:hover { color: #7BA08E; }
+
+        .complete-btn {
+            display: block;
+            margin: var(--space-md) auto 0;
+            padding: var(--space-xs) var(--space-2xl);
+            min-height: var(--space-xl);
+            background: rgba(123,160,142,0.12);
+            border: 1.5px solid rgba(123,160,142,0.4);
+            border-radius: var(--space-xs);
+            color: #7BA08E;
+            font-family: 'Press Start 2P', cursive;
+            font-size: var(--text-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.08em;
+        }
+        .complete-btn:hover {
+            background: rgba(123,160,142,0.22);
+            border-color: #7BA08E;
+        }
+
+        .print-answer {
+            width: 100%;
+            min-height: 80px;
+            padding: var(--space-sm);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--text-base);
+            line-height: 1.65;
+            color: #000;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: var(--space-xs);
+            white-space: pre-wrap;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .page-header, .tab-bar,
+            .panel-next-btn, .monologue-back-btn,
+            .complete-btn, .scenario-grid,
+            .word-bank-row { display: none !important; }
+
+            html, body { background: #fff !important; color: #000 !important;
+                         height: auto !important; overflow: visible !important; }
+            .tab-panel { position: static !important; overflow: visible !important;
+                         padding: 0 !important; }
+            #panel-voice { display: block !important; }
+            #monologue-choose { display: none !important; }
+            #monologue-write { display: block !important; }
+
+            .scenario-context { color: #333; background: #f5f5f5; border-color: #999; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+
+        <!-- COMPACT HEADER -->
+        <header class="page-header">
+            <a href="../index.html" class="page-header__back">&larr; Arrival</a>
+            <div class="page-header__character">
+                <div>
+                    <h1 class="page-header__name">Ian Donnelly</h1>
+                </div>
+            </div>
+        </header>
+
+        <!-- TAB BAR -->
+        <nav class="tab-bar" role="tablist">
+            <button class="tab active" role="tab" aria-selected="true" data-tab="quiz" onclick="switchTab('quiz')">1. Quote Detective</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="words" onclick="switchTab('words')">2. Ian&rsquo;s Words</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="voice" onclick="switchTab('voice')">3. What Would Ian Say?</button>
+        </nav>
+
+        <!-- CONTENT AREA -->
+        <div class="tab-content">
+
+            <!-- ========================================================
+                 PANEL 1: QUOTE DETECTIVE
+            ======================================================== -->
+            <div class="tab-panel" id="panel-quiz" role="tabpanel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Quote Detective</h2>
+                    <p class="panel-intro">Ten quotes from the film are listed below. Some are Ian&rsquo;s and some belong to other characters. Your job is to identify his voice.</p>
+                </div>
+                <div class="quiz-container" id="quizContainer">
+                    <div class="quiz-progress">
+                        <span class="quiz-score" id="quizScore">0 / 0</span>
+                        <div class="quiz-bar"><div class="quiz-bar__fill" id="quizBarFill"></div></div>
+                    </div>
+                    <div class="quiz-card" id="quizCard">
+                        <p class="quiz-quote" id="quizQuote"></p>
+                        <div class="quiz-buttons" id="quizButtons">
+                            <button class="quiz-btn quiz-btn--ian" id="btnIan">Ian said this</button>
+                            <button class="quiz-btn quiz-btn--other" id="btnOther">Someone else</button>
+                        </div>
+                        <div class="quiz-feedback" id="quizFeedback"></div>
+                        <button class="quiz-next" id="quizNext">Next</button>
+                    </div>
+                    <div class="quiz-results" id="quizResults" hidden>
+                        <h3 class="quiz-results__title" id="resultsTitle"></h3>
+                        <p class="quiz-results__text" id="resultsText"></p>
+                        <button class="quiz-next visible" id="quizRestart">Try again</button>
+                    </div>
+                </div>
+                <button class="panel-next-btn" id="next-btn-quiz" style="display:none"
+                        onclick="switchTab('words')">2. Ian&rsquo;s Words &rarr;</button>
+            </div>
+
+            <!-- ========================================================
+                 PANEL 2: IAN'S WORDS
+            ======================================================== -->
+            <div class="tab-panel" id="panel-words" role="tabpanel" hidden>
+                <div class="panel-header">
+                    <h2 class="panel-title">Ian&rsquo;s Words</h2>
+                    <p class="panel-intro">Ian believes science is the cornerstone of civilisation, at least until a linguist proves him wrong. Below are five moments from the film. For each, fill in his exact words.</p>
+                </div>
+
+                <!-- SCENE CAROUSEL (one scene visible at a time) -->
+                <div class="scene-carousel">
+
+                    <!-- SCENE 1: THE HELICOPTER -->
+                    <div class="scene-card active">
+                        <img class="scene-image" src="../generated-images/rd_pro_pixelate_1776492655.png" alt="Ian reading Louise's book in a military helicopter">
+                        <div class="scene-body">
+                            <span class="scene-label">First Meeting</span>
+                            <p class="scene-passage">
+                                <span class="scene-speaker">Ian:</span> Yeah, it&rsquo;s great. Even if it&rsquo;s
+                                <span class="fill-blank"><input class="fill-blank__input" id="s1b1" type="text" data-answer="wrong" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b1">ADJ ▾</span></span>.<br>
+                                <span class="scene-speaker">Louise:</span> It&rsquo;s
+                                <span class="fill-blank"><input class="fill-blank__input" id="s1b2" type="text" data-answer="wrong" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b2">ADJ ▾</span></span>?<br>
+                                <span class="scene-speaker">Ian:</span> Well, the cornerstone of civilization isn&rsquo;t
+                                <span class="fill-blank"><input class="fill-blank__input" id="s1b3" type="text" data-answer="language" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b3">NOUN ▾</span></span>, it&rsquo;s
+                                <span class="fill-blank"><input class="fill-blank__input" id="s1b4" type="text" data-answer="science" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b4">NOUN ▾</span></span>.
+                            </p>
+                            <div id="bk-s1b1" class="scene-bank" data-category="adjectives" data-input="s1b1"></div>
+                            <div id="bk-s1b2" class="scene-bank" data-category="adjectives" data-input="s1b2"></div>
+                            <div id="bk-s1b3" class="scene-bank" data-category="nouns" data-input="s1b3"></div>
+                            <div id="bk-s1b4" class="scene-bank" data-category="nouns" data-input="s1b4"></div>
+                            <button class="scene-reveal-btn" data-scene="1">Stuck? Reveal Ian&rsquo;s words</button>
+                            <div class="scene-reveal-note" id="reveal-1"><strong>Wrong / Wrong / Language / Science</strong> &mdash; This is Ian&rsquo;s introduction, and the physicist here will spend the whole film disproving his own thesis. The dry &ldquo;even if it&rsquo;s wrong&rdquo; is Ian humour at first sight, and the word &ldquo;wrong&rdquo; appearing twice in the same beat tells us Louise has caught the provocation and Ian has doubled down. By the end of the film, science has lost the argument to language.</div>
+                        </div>
+                    </div>
+
+                    <!-- SCENE 2: NAMING THE ALIENS -->
+                    <div class="scene-card">
+                        <img class="scene-image" src="../generated-images/rd_pro_pixelate_1776492707.png" alt="Ian and Louise in hazmat suits discussing the heptapods Abbott and Costello">
+                        <div class="scene-body">
+                            <span class="scene-label">Naming the Unknown</span>
+                            <p class="scene-passage">
+                                <span class="scene-speaker">Louise:</span> So, what are we gonna call them?<br>
+                                <span class="scene-speaker">Ian:</span> I don&rsquo;t know. I was thinking
+                                <span class="fill-blank"><input class="fill-blank__input" id="s2b1" type="text" data-answer="Abbott" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s2b1">NAME ▾</span></span> and
+                                <span class="fill-blank"><input class="fill-blank__input" id="s2b2" type="text" data-answer="Costello" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s2b2">NAME ▾</span></span>.
+                            </p>
+                            <div id="bk-s2b1" class="scene-bank" data-category="properNouns" data-input="s2b1"></div>
+                            <div id="bk-s2b2" class="scene-bank" data-category="properNouns" data-input="s2b2"></div>
+                            <button class="scene-reveal-btn" data-scene="2">Stuck? Reveal Ian&rsquo;s words</button>
+                            <div class="scene-reveal-note" id="reveal-2"><strong>Abbott / Costello</strong> &mdash; Ian reaches for a pop-culture comedy duo at the most extraordinary moment in human history. Abbott and Costello were famous for their &ldquo;Who&rsquo;s on First?&rdquo; sketch, which is a routine built entirely on two people failing to communicate. Ian has named the aliens after the very thing Louise is trying to overcome, so the joke is also a summary of what the film is about.</div>
+                        </div>
+                    </div>
+
+                    <!-- SCENE 3: STILL SINGLE -->
+                    <div class="scene-card">
+                        <img class="scene-image" src="../generated-images/rd_pro_pixelate_1776433250.png" alt="Ian looking at Louise with admiration in the research trailer">
+                        <div class="scene-body">
+                            <span class="scene-label">Still Single</span>
+                            <p class="scene-passage">
+                                <span class="scene-speaker">Ian:</span> As I watch you steer us around these
+                                <span class="fill-blank"><input class="fill-blank__input" id="s3b1" type="text" data-answer="communication" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s3b1">NOUN ▾</span></span>
+                                traps that I didn&rsquo;t even know existed, it&rsquo;s like, &ldquo;what?&rdquo; I guess that&rsquo;s why I&rsquo;m
+                                <span class="fill-blank"><input class="fill-blank__input" id="s3b2" type="text" data-answer="single" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s3b2">ADJ ▾</span></span>.
+                            </p>
+                            <div id="bk-s3b1" class="scene-bank" data-category="nouns" data-input="s3b1"></div>
+                            <div id="bk-s3b2" class="scene-bank" data-category="adjectives" data-input="s3b2"></div>
+                            <button class="scene-reveal-btn" data-scene="3">Stuck? Reveal Ian&rsquo;s words</button>
+                            <div class="scene-reveal-note" id="reveal-3"><strong>Communication / Single</strong> &mdash; Ian compliments Louise and then lands on himself. &ldquo;Communication traps&rdquo; is a physicist&rsquo;s framing of what a linguist does instinctively, and &ldquo;still single&rdquo; is the first crack in the scientist&rsquo;s armour. The self-deprecation is doing real work here: in one sentence Ian is both admiring Louise and admitting something about himself.</div>
+                        </div>
+                    </div>
+
+                    <!-- SCENE 4: IF YOU COULD SEE YOUR WHOLE LIFE -->
+                    <div class="scene-card">
+                        <img class="scene-image" src="../generated-images/rd_pro_pixelate_1776433283.png" alt="Ian and Louise in a contemplative moment during the evacuation">
+                        <div class="scene-body">
+                            <span class="scene-label">What Would You Change?</span>
+                            <p class="scene-passage">
+                                <span class="scene-speaker">Louise:</span> If you could see your whole life from start to finish, would you change things?<br>
+                                <span class="scene-speaker">Ian:</span>
+                                <span class="fill-blank"><input class="fill-blank__input" id="s4b1" type="text" data-answer="Maybe" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s4b1">ADV ▾</span></span>
+                                I&rsquo;d say what I
+                                <span class="fill-blank"><input class="fill-blank__input" id="s4b2" type="text" data-answer="felt" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s4b2">VERB ▾</span></span>
+                                more often. I-I don&rsquo;t know.
+                            </p>
+                            <div id="bk-s4b1" class="scene-bank" data-category="adverbs" data-input="s4b1"></div>
+                            <div id="bk-s4b2" class="scene-bank" data-category="verbs" data-input="s4b2"></div>
+                            <button class="scene-reveal-btn" data-scene="4">Stuck? Reveal Ian&rsquo;s words</button>
+                            <div class="scene-reveal-note" id="reveal-4"><strong>Maybe / Felt</strong> &mdash; Ian is a physicist who has been asked a philosopher&rsquo;s question, and he answers with an emotional one. &ldquo;Maybe&rdquo; is his hedge: he is a man who prefers certainty, but here he is honest about not having it. The past tense &ldquo;felt&rdquo; is the real tell, because Ian is already regretting silences that haven&rsquo;t happened yet. The scientist is beginning to think the way Louise thinks.</div>
+                        </div>
+                    </div>
+
+                    <!-- SCENE 5: THE STARS CONFESSION -->
+                    <div class="scene-card">
+                        <img class="scene-image" src="../generated-images/rd_pixelate_1776495626.png" alt="Ian looking up at the night sky full of stars">
+                        <div class="scene-body">
+                            <span class="scene-label">It Was Meeting You</span>
+                            <p class="scene-passage">
+                                <span class="scene-speaker">Ian:</span> You know I&rsquo;ve had my head tilted up to the
+                                <span class="fill-blank"><input class="fill-blank__input" id="s5b1" type="text" data-answer="stars" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b1">NOUN ▾</span></span>
+                                for as long as I can
+                                <span class="fill-blank"><input class="fill-blank__input" id="s5b2" type="text" data-answer="remember" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b2">VERB ▾</span></span>.
+                                You know what
+                                <span class="fill-blank"><input class="fill-blank__input" id="s5b3" type="text" data-answer="surprised" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b3">VERB ▾</span></span>
+                                me the most? It wasn&rsquo;t meeting
+                                <span class="fill-blank"><input class="fill-blank__input" id="s5b4" type="text" data-answer="them" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b4">PRN ▾</span></span>.
+                                It was meeting
+                                <span class="fill-blank"><input class="fill-blank__input" id="s5b5" type="text" data-answer="you" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b5">PRN ▾</span></span>.
+                            </p>
+                            <div id="bk-s5b1" class="scene-bank" data-category="nouns" data-input="s5b1"></div>
+                            <div id="bk-s5b2" class="scene-bank" data-category="verbs" data-input="s5b2"></div>
+                            <div id="bk-s5b3" class="scene-bank" data-category="verbs" data-input="s5b3"></div>
+                            <div id="bk-s5b4" class="scene-bank" data-category="pronouns" data-input="s5b4"></div>
+                            <div id="bk-s5b5" class="scene-bank" data-category="pronouns" data-input="s5b5"></div>
+                            <button class="scene-reveal-btn" data-scene="5">Stuck? Reveal Ian&rsquo;s words</button>
+                            <div class="scene-reveal-note" id="reveal-5"><strong>Stars / Remember / Surprised / Them / You</strong> &mdash; This line completes Ian&rsquo;s arc. The man who once said science was the cornerstone of civilisation now admits that the most important discovery of his life was not the aliens, it was Louise. &ldquo;Stars&rdquo; and &ldquo;remember&rdquo; place him as the lifelong scientist, and the pair &ldquo;them&rdquo; and &ldquo;you&rdquo; complete the inversion: <em>them</em> is what he came for and <em>you</em> is what he found.</div>
+                        </div>
+                    </div>
+
+                    <!-- SCENE 6: YOUR ANALYSIS -->
+                    <div class="scene-card scene-card--writing">
+                        <div class="scene-reference">
+                            <span class="scene-reference__heading">The five moments &mdash; for reference as you write:</span>
+                            <ol class="scene-reference__list">
+                                <li>&ldquo;Yeah, it&rsquo;s great. Even if it&rsquo;s <em>wrong</em>. / It&rsquo;s <em>wrong</em>? / Well, the cornerstone of civilization isn&rsquo;t <em>language</em>, it&rsquo;s <em>science</em>.&rdquo;</li>
+                                <li>&ldquo;So, what are we gonna call them? / I don&rsquo;t know. I was thinking <em>Abbott</em> and <em>Costello</em>.&rdquo;</li>
+                                <li>&ldquo;As I watch you steer us around these <em>communication</em> traps that I didn&rsquo;t even know existed, it&rsquo;s like, &lsquo;what?&rsquo; I guess that&rsquo;s why I&rsquo;m <em>single</em>.&rdquo;</li>
+                                <li>&ldquo;If you could see your whole life from start to finish, would you change things? / <em>Maybe</em> I&rsquo;d say what I <em>felt</em> more often. I-I don&rsquo;t know.&rdquo;</li>
+                                <li>&ldquo;You know I&rsquo;ve had my head tilted up to the <em>stars</em> for as long as I can <em>remember</em>. You know what <em>surprised</em> me the most? It wasn&rsquo;t meeting <em>them</em>. It was meeting <em>you</em>.&rdquo;</li>
+                            </ol>
+                        </div>
+                        <div class="words-prompts">
+                            <div class="words-prompt-block">
+                                <span class="words-prompt-label">Characteristics</span>
+                                <p class="words-prompt-text">Use Ian&rsquo;s word choices to describe who he is.</p>
+                                <textarea class="response-textarea" id="words-q1" rows="2"
+                                          placeholder="Write your response here..."
+                                          oninput="wordsPersist('1',this.value)"></textarea>
+                            </div>
+                            <div class="words-prompt-block">
+                                <span class="words-prompt-label">Desires</span>
+                                <p class="words-prompt-text">Ian&rsquo;s verbs and nouns are the clue. Use them to work out what he wants.</p>
+                                <textarea class="response-textarea" id="words-q2" rows="2"
+                                          placeholder="Write your response here..."
+                                          oninput="wordsPersist('2',this.value)"></textarea>
+                            </div>
+                            <div class="words-prompt-block">
+                                <span class="words-prompt-label">Internal Conflict</span>
+                                <p class="words-prompt-text">Storytelling is driven by characters facing and overcoming conflict. Describe Ian&rsquo;s.</p>
+                                <textarea class="response-textarea" id="words-q3" rows="2"
+                                          placeholder="Write your response here..."
+                                          oninput="wordsPersist('3',this.value)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /.scene-carousel -->
+
+                <!-- CAROUSEL NAV -->
+                <div class="scene-nav">
+                    <button class="scene-nav-btn" id="scene-prev" disabled>&#9664; Previous</button>
+                    <span class="scene-counter" id="scene-counter">Scene 1 of 5</span>
+                    <div class="scene-nav-right">
+                        <button class="scene-restart-btn" id="scene-restart" title="Clear all answers and start over">&#x21bb; Restart activity</button>
+                        <button class="scene-nav-btn" id="scene-next">Next &#9654;</button>
+                    </div>
+                </div>
+                <button class="panel-next-btn" id="next-btn-words" style="display:none"
+                        onclick="switchTab('voice')">3. What Would Ian Say? &rarr;</button>
+            </div>
+
+            <!-- ========================================================
+                 PANEL 3: WHAT WOULD IAN SAY?
+            ======================================================== -->
+            <div class="tab-panel" id="panel-voice" role="tabpanel" hidden>
+
+                <!-- VIEW 1: CHOOSE SCENARIO -->
+                <div id="monologue-choose">
+                    <div class="panel-header">
+                        <h2 class="panel-title">What Would Ian Say?</h2>
+                        <p class="panel-intro">Choose one scenario and write Ian&rsquo;s monologue. Use the word banks to stay in his voice: he is a scientist who has learned to feel, and he is working through something his equations cannot solve.</p>
+                    </div>
+                    <div class="scenario-grid" id="scenarioGrid">
+                        <div class="scenario-card" data-scenario="a" onclick="openScenario('a')">
+                            <p class="scenario-card__label">Scenario A</p>
+                            <h3 class="scenario-card__title">Responding to the Truth</h3>
+                            <p class="scenario-card__subtitle">Louise has just told Ian what she knew would happen to Hannah. Write his response as a one-sided monologue.</p>
+                        </div>
+                        <div class="scenario-card" data-scenario="b" onclick="openScenario('b')">
+                            <p class="scenario-card__label">Scenario B</p>
+                            <h3 class="scenario-card__title">Hannah&rsquo;s First Birthday</h3>
+                            <p class="scenario-card__subtitle">Ian gives a toast at Hannah&rsquo;s first birthday. He doesn&rsquo;t know what Louise knows.</p>
+                        </div>
+                        <div class="scenario-card" data-scenario="c" onclick="openScenario('c')">
+                            <p class="scenario-card__label">Scenario C</p>
+                            <h3 class="scenario-card__title">Choose Your Own Scenario</h3>
+                            <p class="scenario-card__subtitle">Write Ian speaking in a moment you choose: to Louise, to Hannah, to the heptapods, or to himself.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 2: WRITE -->
+                <div id="monologue-write" style="display:none">
+                    <button class="monologue-back-btn" onclick="scenarioBack()">&larr; Back to scenarios</button>
+
+                    <div class="word-bank-row" id="word-bank-row"></div>
+
+                    <p class="scenario-context" id="write-context"></p>
+                    <p class="scenario-prompt" id="write-prompt"></p>
+                    <textarea class="response-textarea" id="monologue-writing" rows="6"
+                              placeholder="Write in Ian's voice here..."
+                              oninput="monologuePersist()"></textarea>
+                    <button class="complete-btn" onclick="savePdf()">&#8595; Save as PDF</button>
+                </div>
+
+            </div>
+
+        </div><!-- end .tab-content -->
+    </div><!-- end .page-shell -->
+
+    <script>
+    /* ══════════════════════════════════════════════
+       TAB SWITCHING
+    ══════════════════════════════════════════════ */
+    const tabs = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    function switchTab(tabId) {
+        tabs.forEach(t => {
+            t.classList.toggle('active', t.dataset.tab === tabId);
+            t.setAttribute('aria-selected', t.dataset.tab === tabId);
+        });
+        panels.forEach(p => {
+            p.hidden = p.id !== 'panel-' + tabId;
+        });
+    }
+
+    document.addEventListener('keydown', e => {
+        const active = document.querySelector('.tab.active');
+        const allTabs = [...tabs];
+        const idx = allTabs.indexOf(active);
+        if (e.key === 'ArrowRight' && idx < allTabs.length - 1) {
+            switchTab(allTabs[idx + 1].dataset.tab);
+            allTabs[idx + 1].focus();
+        }
+        if (e.key === 'ArrowLeft' && idx > 0) {
+            switchTab(allTabs[idx - 1].dataset.tab);
+            allTabs[idx - 1].focus();
+        }
+    });
+
+    /* ══════════════════════════════════════════════
+       TAB 1: QUOTE DETECTIVE
+    ══════════════════════════════════════════════ */
+    const quizData = [
+        {
+            quote: "The cornerstone of civilisation isn\u2019t language, it\u2019s science.",
+            isIan: true,
+            feedback: "Ian\u2019s opening position \u2014 the thing he\u2019s so certain about at the start of the film. By the end, Louise has shown him it was never that simple."
+        },
+        {
+            quote: "Language is the foundation of civilisation. It is the glue that holds a people together.",
+            isIan: false,
+            feedback: "This is what Ian reads aloud from Louise\u2019s book \u2014 and immediately disagrees with. The film\u2019s central argument begins here, between these two."
+        },
+        {
+            quote: "I\u2019ve been tilting my head to the stars for as long as I can remember. You know what surprised me the most? It\u2019s not meeting them. It\u2019s meeting you.",
+            isIan: true,
+            feedback: "The moment the physicist admits something his equations can\u2019t calculate. He\u2019s looking at Louise. He\u2019s already changed."
+        },
+        {
+            quote: "If you could see your whole life from start to finish, would you change things?",
+            isIan: false,
+            feedback: "Louise asks this already knowing the answer. Ian thinks it\u2019s a thought experiment. It isn\u2019t."
+        },
+        {
+            quote: "Maybe I\u2019d say what I felt more often.",
+            isIan: true,
+            twist: true,
+            feedback: "He says this to Louise. It becomes the film\u2019s most heartbreaking unfulfilled intention."
+        },
+        {
+            quote: "Memory is a strange thing. It doesn\u2019t work like I thought it did.",
+            isIan: false,
+            feedback: "Louise narrates from a time Ian doesn\u2019t have access to. Her experience of memory is fundamentally different from his."
+        },
+        {
+            quote: "I\u2019m curious. Are you dreaming in their language?",
+            isIan: true,
+            feedback: "Ian reaches for the only tool he has \u2014 the scientific question. He\u2019s watching Louise change and trying to measure it the only way he knows how."
+        },
+        {
+            quote: "Despite knowing the journey and where it leads, I embrace it.",
+            isIan: false,
+            twist: true,
+            feedback: "Louise\u2019s answer to the question Ian asked her. He asked if she\u2019d change things. She already has her answer. Ian doesn\u2019t \u2014 yet."
+        },
+        {
+            quote: "You wanna make a baby?",
+            isIan: true,
+            feedback: "The question he asks as a new beginning. For Louise, it\u2019s a different kind of moment entirely."
+        },
+        {
+            quote: "I\u2019m unstoppable?",
+            isIan: false,
+            feedback: "The word Ian and Louise chose \u2014 and the truth it conceals. Hannah carries it without knowing its weight."
+        }
+    ];
+
+    let quizState = { current: 0, score: 0, order: [] };
+
+    function shuffleArray(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    function initQuiz() {
+        quizState.order = shuffleArray(quizData.map((_, i) => i));
+        quizState.current = 0;
+        quizState.score = 0;
+        document.getElementById('quizResults').hidden = true;
+        document.getElementById('quizCard').hidden = false;
+        showQuizQuestion();
+    }
+
+    function showQuizQuestion() {
+        const q = quizData[quizState.order[quizState.current]];
+        document.getElementById('quizQuote').textContent = '\u201C' + q.quote + '\u201D';
+        document.getElementById('quizScore').textContent = quizState.score + ' / ' + quizState.current;
+        document.getElementById('quizBarFill').style.width = (quizState.current / quizData.length * 100) + '%';
+        document.getElementById('quizFeedback').className = 'quiz-feedback';
+        document.getElementById('quizNext').className = 'quiz-next';
+        document.getElementById('btnIan').disabled = false;
+        document.getElementById('btnOther').disabled = false;
+    }
+
+    function answerQuiz(choseIan) {
+        const q = quizData[quizState.order[quizState.current]];
+        const correct = choseIan === q.isIan;
+        if (correct) quizState.score++;
+
+        const fb = document.getElementById('quizFeedback');
+        let cls = 'quiz-feedback visible ';
+        if (q.twist && !correct) cls += 'twist';
+        else if (correct) cls += 'correct';
+        else cls += 'incorrect';
+        fb.className = cls;
+        fb.textContent = (correct ? '\u2713 ' : '\u2717 ') + q.feedback;
+
+        document.getElementById('btnIan').disabled = true;
+        document.getElementById('btnOther').disabled = true;
+        document.getElementById('quizNext').className = 'quiz-next visible';
+        document.getElementById('quizScore').textContent = quizState.score + ' / ' + (quizState.current + 1);
+    }
+
+    function nextQuiz() {
+        quizState.current++;
+        if (quizState.current >= quizData.length) {
+            showQuizResults();
+        } else {
+            showQuizQuestion();
+        }
+    }
+
+    function showQuizResults() {
+        document.getElementById('quizCard').hidden = true;
+        const results = document.getElementById('quizResults');
+        results.hidden = false;
+        document.getElementById('quizBarFill').style.width = '100%';
+        document.getElementById('quizScore').textContent = quizState.score + ' / ' + quizData.length;
+
+        const pct = quizState.score / quizData.length;
+        let title, text;
+        if (pct >= 0.8) {
+            title = 'You know Ian\u2019s voice.';
+            text = 'You can hear the difference between the physicist and the linguist. You\u2019re ready to write from inside his perspective. Pay attention to the quotes you got wrong \u2014 they show where Ian\u2019s certainty and Louise\u2019s calm start to overlap.';
+        } else if (pct >= 0.5) {
+            title = 'Getting closer.';
+            text = 'You caught some of Ian\u2019s voice but confused him with others. That gap is worth exploring \u2014 it shows where Ian and Louise inhabit the same emotional territory, even if they arrived there differently.';
+        } else {
+            title = 'Ian is harder to distinguish than you thought.';
+            text = 'He starts the film certain. He ends it changed. The difficulty is that his voice transforms across the film \u2014 what sounds like Louise late on might have been Ian earlier. Try again and watch for the scientific register.';
+        }
+
+        document.getElementById('resultsTitle').textContent = title;
+        document.getElementById('resultsText').textContent = text;
+        document.getElementById('next-btn-quiz').style.display = 'block';
+    }
+
+    // Single delegated handler for all quiz button interactions
+    document.getElementById('panel-quiz').addEventListener('click', e => {
+        if (e.target.id === 'btnIan')      answerQuiz(true);
+        else if (e.target.id === 'btnOther')   answerQuiz(false);
+        else if (e.target.id === 'quizNext')   nextQuiz();
+        else if (e.target.id === 'quizRestart') initQuiz();
+    });
+    initQuiz();
+
+    /* ══════════════════════════════════════════════
+       TAB 2: IAN'S WORDS — SCENE CAROUSEL
+    ══════════════════════════════════════════════ */
+    const WORD_LISTS = {
+        nouns: [
+            'language','foundation','civilization','cornerstone','science','weapon','tool',
+            'communication','stars','sky','choice','story','time','brain','path','code',
+            'word','mathematics','light','ship','space','gift','data','name','principle',
+            'logogram','symbol','theory','physicist','probability','research','math',
+            'question','sequence','gravity','atmosphere','earth','door','hour','pressure'
+        ],
+        verbs: [
+            'write','say','hold','draw','call','get','travel','respond','open','look',
+            'know','explain','feel','predict','tell','ask','mean','live','read','translate',
+            'rewire','immerse','understand','combine','work','end','choose','change','grow',
+            'protect','stop','surprise','tilt','meet','love','remember','felt','steer',
+            'exist','find','explore','spend','start','build','help','repeat'
+        ],
+        adjectives: [
+            'good','wrong','capable','different','simple','complex','alien','basic',
+            'confused','hard','single','sad','random','alive','extinct','right',
+            'shortest','amazing','foreign','useless','possible','total','further'
+        ],
+        adverbs: [
+            'not','just','really','even','here','right','already','totally','beyond',
+            'always','never','yet','finally','too','soon','later','well','quickly',
+            'actually','possibly','probably','together','out','away','back','down',
+            'now','then','most','more','again','hard','only','still','maybe','enough',
+            'clearly','completely','barely','also','so'
+        ],
+        pronouns: ['them','you','me','I','it','us','we','her','him','they','my','your'],
+        properNouns: [
+            'Abbott','Costello','Louise','Hannah','Montana','Fermat','Fibonacci',
+            'Sanskrit','Mandarin','Sapir','Whorf','Nobel'
+        ]
+    };
+
+    // --- Carousel state ---
+    const sceneCards  = document.querySelectorAll('#panel-words .scene-card');
+    const totalScenes = sceneCards.length;
+    let   sceneIdx    = 0;
+    let   advanceTimer = null;
+
+    function showScene(n) {
+        if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
+        sceneCards.forEach((c, i) => c.classList.toggle('active', i === n));
+        sceneIdx = n;
+        document.getElementById('scene-counter').textContent =
+            (n === totalScenes - 1) ? 'Your Analysis' : 'Scene ' + (n + 1) + ' of ' + (totalScenes - 1);
+        document.getElementById('scene-prev').disabled = (n === 0);
+        document.getElementById('scene-next').disabled = (n === totalScenes - 1);
+        document.querySelectorAll('#panel-words .scene-bank.open').forEach(b => b.classList.remove('open'));
+        if (n === totalScenes - 1) document.getElementById('next-btn-words').style.display = 'block';
+    }
+
+    function sceneInputsFor(n) {
+        return [...document.querySelectorAll('#panel-words .fill-blank__input')]
+            .filter(inp => inp.id.startsWith('s' + (n + 1) + 'b'));
+    }
+
+    function isSceneCorrect(n) {
+        const inputs = sceneInputsFor(n);
+        return inputs.length > 0 && inputs.every(inp =>
+            inp.value.trim().toLowerCase() === inp.dataset.answer.toLowerCase()
+        );
+    }
+
+    function markCorrectAndAdvance(n) {
+        sceneInputsFor(n).forEach(inp => {
+            inp.classList.add('correct');
+            inp.disabled = true;
+            saveIanBlank(inp);
+        });
+        const note = document.getElementById('reveal-' + (n + 1));
+        const btn  = document.querySelector('#panel-words .scene-reveal-btn[data-scene="' + (n + 1) + '"]');
+        if (note) note.classList.add('open');
+        if (btn)  btn.style.display = 'none';
+        try { localStorage.setItem('arrival-ian-reveal-' + (n + 1), '1'); } catch(e) {}
+        const delay = n < totalScenes - 1 ? 2500 : 3000;
+        advanceTimer = setTimeout(() => {
+            if (n < totalScenes - 1) {
+                showScene(n + 1);
+            } else {
+                document.getElementById('scene-counter').textContent = '\u2713 All scenes complete';
+            }
+        }, delay);
+    }
+
+    // Build scene-bank pills from WORD_LISTS
+    document.querySelectorAll('#panel-words .scene-bank').forEach(bank => {
+        const words = WORD_LISTS[bank.dataset.category] || [];
+        words.forEach(word => {
+            const pill = document.createElement('span');
+            pill.className     = 'scene-bank-pill';
+            pill.textContent   = word;
+            pill.dataset.input = bank.dataset.input;
+            bank.appendChild(pill);
+        });
+    });
+
+    // Focus on a blank → open its word bank immediately
+    document.getElementById('panel-words').addEventListener('focusin', e => {
+        if (!e.target.classList.contains('fill-blank__input')) return;
+        const badge = e.target.closest('.fill-blank')?.querySelector('.fill-blank__badge');
+        if (!badge) return;
+        const bank = document.getElementById(badge.dataset.bank);
+        if (!bank) return;
+        const sceneBody = e.target.closest('.scene-body');
+        if (!sceneBody) return;
+        sceneBody.querySelectorAll('.scene-bank').forEach(b => {
+            if (b !== bank) b.classList.remove('open');
+        });
+        bank.classList.add('open');
+    });
+
+    // Auto-check on typing
+    document.getElementById('panel-words').addEventListener('input', e => {
+        if (!e.target.classList.contains('fill-blank__input')) return;
+        saveIanBlank(e.target);
+        const correct = e.target.value.trim().toLowerCase() === e.target.dataset.answer.toLowerCase();
+        e.target.classList.toggle('correct', correct);
+        if (correct && isSceneCorrect(sceneIdx)) markCorrectAndAdvance(sceneIdx);
+    });
+
+    // Single delegated click handler (prev/next + badge + pill + reveal + restart)
+    document.getElementById('panel-words').addEventListener('click', e => {
+        // Restart activity
+        if (e.target.id === 'scene-restart') { restartIanWords(); return; }
+        // Prev / Next nav
+        if (e.target.id === 'scene-prev') { if (sceneIdx > 0) showScene(sceneIdx - 1); return; }
+        if (e.target.id === 'scene-next') { if (sceneIdx < totalScenes - 1) showScene(sceneIdx + 1); return; }
+        // Badge → toggle its bank, close siblings
+        if (e.target.classList.contains('fill-blank__badge')) {
+            const bank      = document.getElementById(e.target.dataset.bank);
+            const sceneBody = e.target.closest('.scene-body');
+            sceneBody.querySelectorAll('.scene-bank').forEach(b => {
+                if (b !== bank) b.classList.remove('open');
+            });
+            bank.classList.toggle('open');
+            return;
+        }
+        // Pill → fill input, check completion
+        if (e.target.classList.contains('scene-bank-pill')) {
+            const input = document.getElementById(e.target.dataset.input);
+            if (input && !input.disabled) {
+                input.value = e.target.textContent;
+                saveIanBlank(input);
+                const correct = input.value.trim().toLowerCase() === input.dataset.answer.toLowerCase();
+                input.classList.toggle('correct', correct);
+                if (correct && isSceneCorrect(sceneIdx)) markCorrectAndAdvance(sceneIdx);
+            }
+            document.querySelectorAll('#panel-words .scene-bank.open').forEach(b => b.classList.remove('open'));
+            return;
+        }
+        // Reveal button → fill answers, then auto-advance
+        if (e.target.classList.contains('scene-reveal-btn')) {
+            const n = parseInt(e.target.dataset.scene) - 1;
+            revealIanScene(e.target.dataset.scene);
+            try { localStorage.setItem('arrival-ian-reveal-' + e.target.dataset.scene, '1'); } catch(e2) {}
+            if (n < totalScenes - 1) {
+                advanceTimer = setTimeout(() => showScene(n + 1), 3000);
+            }
+            return;
+        }
+        // Close open banks on any other click
+        if (!e.target.classList.contains('fill-blank__input')) {
+            document.querySelectorAll('#panel-words .scene-bank.open').forEach(b => b.classList.remove('open'));
+        }
+    });
+
+    function revealIanScene(n) {
+        document.querySelectorAll('#panel-words .fill-blank__input').forEach(input => {
+            if (input.id.startsWith('s' + n + 'b')) {
+                input.value    = input.dataset.answer;
+                input.classList.add('correct');
+                input.disabled = true;
+                saveIanBlank(input);
+            }
+        });
+        const note = document.getElementById('reveal-' + n);
+        const btn  = document.querySelector('#panel-words .scene-reveal-btn[data-scene="' + n + '"]');
+        if (note) note.classList.add('open');
+        if (btn)  btn.style.display = 'none';
+    }
+
+    function saveIanBlank(input) {
+        try { localStorage.setItem('arrival-ian-blank-' + input.id, input.value); } catch(e) {}
+    }
+
+    function restartIanWords() {
+        if (!confirm('Clear all your answers for Ian\u2019s Words and start over?')) return;
+        if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
+        try {
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                const k = localStorage.key(i);
+                if (k && (k.startsWith('arrival-ian-blank-') || k.startsWith('arrival-ian-reveal-'))) {
+                    localStorage.removeItem(k);
+                }
+            }
+        } catch(e) {}
+        document.querySelectorAll('#panel-words .fill-blank__input').forEach(inp => {
+            inp.value = '';
+            inp.classList.remove('correct');
+            inp.disabled = false;
+        });
+        document.querySelectorAll('#panel-words .scene-bank.open').forEach(b => b.classList.remove('open'));
+        document.querySelectorAll('#panel-words .scene-reveal-note.open').forEach(n => n.classList.remove('open'));
+        document.querySelectorAll('#panel-words .scene-reveal-btn').forEach(b => b.style.display = '');
+        const nextBtn = document.getElementById('next-btn-words');
+        if (nextBtn) nextBtn.style.display = 'none';
+        showScene(0);
+    }
+
+    // Restore saved blanks and revealed scenes, then start at first incomplete scene
+    document.querySelectorAll('#panel-words .fill-blank__input').forEach(input => {
+        try {
+            const saved = localStorage.getItem('arrival-ian-blank-' + input.id);
+            if (saved !== null) input.value = saved;
+        } catch(e) {}
+    });
+    ['1','2','3','4','5'].forEach(n => {
+        try { if (localStorage.getItem('arrival-ian-reveal-' + n)) revealIanScene(n); } catch(e) {}
+    });
+    let startScene = 0;
+    for (let i = 0; i < totalScenes - 1; i++) {
+        if (isSceneCorrect(i)) startScene = Math.min(i + 1, totalScenes - 1);
+        else break;
+    }
+    showScene(startScene);
+
+    function wordsPersist(num, val) {
+        try { localStorage.setItem('arrival-ian-words-' + num, val); } catch(e) {}
+        if (val && val.trim()) document.getElementById('next-btn-words').style.display = 'block';
+    }
+
+    function wordsRestore() {
+        ['1','2','3'].forEach(n => {
+            try {
+                const saved = localStorage.getItem('arrival-ian-words-' + n);
+                const el    = document.getElementById('words-q' + n);
+                if (saved && el) { el.value = saved; document.getElementById('next-btn-words').style.display = 'block'; }
+            } catch(e) {}
+        });
+    }
+    wordsRestore();
+
+    /* ══════════════════════════════════════════════
+       TAB 3: WHAT WOULD IAN SAY?
+    ══════════════════════════════════════════════ */
+    const SCENARIOS = {
+        a: {
+            title: 'Responding to the Truth',
+            context: 'Ian responds to Louise telling him the truth.',
+            prompt: 'Decide when she tells him, where they are, and how he reacts. Then write 3\u20134 sentences in his voice.'
+        },
+        b: {
+            title: "Hannah's First Birthday",
+            context: 'Ian speaks at Hannah\u2019s first birthday.',
+            prompt: 'Decide who is in the room, what he focuses on, and what he does not yet know. Then write 3\u20134 sentences in his voice.'
+        },
+        c: {
+            title: 'Choose Your Own Scenario',
+            context: 'Ian speaks in a moment you choose \u2014 to Louise, to Hannah, to the heptapods, or to himself.',
+            prompt: 'Decide who he is speaking to, when, and what is at stake. Then write 3\u20134 sentences in his voice.'
+        }
+    };
+
+    const WORD_BANKS = {
+        scientific: {
+            words: ['cornerstone','civilization','science','hypothesis','theory','language',
+                    'mathematician','binary','Fibonacci','pattern','weapon','gift','heptapod',
+                    'non-linear','time','perceive','rewire','brain','purpose','random',
+                    'translate','signal','equation','communicate'],
+            phrases: [
+                'Well, the cornerstone of civilization isn\u2019t language, it\u2019s science.',
+                'If you immerse yourself into a foreign language, then you can actually rewire your brain.',
+                'Yeah. It affects how you see everything.',
+                'It\u2019s not a weapon. It\u2019s a gift. The weapon is their language. They gave it to us.',
+                'If you learn it, when you really learn it, you begin to perceive time the way that they do.',
+                'You approach language like a mathematician.',
+                'I was thinking Abbott and Costello.'
+            ]
+        },
+        personal: {
+            words: ['stars','feel','surprised','dream','single','thinking','meet','baby',
+                    'curious','wrong','great','tilted','coffee','honor','moment'],
+            phrases: [
+                'Maybe I\u2019d say what I feel more often.',
+                'I\u2019ve had my head tilted up to the stars for as long as I can remember. You know what surprised me the most? It wasn\u2019t meeting them. It was meeting you.',
+                'I watched you steer us around these communication traps that I didn\u2019t even know existed.',
+                'Are you dreaming in their language?',
+                'You wanna make a baby?',
+                'I guess that\u2019s why I\u2019m still single.',
+                'Yeah, it\u2019s great. Even if it\u2019s wrong.'
+            ]
+        }
+    };
+
+    let activeScenario = null;
+
+    const BANK_INSTRUCTIONS = {
+        scientific: 'Use these words to capture Ian\u2019s analytical register. Weave them naturally into your monologue \u2014 don\u2019t force every word in.',
+        personal: 'These are the words and phrases Ian uses when emotion breaks through his scientific framing. Mix them with his analytical vocabulary to capture how he moves between logic and feeling.'
+    };
+
+    function buildWordBanks() {
+        const row = document.getElementById('word-bank-row');
+        const banks = [
+            { key: 'scientific', label: 'Ian\u2019s Scientific Language' },
+            { key: 'personal',   label: 'Ian\u2019s Personal Language' }
+        ];
+        row.innerHTML = '';
+        banks.forEach(b => {
+            const data = WORD_BANKS[b.key];
+            const div = document.createElement('div');
+            div.className = 'word-bank';
+            const pills = data.words.map(w => '<span class="word-bank-pill">' + w + '</span>').join(' ');
+            const lis  = data.phrases.map(p => '<li>\u201c' + p + '\u201d</li>').join('');
+            div.innerHTML =
+                '<button class="word-bank-toggle" aria-expanded="false" onclick="toggleBank(this)">' +
+                    '<span class="arrow">\u25B6</span> ' + b.label +
+                '</button>' +
+                '<div class="word-bank-body">' +
+                    '<p class="word-bank-instruction">' + BANK_INSTRUCTIONS[b.key] + '</p>' +
+                    '<div class="word-bank-pills">' + pills + '</div>' +
+                    '<ul class="word-bank-phrases">' + lis + '</ul>' +
+                '</div>';
+            row.appendChild(div);
+        });
+    }
+    buildWordBanks();
+
+    function toggleBank(btn) {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+    }
+
+    function openScenario(id) {
+        activeScenario = id;
+        const s = SCENARIOS[id];
+        document.getElementById('write-context').textContent = s.context;
+        document.getElementById('write-prompt').textContent = s.prompt;
+
+        // Restore saved writing
+        const ta = document.getElementById('monologue-writing');
+        try { ta.value = localStorage.getItem('arrival-ian-monologue-' + id) || ''; } catch(e) {}
+
+        document.getElementById('monologue-choose').style.display = 'none';
+        document.getElementById('monologue-write').style.display = 'block';
+    }
+
+    function scenarioBack() {
+        document.getElementById('monologue-write').style.display = 'none';
+        document.getElementById('monologue-choose').style.display = 'block';
+    }
+
+    function monologuePersist() {
+        if (!activeScenario) return;
+        try {
+            localStorage.setItem('arrival-ian-monologue-' + activeScenario,
+                document.getElementById('monologue-writing').value);
+        } catch(e) {}
+    }
+
+    function buildPdf() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+        const charName      = document.querySelector('.page-header__name')?.textContent?.trim() || 'Ian Donnelly';
+        const scenarioTitle = (activeScenario && SCENARIOS[activeScenario]?.title) || '';
+        const prompt        = document.getElementById('write-prompt')?.textContent?.trim() || '';
+        const text          = document.getElementById('monologue-writing')?.value || '';
+        const W = 170;
+        let y = 20;
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        doc.setTextColor(110, 110, 110);
+        doc.text('ARRIVAL \u2014 CHARACTER STUDY', 20, y);
+        y += 8;
+
+        doc.setFontSize(20);
+        doc.setTextColor(30, 30, 30);
+        doc.text(charName, 20, y);
+        y += 6;
+
+        doc.setDrawColor(190, 190, 190);
+        doc.line(20, y, 190, y);
+        y += 8;
+
+        if (scenarioTitle) {
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(13);
+            doc.setTextColor(50, 50, 50);
+            doc.text(scenarioTitle, 20, y);
+            y += 7;
+        }
+
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(10);
+        doc.setTextColor(110, 110, 110);
+        const promptLines = doc.splitTextToSize(prompt, W);
+        doc.text(promptLines, 20, y);
+        y += promptLines.length * 5 + 8;
+
+        doc.setDrawColor(190, 190, 190);
+        doc.line(20, y, 190, y);
+        y += 8;
+
+        doc.setFont('times', 'normal');
+        doc.setFontSize(13);
+        doc.setTextColor(20, 20, 20);
+        const monoLines = doc.splitTextToSize(text || '(nothing written yet)', W);
+        if (y + monoLines.length * 6 > 270) { doc.addPage(); y = 20; }
+        doc.text(monoLines, 20, y);
+
+        const slug = charName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        doc.save(slug + '-monologue.pdf');
+    }
+    function savePdf() {
+        if (window.jspdf) { buildPdf(); return; }
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+        s.onload = buildPdf;
+        document.head.appendChild(s);
+    }
+
+    </script>
+</body>
+</html>

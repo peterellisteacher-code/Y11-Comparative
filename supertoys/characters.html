@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Characters | Super-Toys Last All Summer Long</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Dancing+Script:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Press+Start+2P&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared/tokens.css">
+    <style>
+        html, body { width: 100%; height: 100dvh; overflow: hidden; background: #0a1a0a; }
+        body { font-family: 'Inter', sans-serif; font-size: var(--text-base); color: #F5F0E6; }
+
+        /* ==============================
+           BACKGROUND — Dark garden grid
+           ============================== */
+        .bg {
+            position: fixed; inset: 0; z-index: 0;
+            background: radial-gradient(ellipse at 50% 60%, rgba(0,60,30,0.4) 0%, #0a1a0a 70%);
+        }
+        .bg::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(rgba(0,255,100,0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,255,100,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.4;
+        }
+
+        /* ==============================
+           LAYOUT — Wide desktop container
+           ============================== */
+        .page {
+            position: relative; z-index: 1;
+            max-width: 1300px; margin: 0 auto;
+            padding: var(--space-xl) var(--space-lg);
+            text-align: center;
+        }
+
+        /* ==============================
+           HEADER
+           ============================== */
+        .back-link {
+            display: inline-flex; align-items: center; gap: var(--space-xs);
+            color: rgba(245, 240, 230, 0.5);
+            text-decoration: none;
+            font-size: var(--text-base); font-weight: 500;
+            margin-bottom: var(--space-lg);
+            padding: var(--space-xs) var(--space-sm); border-radius: 4px;
+            transition: color 0.2s, background 0.2s;
+        }
+        .back-link:hover { color: rgba(245, 240, 230, 0.85); background: rgba(245,240,230,0.05); }
+        .back-link:focus-visible { outline: 2px solid #FFD700; outline-offset: 3px; }
+
+        .page-title {
+            font-family: 'Bungee', cursive;
+            font-size: var(--text-2xl);
+            color: #F5F0E6;
+            text-shadow: 0 0 20px rgba(0,255,100,0.15);
+            margin-bottom: var(--space-xs);
+        }
+        .page-subtitle {
+            font-family: 'Libre Baskerville', serif;
+            font-style: italic;
+            font-size: var(--text-base);
+            color: rgba(245, 240, 230, 0.65);
+            margin-bottom: var(--space-xl);
+        }
+
+        /* ==============================
+           CHARACTER GRID — 5 wide columns, large sprites
+           ============================== */
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: var(--space-md);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .character-card {
+            position: relative;
+            background: rgba(245, 240, 230, 0.04);
+            border: 1px solid rgba(245, 240, 230, 0.08);
+            border-radius: 12px;
+            padding: var(--space-md) var(--space-sm) var(--space-md);
+            text-align: center;
+            transition: background 0.3s, border-color 0.3s, transform 0.3s;
+        }
+        .character-card.active {
+            cursor: pointer;
+            border-color: rgba(0, 255, 100, 0.2);
+        }
+        .character-card.active:hover {
+            background: rgba(0, 255, 100, 0.06);
+            border-color: rgba(0, 255, 100, 0.35);
+            transform: translateY(-4px);
+        }
+        .character-card.active:focus-visible {
+            outline: 2px solid #FFD700;
+            outline-offset: 3px;
+        }
+        .character-card.locked {
+            opacity: 0.4;
+            cursor: default;
+        }
+
+        /* Sprites — 160px for desktop visibility */
+        .sprite-wrap {
+            width: 160px; height: 160px;
+            margin: 0 auto var(--space-sm);
+            image-rendering: pixelated;
+        }
+        .sprite-wrap img {
+            width: 100%; height: 100%;
+            image-rendering: pixelated;
+        }
+        .character-card.locked .sprite-wrap {
+            filter: grayscale(1) brightness(0.6);
+        }
+
+        /* Character info — all 1rem+ */
+        .char-name {
+            font-family: 'Press Start 2P', monospace;
+            font-size: var(--text-base);
+            letter-spacing: 0.05em;
+            color: #F5F0E6;
+            margin-bottom: var(--space-xs);
+        }
+        .char-role {
+            font-family: 'Libre Baskerville', serif;
+            font-style: italic;
+            font-size: var(--text-base);
+            color: rgba(245, 240, 230, 0.7);
+            line-height: 1.5;
+        }
+        .char-activity {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            font-weight: 500;
+            color: rgba(0, 255, 100, 0.7);
+            margin-top: var(--space-sm);
+        }
+        .character-card.locked .char-activity {
+            color: rgba(245, 240, 230, 0.25);
+        }
+
+        /* Lock icon */
+        .lock-badge {
+            position: absolute;
+            top: 12px; right: 12px;
+            font-size: var(--text-base);
+            opacity: 0.3;
+        }
+
+        /* ==============================
+           PROMPT SECTION
+           ============================== */
+        .prompt-section {
+            margin-top: var(--space-xl);
+            padding: var(--space-md) var(--space-lg);
+            background: rgba(245, 240, 230, 0.03);
+            border: 1px solid rgba(245, 240, 230, 0.06);
+            border-radius: 10px;
+            max-width: 700px;
+            margin-left: auto; margin-right: auto;
+        }
+        .prompt-section p {
+            font-family: 'Libre Baskerville', serif;
+            font-size: var(--text-base);
+            line-height: 1.7;
+            color: rgba(245, 240, 230, 0.6);
+        }
+        .prompt-section strong {
+            color: rgba(245, 240, 230, 0.85);
+        }
+
+        /* ==============================
+           RESPONSIVE — Desktop-first degradation
+           ============================== */
+        @media (max-width: 1000px) {
+            .character-grid { grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
+            .sprite-wrap { width: 160px; height: 160px; }
+        }
+        @media (max-width: 600px) {
+            .character-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-sm); }
+            .sprite-wrap { width: 120px; height: 120px; }
+            .page { padding: var(--space-md) var(--space-sm) var(--space-xl); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="page">
+    <a href="index.html" class="back-link">&#8592; Super-Toys</a>
+
+    <h1 class="page-title">Characters</h1>
+    <p class="page-subtitle">Who are they, really?</p>
+
+    <div class="character-grid">
+        <a href="characters/david.html" class="character-card active" style="text-decoration:none; color:inherit;">
+            <div class="sprite-wrap">
+                <img src="sprites/david/rotations/south.png" alt="David">
+            </div>
+            <div class="char-name">David</div>
+        </a>
+
+        <a href="characters/teddy.html" class="character-card active" style="text-decoration:none; color:inherit;">
+            <div class="sprite-wrap">
+                <img src="sprites/teddy/rotations/south.png" alt="Teddy">
+            </div>
+            <div class="char-name">Teddy</div>
+        </a>
+
+        <a href="characters/monica.html" class="character-card active" style="text-decoration:none; color:inherit;">
+            <div class="sprite-wrap">
+                <img src="sprites/monica/rotations/south.png" alt="Monica">
+            </div>
+            <div class="char-name">Monica</div>
+        </a>
+
+        <a href="characters/henry.html" class="character-card active" style="text-decoration:none; color:inherit;">
+            <div class="sprite-wrap">
+                <img src="sprites/henry/rotations/south.png" alt="Henry">
+            </div>
+            <div class="char-name">Henry</div>
+        </a>
+
+        <a href="characters/servingman.html" class="character-card active" style="text-decoration:none; color:inherit;">
+            <div class="sprite-wrap">
+                <img src="sprites/servingman/rotations/south.png" alt="Serving-Man">
+            </div>
+            <div class="char-name">Serving-Man</div>
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

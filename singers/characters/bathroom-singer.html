@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Bathroom Singer | The Singers</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;1,400;1,600&family=Special+Elite&display=swap" rel="stylesheet">
+
+    <style>
+        /* =============================================
+           TOKENS
+           ============================================= */
+        :root {
+            --space-xs:  8px;
+            --space-sm:  16px;
+            --space-md:  24px;
+            --space-lg:  32px;
+            --space-xl:  48px;
+            --space-2xl: 64px;
+
+            --text-sm:   14px;
+            --text-base: 18px;
+            --text-lg:   24px;
+            --text-xl:   32px;
+            --text-2xl:  43px;
+
+            /* Bar palette */
+            --bar-dark:    #0A0704;
+            --bar-amber:   #D4943A;
+            --bar-text:    #E8DDD0;
+            --bar-muted:   rgba(232,221,208,0.55);
+            --bar-surface: rgba(255,255,255,0.045);
+            --bar-border:  rgba(232,221,208,0.10);
+
+            /* Character accent — teal-blue: cold, outside, early morning */
+            --accent:      #5A8EA8;
+            --accent-dim:  rgba(90,142,168,0.22);
+        }
+
+        /* =============================================
+           RESET & VIEWPORT LOCK
+           ============================================= */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            height: 100dvh; overflow: hidden;
+            background: var(--bar-dark);
+            color: var(--bar-text);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            line-height: 1.6;
+        }
+
+        /* =============================================
+           BACKGROUND — character-tinted bar atmosphere
+           ============================================= */
+        .bg {
+            position: fixed; inset: 0; z-index: 0;
+            background:
+                radial-gradient(ellipse at 18% 55%, rgba(90,142,168,0.18) 0%, transparent 52%),
+                radial-gradient(ellipse at 88% 75%, rgba(212,148,58,0.07) 0%, transparent 40%);
+        }
+        /* Dingy bar atmosphere — brick + smoke layered behind the page */
+        .bg-bar {
+            position: fixed; inset: 0; z-index: 0;
+            opacity: 0.28;
+            background:
+                repeating-linear-gradient(0deg,
+                    transparent 0px, transparent 18px,
+                    rgba(6,4,1,0.35) 18px, rgba(6,4,1,0.35) 19px),
+                repeating-linear-gradient(90deg,
+                    transparent 0px, transparent 50px,
+                    rgba(6,4,1,0.18) 50px, rgba(6,4,1,0.18) 51px);
+            pointer-events: none;
+        }
+        .bg-smoke {
+            position: fixed; inset: 0; z-index: 0;
+            opacity: 0.45;
+            background:
+                radial-gradient(ellipse 40% 30% at 35% 30%,
+                    rgba(160,170,180,0.07) 0%, transparent 80%),
+                radial-gradient(ellipse 35% 28% at 65% 75%,
+                    rgba(140,155,170,0.06) 0%, transparent 80%);
+            background-size: 140% 140%;
+            background-position: 0% 0%;
+            pointer-events: none;
+            animation: bgSmokeDrift 30s ease-in-out infinite;
+        }
+        @keyframes bgSmokeDrift {
+            0%, 100% { background-position: 0% 0%; }
+            50%      { background-position: 5% -5%; }
+        }
+        .bg-neon {
+            position: fixed; top: 4%; left: 3%; z-index: 0;
+            width: 110px; height: 46px;
+            border-radius: 10px;
+            box-shadow:
+                0 0 6px rgba(196,30,30,0.30),
+                0 0 24px rgba(196,30,30,0.18),
+                0 0 60px rgba(196,30,30,0.08);
+            pointer-events: none;
+            opacity: 0.40;
+            animation: bgNeonHint 5s ease-in-out infinite;
+        }
+        @keyframes bgNeonHint {
+            0%, 100% { opacity: 0.40; }
+            50%      { opacity: 0.25; }
+        }
+        .bg-vignette {
+            position: fixed; inset: 0; z-index: 1;
+            background: radial-gradient(ellipse at 50% 50%,
+                transparent 20%, rgba(10,7,4,0.48) 60%, rgba(10,7,4,0.90) 100%);
+            pointer-events: none;
+        }
+
+        /* =============================================
+           PAGE SHELL — 3-row: header / main(1fr) / nav
+           ============================================= */
+        .page-shell {
+            position: relative; z-index: 2;
+            height: 100dvh; overflow: hidden;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+        }
+
+        /* =============================================
+           HEADER
+           ============================================= */
+        .page-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: var(--space-sm) var(--space-lg);
+            border-bottom: 1px solid var(--bar-border);
+            flex-shrink: 0;
+        }
+        .header-back {
+            display: inline-flex; align-items: center; gap: var(--space-xs);
+            font-size: var(--text-base); color: var(--bar-muted);
+            text-decoration: none; min-height: var(--space-xl);
+            padding: var(--space-xs) var(--space-sm);
+            border: 1px solid var(--bar-border); border-radius: 6px;
+            background: var(--bar-surface); transition: color 0.2s, border-color 0.2s;
+        }
+        .header-back:hover { color: var(--bar-amber); border-color: rgba(212,148,58,0.3); }
+        .header-label {
+            font-size: var(--text-sm); color: var(--bar-muted);
+            letter-spacing: 0.12em; text-transform: uppercase;
+        }
+        .header-step {
+            font-size: var(--text-sm); color: var(--accent);
+            font-weight: 500; letter-spacing: 0.05em;
+        }
+
+        /* =============================================
+           MAIN — 5+7 grid, locked height
+           ============================================= */
+        .page-main {
+            display: grid;
+            grid-template-rows: minmax(0, 1fr);
+            overflow: hidden;
+            padding: var(--space-md) var(--space-lg) var(--space-sm);
+        }
+        .page-grid {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            gap: var(--space-lg);
+            height: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* =============================================
+           LEFT PANEL — Character identity (persistent)
+           ============================================= */
+        .char-panel {
+            display: flex; flex-direction: column;
+            height: 100%; gap: var(--space-sm);
+            overflow: hidden;
+        }
+        /* =============================================
+           CHAR STAGE — large pixel character in a dingy bar
+           No photo. Stacked entirely with CSS grid (no absolute positioning).
+           ============================================= */
+        .char-stage {
+            flex: 1; min-height: 0;
+            border-radius: 8px; overflow: hidden;
+            background:
+                linear-gradient(180deg,
+                    rgba(20,14,7,0.65) 0%,
+                    rgba(90,142,168,0.10) 35%,
+                    rgba(10,7,4,0.95) 100%);
+            box-shadow: inset 0 0 0 1px var(--bar-border), 0 0 48px rgba(90,142,168,0.12);
+            display: grid;
+            grid-template-areas: "stack";
+        }
+        .char-stage > * {
+            grid-area: stack;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .stage-bg-walls {
+            background:
+                repeating-linear-gradient(0deg,
+                    transparent 0px, transparent 11px,
+                    rgba(6,4,1,0.40) 11px, rgba(6,4,1,0.40) 12px),
+                repeating-linear-gradient(90deg,
+                    transparent 0px, transparent 30px,
+                    rgba(6,4,1,0.22) 30px, rgba(6,4,1,0.22) 31px),
+                radial-gradient(ellipse at 50% 12%,
+                    rgba(180,210,230,0.18) 0%, transparent 55%),
+                radial-gradient(ellipse at 25% 55%,
+                    rgba(160,170,180,0.08) 0%, transparent 50%);
+            opacity: 0.78;
+        }
+        .stage-lamp {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: var(--space-md);
+        }
+        .stage-lamp-inner {
+            width: 240px; height: 110px;
+            background: radial-gradient(ellipse at 50% 30%,
+                rgba(220,235,250,0.28) 0%,
+                rgba(160,200,230,0.16) 30%,
+                rgba(90,142,168,0.05) 55%,
+                transparent 75%);
+            border-radius: 50%;
+            animation: lampFlicker 9s ease-in-out infinite;
+        }
+        @keyframes lampFlicker {
+            0%, 100% { opacity: 1; }
+            87% { opacity: 1; }
+            89% { opacity: 0.55; }
+            91% { opacity: 1; }
+            96% { opacity: 0.78; }
+            97% { opacity: 1; }
+        }
+        .stage-bg-floor {
+            background:
+                linear-gradient(to top,
+                    rgba(28,18,8,0.88) 0%,
+                    rgba(28,18,8,0.45) 12%,
+                    transparent 28%),
+                radial-gradient(ellipse at 50% 55%,
+                    transparent 30%, rgba(10,7,4,0.55) 100%);
+        }
+        .char-sprite-large {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            width: 256px; height: 384px;
+            justify-self: center;
+            align-self: end;
+            margin-bottom: var(--space-lg);
+            filter: drop-shadow(0 12px 24px rgba(0,0,0,0.70))
+                    drop-shadow(0 0 18px rgba(90,142,168,0.30));
+        }
+        .char-identity {
+            flex-shrink: 0; padding: var(--space-xs) 0 0;
+        }
+        .char-name {
+            font-family: 'Playfair Display', serif;
+            font-size: var(--text-2xl); font-style: italic; font-weight: 400;
+            color: var(--bar-text); line-height: 1.1;
+        }
+        .char-role {
+            font-size: var(--text-sm); color: var(--accent);
+            letter-spacing: 0.16em; text-transform: uppercase;
+            margin-top: var(--space-xs);
+        }
+
+        /* =============================================
+           RIGHT PANEL — Step content
+           ============================================= */
+        .step-panel {
+            display: flex; flex-direction: column;
+            height: 100%; overflow: hidden;
+        }
+        .step {
+            display: none; flex-direction: column;
+            height: 100%; gap: var(--space-md); overflow: hidden;
+        }
+        .step.active { display: flex; }
+
+        /* Step header */
+        .step-hd {
+            flex-shrink: 0;
+            display: flex; align-items: baseline; gap: var(--space-sm);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--bar-border);
+        }
+        .step-num {
+            font-size: var(--text-sm); color: var(--accent);
+            letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase;
+        }
+        .step-title {
+            font-family: 'Playfair Display', serif;
+            font-size: var(--text-xl); font-style: italic;
+            color: var(--bar-text);
+        }
+
+        /* =============================================
+           STEP 1 — FIRST LOOK
+           ============================================= */
+        .step-prompt {
+            flex-shrink: 0;
+            font-size: var(--text-base); color: var(--bar-muted); font-style: italic;
+        }
+        .obs-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-auto-rows: minmax(0, 1fr);
+            gap: var(--space-sm);
+            flex: 1; min-height: 0;
+        }
+        .obs-item {
+            display: grid;
+            grid-template-columns: var(--space-lg) 1fr var(--space-lg);
+            gap: var(--space-md); align-items: center;
+            padding: var(--space-sm) var(--space-md);
+            background: var(--bar-surface);
+            border: 1px solid var(--bar-border); border-radius: 8px;
+            min-height: 0;
+            text-align: left;
+            cursor: pointer;
+            color: var(--bar-text);
+            font-family: 'Inter', sans-serif;
+            transition: background 0.2s, border-color 0.2s, transform 0.1s;
+        }
+        .obs-item:hover {
+            border-color: var(--accent);
+            background: rgba(255,255,255,0.07);
+        }
+        .obs-item:active { transform: scale(0.995); }
+        .obs-item.noticed {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+        }
+        .obs-item:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 3px;
+        }
+        .obs-letter {
+            font-family: 'Playfair Display', serif;
+            font-size: var(--text-xl); font-style: italic;
+            color: var(--accent); line-height: 1.1;
+        }
+        .obs-text {
+            font-size: var(--text-base); line-height: 1.65; color: var(--bar-text);
+        }
+        .obs-check {
+            font-size: var(--text-lg);
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1.1;
+            justify-self: end;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+        .obs-item.noticed .obs-check { opacity: 1; }
+        .obs-own {
+            grid-column: 1 / -1;
+            display: flex; flex-direction: column; gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--bar-surface);
+            border: 1px dashed var(--bar-border); border-radius: 8px;
+            min-height: 0;
+        }
+        .obs-own-label {
+            font-size: var(--text-sm); color: var(--accent);
+            letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600;
+        }
+        .obs-own-input {
+            width: 100%;
+            background: transparent; border: none;
+            color: var(--bar-text);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            line-height: 1.5;
+            outline: none; resize: none;
+        }
+        .obs-own-input::placeholder { color: var(--bar-muted); font-style: italic; }
+
+        /* =============================================
+           STEP 2 — THE SONG
+           ============================================= */
+        .song-meta {
+            flex-shrink: 0;
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--bar-border);
+        }
+        .song-title {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-size: var(--text-lg); font-style: italic;
+            color: var(--bar-text);
+        }
+        .song-credit {
+            display: block; font-size: var(--text-sm); color: var(--bar-muted);
+            margin-top: 2px; /* optical nudge */
+        }
+        .lyrics-container {
+            flex: 1; min-height: 0;
+            overflow-y: auto; padding-right: var(--space-sm);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(212,148,58,0.22) transparent;
+        }
+        .lyrics-container::-webkit-scrollbar { width: 4px; }
+        .lyrics-container::-webkit-scrollbar-thumb { background: rgba(212,148,58,0.22); border-radius: 2px; }
+        .lyrics {
+            font-family: 'Special Elite', cursive;
+            font-size: var(--text-base); line-height: 2.0;
+            color: rgba(232,221,208,0.90);
+        }
+        .lyric-stanza { margin-bottom: var(--space-md); }
+        .lyric-stanza:last-child { margin-bottom: 0; }
+
+        /* =============================================
+           STEP 3 — "THE AUDIENCE HE CHOSE" FIXTURE-REVEAL
+           ============================================= */
+        .activity-intro {
+            flex-shrink: 0;
+            font-size: var(--text-base); color: var(--bar-muted); font-style: italic;
+            line-height: 1.65;
+        }
+
+        /* Fixture grid — the 4 things he sang to */
+        .fixture-board {
+            flex-shrink: 0;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-sm);
+        }
+        .fixture {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm);
+            background: var(--bar-surface);
+            border: 1px solid var(--bar-border);
+            border-radius: 8px;
+            color: var(--bar-text);
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.2s, border-color 0.2s, transform 0.2s;
+            min-height: var(--space-2xl);
+        }
+        .fixture:hover { border-color: var(--accent); transform: translateY(-2px); }
+        .fixture-icon {
+            font-family: 'Playfair Display', serif;
+            font-size: var(--text-xl);
+            color: var(--accent);
+            line-height: 1;
+        }
+        .fixture-label {
+            font-size: var(--text-base);
+            color: var(--bar-text);
+            font-weight: 500;
+        }
+        .fixture-hint {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: var(--text-sm);
+            color: var(--bar-muted);
+            line-height: 1.3;
+        }
+        .fixture.visited {
+            background: rgba(90,142,168,0.12);
+            border-color: var(--accent);
+        }
+        .fixture.active {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Reveal panel — shows lyric + what this fixture hears */
+        .fixture-reveal {
+            flex: 1; min-height: 0;
+            display: flex; flex-direction: column;
+            gap: var(--space-sm);
+            padding: var(--space-md);
+            background: var(--bar-surface);
+            border: 1px solid var(--bar-border);
+            border-radius: 8px;
+            transition: opacity 0.4s ease;
+        }
+        .reveal-empty {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--bar-muted);
+            font-size: var(--text-base);
+            text-align: center;
+            margin: auto;
+        }
+        .reveal-empty.hidden { display: none; }
+        .reveal-content { display: none; flex-direction: column; gap: var(--space-sm); }
+        .reveal-content.shown { display: flex; }
+        .reveal-fixture-name {
+            font-size: var(--text-sm);
+            color: var(--accent);
+            letter-spacing: 0.16em; text-transform: uppercase;
+            font-weight: 600;
+        }
+        .reveal-lyric {
+            font-family: 'Special Elite', cursive;
+            font-size: var(--text-base);
+            color: rgba(232,221,208,0.92);
+            line-height: 1.7;
+            padding-left: var(--space-sm);
+            border-left: 2px solid var(--accent);
+        }
+        .reveal-hears {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: var(--text-base);
+            color: var(--bar-text);
+            line-height: 1.5;
+        }
+
+        /* Final reflection — appears once all 4 fixtures visited */
+        .fixture-reflection {
+            flex-shrink: 0;
+            display: flex; gap: var(--space-md); align-items: flex-start;
+            padding: 0 var(--space-md);
+            background: rgba(90,142,168,0.10);
+            border: 1px solid rgba(90,142,168,0.30);
+            border-width: 0;
+            border-radius: 8px;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transform: translateY(8px);
+            transition: max-height 0.7s ease, opacity 0.7s ease, transform 0.7s ease,
+                        padding 0.7s ease, border-width 0.7s ease;
+            pointer-events: none;
+        }
+        .fixture-reflection.revealed {
+            max-height: 400px;
+            padding: var(--space-md);
+            border-width: 1px;
+            opacity: 1; transform: translateY(0);
+            pointer-events: auto;
+        }
+        .q-num {
+            font-family: 'Playfair Display', serif;
+            font-size: var(--text-xl); font-style: italic;
+            color: var(--accent); flex-shrink: 0; line-height: 1.1;
+            width: var(--space-lg);
+        }
+        .q-text {
+            font-size: var(--text-base); line-height: 1.55; color: var(--bar-text);
+        }
+        .reflection-pivot { color: var(--accent); font-style: italic; }
+
+        /* =============================================
+           CHARACTER TAGLINE + AMBIENT GLOW
+           ============================================= */
+        .char-tagline {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--bar-muted);
+            font-size: var(--text-sm);
+            line-height: 1.4;
+            margin-top: var(--space-xs);
+        }
+        @keyframes ambientPulse {
+            0%, 100% { box-shadow: inset 0 0 0 1px var(--bar-border), 0 0 14px rgba(90,142,168,0.12); }
+            50%      { box-shadow: inset 0 0 0 1px var(--bar-border), 0 0 28px rgba(90,142,168,0.30); }
+        }
+        .char-stage { animation: ambientPulse 8s ease-in-out infinite; }
+
+        /* =============================================
+           NEXT BUTTON — pulses when all 3 obs cards are noticed
+           ============================================= */
+        @keyframes nextPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(212,148,58,0); }
+            50%      { box-shadow: 0 0 0 8px rgba(212,148,58,0.20); }
+        }
+        .nav-btn--primary.ready { animation: nextPulse 1.6s ease-in-out infinite; }
+
+        /* =============================================
+           STEP 4 — YOUR MONOLOGUE
+           ============================================= */
+        .monologue-instruction {
+            flex-shrink: 0;
+            font-size: var(--text-sm); color: var(--accent);
+            letter-spacing: 0.12em; text-transform: uppercase;
+        }
+        .monologue-prompt {
+            flex-shrink: 0;
+            font-size: var(--text-base); color: var(--bar-muted); font-style: italic;
+            line-height: 1.65;
+            padding: var(--space-md);
+            background: var(--bar-surface);
+            border: 1px solid var(--bar-border); border-radius: 8px;
+        }
+        .monologue-area {
+            flex: 1; min-height: 0;
+            width: 100%;
+            background: rgba(90,142,168,0.04);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            color: var(--bar-text);
+            font-family: 'Special Elite', cursive;
+            font-size: var(--text-base);
+            line-height: 1.8;
+            padding: var(--space-md);
+            resize: none;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .monologue-area::placeholder {
+            color: var(--bar-muted);
+            opacity: 0.55;
+            font-style: italic;
+        }
+        .monologue-area:focus {
+            border-color: var(--bar-amber);
+            background: rgba(212,148,58,0.03);
+        }
+
+        /* =============================================
+           NAV BAR
+           ============================================= */
+        .page-nav {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: var(--space-sm) var(--space-lg);
+            border-top: 1px solid var(--bar-border);
+            flex-shrink: 0;
+        }
+        .nav-btn {
+            display: inline-flex; align-items: center; gap: var(--space-xs);
+            min-height: var(--space-xl); padding: var(--space-sm) var(--space-md);
+            font-size: var(--text-base); font-weight: 600;
+            border: none; border-radius: 8px; cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .nav-btn--primary { color: var(--bar-dark); background: var(--accent); }
+        .nav-btn--ghost {
+            color: var(--bar-muted); background: var(--bar-surface);
+            border: 1px solid var(--bar-border);
+        }
+        .nav-btn--ghost:hover:not(:disabled) { color: var(--bar-text); }
+        .nav-btn:disabled { opacity: 0.30; cursor: not-allowed; }
+        .nav-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+        .nav-btn--pdf { color: var(--bar-dark); background: var(--bar-amber); display: none; }
+        .nav-btn--pdf:hover { background: #c4841d; }
+
+        @media print {
+            .bg, .bg-bar, .bg-smoke, .bg-neon, .bg-vignette,
+            .page-nav, .char-panel,
+            .step:not(.active) { display: none !important; }
+            html, body { height: auto; overflow: auto; background: #fff; color: #111; }
+            .page-shell { height: auto; overflow: auto; }
+            .page-header { border-bottom: 1px solid #ccc; padding: 12px 24px; }
+            .header-back, .header-step { display: none; }
+            .header-label { color: #555; }
+            .page-main { padding: 24px; overflow: auto; }
+            .page-grid { grid-template-columns: 1fr; height: auto; }
+            .step-panel, .step { height: auto; overflow: visible; }
+            .step-hd { border-bottom: 1px solid #ccc; }
+            .step-num { color: var(--accent); }
+            .step-title, .char-name { color: #111; }
+            .monologue-instruction { color: #555; }
+            .monologue-prompt { background: #f5f5f5; border: 1px solid #ddd; color: #333; }
+            .monologue-area {
+                border: 1px solid #bbb; background: #fff; color: #111;
+                height: auto; min-height: 220px;
+                font-family: Georgia, serif; font-size: 14px;
+                print-color-adjust: exact;
+            }
+        }
+        .nav-dots {
+            display: flex; gap: var(--space-xs); align-items: center;
+        }
+        .nav-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--bar-border);
+            transition: background 0.3s, transform 0.3s;
+        }
+        .nav-dot.active { background: var(--accent); transform: scale(1.3); }
+
+        /* =============================================
+           STEP 2 — EXPANDED: lyrics take the whole stage
+           ============================================= */
+        .page-grid.step-song { grid-template-columns: 1fr; }
+        .page-grid.step-song .char-panel { display: none; }
+
+        /* Global chrome shrink — activity dominates on every step */
+        .page-header { padding: var(--space-xs) var(--space-md); }
+        .header-back {
+            font-size: var(--text-sm);
+            min-height: auto;
+            padding: var(--space-xs);
+        }
+        .page-main {
+            padding: var(--space-sm) var(--space-lg) var(--space-xs);
+        }
+        .page-nav { padding: var(--space-xs) var(--space-md); }
+        .nav-btn {
+            font-size: var(--text-sm);
+            min-height: auto;
+            padding: var(--space-xs) var(--space-sm);
+        }
+        .step { gap: var(--space-sm); }
+        .step-hd {
+            padding-bottom: var(--space-xs);
+            border-bottom: none;
+        }
+        .step-title { font-size: var(--text-base); }
+        .page-grid.step-song .song-meta {
+            padding-bottom: var(--space-xs);
+            border-bottom: none;
+        }
+        .page-grid.step-song .song-title { font-size: var(--text-base); }
+        .page-grid.step-song .song-notes-area { padding-left: var(--space-md); }
+
+        .song-work {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: var(--space-lg);
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+        }
+        .song-work .lyrics-container { min-height: 0; }
+        .song-work .lyrics {
+            font-size: var(--text-sm);
+            line-height: 1.9;
+        }
+        .page-grid.step-song .song-notes-title { display: none; }
+
+        /* Clickable lyric lines */
+        .lyric-line {
+            display: block;
+            cursor: pointer;
+            padding: 0 var(--space-xs);
+            border-radius: 3px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .lyric-line:hover { background: rgba(255,255,255,0.06); }
+        .lyric-line.highlighted {
+            background: var(--accent-dim);
+            color: var(--bar-text);
+        }
+
+        /* Notes sidebar */
+        .song-notes-area {
+            display: flex; flex-direction: column;
+            gap: var(--space-sm);
+            overflow: hidden; min-height: 0;
+            border-left: 1px solid var(--bar-border);
+            padding-left: var(--space-lg);
+        }
+        .song-notes-title {
+            font-size: var(--text-sm);
+            color: var(--accent);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 600;
+            padding-bottom: var(--space-xs);
+            border-bottom: 1px solid var(--bar-border);
+        }
+        .song-notes-intro {
+            font-size: var(--text-sm);
+            color: var(--bar-muted);
+            font-style: italic;
+            line-height: 1.5;
+        }
+        .song-notes-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex; flex-direction: column;
+            gap: var(--space-sm);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(212,148,58,0.22) transparent;
+            padding-right: var(--space-xs);
+        }
+        .song-notes-list::-webkit-scrollbar { width: 4px; }
+        .song-notes-list::-webkit-scrollbar-thumb { background: rgba(212,148,58,0.22); border-radius: 2px; }
+        .song-notes-empty {
+            font-size: var(--text-sm);
+            color: var(--bar-muted);
+            font-style: italic;
+            text-align: center;
+            padding: var(--space-md);
+            line-height: 1.5;
+        }
+        .song-note {
+            position: relative;
+            padding: var(--space-sm);
+            padding-right: var(--space-lg);
+            background: var(--bar-surface);
+            border: 1px solid var(--bar-border);
+            border-left: 3px solid var(--accent);
+            border-radius: 6px;
+        }
+        .song-note-remove {
+            position: absolute;
+            top: 4px; right: 6px;
+            background: none; border: none;
+            color: var(--bar-muted);
+            font-size: var(--text-lg);
+            line-height: 1;
+            cursor: pointer;
+            padding: 2px 6px;
+        }
+        .song-note-remove:hover { color: var(--accent); }
+        .song-note-quote {
+            font-family: 'Special Elite', cursive;
+            font-size: var(--text-sm);
+            color: var(--accent);
+            margin-bottom: var(--space-xs);
+            line-height: 1.4;
+        }
+        .song-note-thought {
+            width: 100%;
+            background: rgba(0,0,0,0.25);
+            border: 1px solid var(--bar-border);
+            border-radius: 4px;
+            color: var(--bar-text);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            padding: var(--space-xs) var(--space-sm);
+            min-height: 50px;
+            resize: vertical;
+            outline: none;
+            line-height: 1.5;
+        }
+        .song-note-thought:focus { border-color: var(--accent); }
+        .song-note-thought::placeholder {
+            color: var(--bar-muted);
+            font-style: italic;
+            opacity: 0.6;
+        }
+
+        /* =============================================
+           STEP 2 — LYRIC SELECTION
+           ============================================= */
+        .lyric-pick {
+            display: flex; flex-direction: column;
+            gap: var(--space-sm);
+            flex: 1; min-height: 0;
+            overflow: hidden;
+        }
+        .lyric-pick .lyrics-container { flex: 1; min-height: 0; }
+        .lyric-pick .lyrics { font-size: var(--text-sm); line-height: 1.9; }
+        .lyric-pick-footer {
+            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: space-between;
+            padding-top: var(--space-sm);
+            border-top: 1px solid var(--bar-border);
+        }
+        .lyric-pick-count {
+            font-size: var(--text-sm); color: var(--bar-muted);
+            letter-spacing: 0.08em;
+        }
+        .lyric-pick-count.ready { color: var(--accent); font-weight: 600; }
+
+        /* =============================================
+           STEP 3 — BACKSTORY
+           ============================================= */
+        .backstory-list {
+            flex: 1; min-height: 0;
+            overflow-y: auto;
+            display: flex; flex-direction: column;
+            gap: var(--space-sm);
+            padding-right: var(--space-xs);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(212,148,58,0.22) transparent;
+        }
+        .backstory-list::-webkit-scrollbar { width: 4px; }
+        .backstory-list::-webkit-scrollbar-thumb { background: rgba(212,148,58,0.22); border-radius: 2px; }
+        .backstory-item {
+            display: flex; flex-direction: column;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--bar-surface);
+            border: 1px solid var(--bar-border);
+            border-left: 3px solid var(--accent);
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+        .backstory-quote {
+            font-family: 'Special Elite', cursive;
+            font-size: var(--text-sm);
+            color: var(--accent);
+            line-height: 1.5;
+        }
+        .backstory-textarea {
+            width: 100%;
+            background: rgba(0,0,0,0.25);
+            border: 1px solid var(--bar-border);
+            border-radius: 4px;
+            color: var(--bar-text);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-sm);
+            padding: var(--space-xs) var(--space-sm);
+            min-height: 60px;
+            resize: vertical;
+            outline: none;
+            line-height: 1.5;
+        }
+        .backstory-textarea:focus { border-color: var(--accent); }
+        .backstory-textarea::placeholder { color: var(--bar-muted); font-style: italic; opacity: 0.6; }
+
+        /* =============================================
+           STEP 4 — MONO REF PANEL (replaces char-panel)
+           ============================================= */
+        .mono-ref-panel {
+            display: none;
+            flex-direction: column;
+            gap: var(--space-sm);
+            height: 100%;
+            overflow: hidden;
+        }
+        .page-grid.step-monologue .char-panel { display: none; }
+        .page-grid.step-monologue .mono-ref-panel { display: flex; }
+        .mono-ref-title {
+            font-size: var(--text-sm); color: var(--accent);
+            letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600;
+            padding-bottom: var(--space-xs);
+            border-bottom: 1px solid var(--bar-border);
+            flex-shrink: 0;
+        }
+        .mono-ref-list {
+            flex: 1; min-height: 0;
+            overflow-y: auto;
+            display: flex; flex-direction: column;
+            gap: var(--space-sm);
+            padding-right: var(--space-xs);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(212,148,58,0.22) transparent;
+        }
+        .mono-ref-list::-webkit-scrollbar { width: 4px; }
+        .mono-ref-list::-webkit-scrollbar-thumb { background: rgba(212,148,58,0.22); border-radius: 2px; }
+        .mono-ref-item {
+            padding: var(--space-sm);
+            background: var(--bar-surface);
+            border: 1px solid var(--bar-border);
+            border-left: 3px solid var(--accent);
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+        .mono-ref-quote {
+            font-family: 'Special Elite', cursive;
+            font-size: var(--text-sm);
+            color: var(--accent);
+            line-height: 1.4;
+            margin-bottom: var(--space-xs);
+        }
+        .mono-ref-back {
+            font-size: var(--text-sm);
+            color: var(--bar-text);
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        .mono-ref-back.empty {
+            color: var(--bar-muted); font-style: italic; opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg"></div>
+    <div class="bg-bar"></div>
+    <div class="bg-smoke"></div>
+    <div class="bg-neon"></div>
+    <div class="bg-vignette"></div>
+
+    <div class="page-shell">
+
+        <!-- HEADER -->
+        <header class="page-header">
+            <a href="../index.html" class="header-back">&#8592; The Singers</a>
+            <span class="header-label">Character Study</span>
+            <span class="header-step" id="stepIndicator">Step 1 of 4</span>
+        </header>
+
+        <!-- MAIN -->
+        <main class="page-main">
+            <div class="page-grid">
+
+                <!-- LEFT: pixel character on dingy bar stage (no photo) -->
+                <div class="char-panel">
+                    <div class="char-stage">
+                        <div class="stage-bg-walls"></div>
+                        <div class="stage-lamp"><div class="stage-lamp-inner"></div></div>
+                        <div class="stage-bg-floor"></div>
+                        <canvas class="char-sprite-large" id="charSprite" width="32" height="48"
+                                aria-hidden="true"></canvas>
+                    </div>
+                    <div class="char-identity">
+                        <h1 class="char-name">The Bathroom Singer</h1>
+                    </div>
+                </div>
+
+                <!-- LEFT (step 4): Lyrics + backstories reference -->
+                <aside class="mono-ref-panel">
+                    <span class="mono-ref-title">Your lines &amp; backstories</span>
+                    <div class="mono-ref-list" id="monoRefList"></div>
+                </aside>
+
+                <!-- RIGHT: Step content -->
+                <div class="step-panel">
+
+                    <!-- ── STEP 1: FIRST LOOK ── -->
+                    <div class="step active" data-step="0">
+                        <div class="step-hd">
+                            <span class="step-num">01</span>
+                            <h2 class="step-title">First Look</h2>
+                        </div>
+                        <p class="step-prompt">What questions do you have about him before he sings?</p>
+                        <div class="obs-list">
+                            <button type="button" class="obs-item">
+                                <span class="obs-letter">A</span>
+                                <span class="obs-text">Why is he singing alone?</span>
+                                <span class="obs-check" aria-hidden="true">&#10003;</span>
+                            </button>
+                            <button type="button" class="obs-item">
+                                <span class="obs-letter">B</span>
+                                <span class="obs-text">Who is he missing?</span>
+                                <span class="obs-check" aria-hidden="true">&#10003;</span>
+                            </button>
+                            <button type="button" class="obs-item">
+                                <span class="obs-letter">C</span>
+                                <span class="obs-text">Where is he heading next?</span>
+                                <span class="obs-check" aria-hidden="true">&#10003;</span>
+                            </button>
+                            <button type="button" class="obs-item">
+                                <span class="obs-letter">D</span>
+                                <span class="obs-text">Is he hiding from someone?</span>
+                                <span class="obs-check" aria-hidden="true">&#10003;</span>
+                            </button>
+                            <button type="button" class="obs-item">
+                                <span class="obs-letter">E</span>
+                                <span class="obs-text">Does he actually want company?</span>
+                                <span class="obs-check" aria-hidden="true">&#10003;</span>
+                            </button>
+                            <button type="button" class="obs-item">
+                                <span class="obs-letter">F</span>
+                                <span class="obs-text">What mood is he in?</span>
+                                <span class="obs-check" aria-hidden="true">&#10003;</span>
+                            </button>
+                            <label class="obs-own">
+                                <span class="obs-own-label">Your own question</span>
+                                <textarea class="obs-own-input" rows="2" placeholder="What do you want to ask about him?"></textarea>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- ── STEP 2: THE SONG ── -->
+                    <div class="step" data-step="1">
+                        <div class="step-hd">
+                            <span class="step-num">02</span>
+                            <h2 class="step-title">The Song &mdash; "In the Early Morning Rain"</h2>
+                        </div>
+                        <p class="step-prompt">Pick five lines that tell you the most about him. Click a line to highlight it; click again to remove it.</p>
+                        <div class="lyric-pick">
+                            <div class="lyrics-container">
+                                <div class="lyrics">
+                                    <p class="lyric-stanza">
+                                        <span class="lyric-line">In the early morning rain</span>
+                                        <span class="lyric-line">With a dollar in my hand</span>
+                                        <span class="lyric-line">With an achin' in my heart</span>
+                                        <span class="lyric-line">And my pockets full of sand</span>
+                                    </p>
+                                    <p class="lyric-stanza">
+                                        <span class="lyric-line">I'm a long way from home</span>
+                                        <span class="lyric-line">And I miss my loved ones so</span>
+                                        <span class="lyric-line">In the early morning rain</span>
+                                        <span class="lyric-line">With no place to go</span>
+                                    </p>
+                                    <p class="lyric-stanza">
+                                        <span class="lyric-line">Out on runway number nine</span>
+                                        <span class="lyric-line">Big 707 set to go</span>
+                                        <span class="lyric-line">But I'm stuck here in the grass</span>
+                                        <span class="lyric-line">Where the cold wind blows</span>
+                                    </p>
+                                    <p class="lyric-stanza">
+                                        <span class="lyric-line">Now, the liquor tasted good</span>
+                                        <span class="lyric-line">And the women all were fast</span>
+                                        <span class="lyric-line">Well, there she goes my friend</span>
+                                        <span class="lyric-line">Well, she's rollin' down at last</span>
+                                    </p>
+                                    <p class="lyric-stanza">
+                                        <span class="lyric-line">Hear the mighty engines roar</span>
+                                        <span class="lyric-line">See the silver bird on high</span>
+                                        <span class="lyric-line">She's away and westward bound</span>
+                                        <span class="lyric-line">Far above the cloud, she'll fly</span>
+                                    </p>
+                                    <p class="lyric-stanza">
+                                        <span class="lyric-line">Where the mornin' rain don't fall</span>
+                                        <span class="lyric-line">And the sun always shines</span>
+                                        <span class="lyric-line">She'll be flyin' o'er my home</span>
+                                        <span class="lyric-line">In about three hours time</span>
+                                    </p>
+                                    <p class="lyric-stanza">
+                                        <span class="lyric-line">This old airport's got me down</span>
+                                        <span class="lyric-line">It's no earthly good to me</span>
+                                        <span class="lyric-line">'Cause I'm stuck here on the ground</span>
+                                        <span class="lyric-line">As cold and drunk as I can be</span>
+                                    </p>
+                                    <p class="lyric-stanza">
+                                        <span class="lyric-line">You can't jump a jet plane</span>
+                                        <span class="lyric-line">Like you can a freight train</span>
+                                        <span class="lyric-line">So, I'd best be on my way</span>
+                                        <span class="lyric-line">In the early morning rain</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="lyric-pick-footer">
+                                <span class="lyric-pick-count" id="lyricPickCount">0 of 5 selected</span>
+                                <button type="button" class="nav-btn nav-btn--primary" id="lyricPickConfirm" disabled>Confirm &#8594;</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── STEP 3: BACKSTORY ── -->
+                    <div class="step" data-step="2">
+                        <div class="step-hd">
+                            <span class="step-num">03</span>
+                            <h2 class="step-title">Backstory</h2>
+                        </div>
+                        <p class="step-prompt">For each lyric, write a creative backstory that explains the relevance of that lyric to their life&mdash;an event, a relationship, a regret, etc. One sentence each, minimum.</p>
+                        <div class="backstory-list" id="backstoryList"></div>
+                    </div>
+
+                    <!-- ── STEP 4: YOUR MONOLOGUE ── -->
+                    <div class="step" data-step="3">
+                        <div class="step-hd">
+                            <span class="step-num">04</span>
+                            <h2 class="step-title">Your Monologue</h2>
+                        </div>
+                        <p class="monologue-instruction">Write in character</p>
+                        <div class="monologue-prompt">
+                            Write 4 sentences minimum of a monologue for this character, first explaining who they are delivering the monologue to.
+                        </div>
+                        <textarea class="monologue-area"
+                            placeholder="Start writing the Bathroom Singer's monologue..."
+                            aria-label="Monologue writing space"></textarea>
+                    </div>
+
+                </div><!-- /step-panel -->
+            </div><!-- /page-grid -->
+        </main>
+
+        <!-- NAV -->
+        <nav class="page-nav" aria-label="Step navigation">
+            <button class="nav-btn nav-btn--ghost" id="btnPrev" data-action="prev" disabled>&#8592; Previous</button>
+            <div class="nav-dots" id="navDots"></div>
+            <button class="nav-btn nav-btn--primary" id="btnNext" data-action="next">Next &#8594;</button>
+            <button class="nav-btn nav-btn--pdf" id="pdfBtn">&#8595; Save as PDF</button>
+        </nav>
+
+    </div><!-- /page-shell -->
+
+    <script>
+    /* Three independent try/catch blocks — failures are isolated.
+       Single onClick() helper — one click-bind site for the whole file. */
+    (() => {
+        const onClick = (el, fn) => { if (el) el.addEventListener('click', fn); };
+
+        /* ============== BLOCK A — STEP NAVIGATION ============== */
+        try {
+            const steps   = document.querySelectorAll('.step');
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+            const dotsEl  = document.getElementById('navDots');
+            const stepInd = document.getElementById('stepIndicator');
+            const grid    = document.querySelector('.page-grid');
+            let current = 0;
+
+            steps.forEach((_, i) => {
+                const d = document.createElement('div');
+                d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+                dotsEl.appendChild(d);
+            });
+            const dots = dotsEl.querySelectorAll('.nav-dot');
+
+            function goTo(idx) {
+                if (idx < 0 || idx >= steps.length) return;
+                steps[current].classList.remove('active');
+                dots[current].classList.remove('active');
+                current = idx;
+                steps[current].classList.add('active');
+                dots[current].classList.add('active');
+                const pdfBtn = document.getElementById('pdfBtn');
+                btnPrev.disabled = current === 0;
+                const isLast = current === steps.length - 1;
+                btnNext.disabled = isLast;
+                btnNext.style.display = (isLast || current === 1) ? 'none' : '';
+                if (pdfBtn) pdfBtn.style.display = isLast ? 'inline-flex' : 'none';
+                stepInd.textContent = `Step ${current + 1} of ${steps.length}`;
+                if (grid) {
+                    grid.classList.toggle('step-song', current === 1);
+                    grid.classList.toggle('step-monologue', isLast);
+                }
+                if (current === 2 && window.__renderBackstoryList) window.__renderBackstoryList();
+                if (isLast && window.__renderMonoRef) window.__renderMonoRef();
+            }
+            window.__goToStep = goTo;
+
+            onClick(btnPrev, () => goTo(current - 1));
+            onClick(btnNext, () => goTo(current + 1));
+            function buildPdf() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+                const charName = document.querySelector('.char-name')?.textContent?.trim() || 'Character';
+                const prompt   = document.querySelector('.monologue-prompt')?.textContent?.trim() || '';
+                const text     = document.querySelector('.monologue-area')?.value || '';
+                const W = 170;
+                let y = 20;
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(10);
+                doc.setTextColor(110, 110, 110);
+                doc.text('THE SINGERS \u2014 CHARACTER STUDY', 20, y);
+                y += 8;
+
+                doc.setFontSize(20);
+                doc.setTextColor(30, 30, 30);
+                doc.text(charName, 20, y);
+                y += 6;
+
+                doc.setDrawColor(190, 190, 190);
+                doc.line(20, y, 190, y);
+                y += 8;
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(13);
+                doc.setTextColor(50, 50, 50);
+                doc.text('Your Monologue', 20, y);
+                y += 7;
+
+                doc.setFont('helvetica', 'italic');
+                doc.setFontSize(10);
+                doc.setTextColor(110, 110, 110);
+                const promptLines = doc.splitTextToSize(prompt, W);
+                doc.text(promptLines, 20, y);
+                y += promptLines.length * 5 + 8;
+
+                doc.setDrawColor(190, 190, 190);
+                doc.line(20, y, 190, y);
+                y += 8;
+
+                doc.setFont('times', 'normal');
+                doc.setFontSize(13);
+                doc.setTextColor(20, 20, 20);
+                const monoLines = doc.splitTextToSize(text || '(nothing written yet)', W);
+                if (y + monoLines.length * 6 > 270) { doc.addPage(); y = 20; }
+                doc.text(monoLines, 20, y);
+
+                const slug = charName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                doc.save(slug + '-monologue.pdf');
+            }
+            onClick(document.getElementById('pdfBtn'), () => {
+                if (window.jspdf) { buildPdf(); return; }
+                const s = document.createElement('script');
+                s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+                s.onload = buildPdf;
+                document.head.appendChild(s);
+            });
+
+            document.addEventListener('keydown', e => {
+                if (document.activeElement.tagName === 'TEXTAREA') return;
+                if (e.key === 'ArrowLeft')  goTo(current - 1);
+                if (e.key === 'ArrowRight') goTo(current + 1);
+            });
+        } catch (err) {
+            console.error('Singers: nav block failed —', err);
+        }
+
+        /* ============== BLOCK B — ACTIVITIES 1–4 ============== */
+        try {
+            const state = { selected: [], backstories: {} };
+
+            /* Step 1 — observation cards toggle "noticed". */
+            const cards = document.querySelectorAll('.obs-item');
+            const btnNext = document.getElementById('btnNext');
+            function updateReady() {
+                if (!btnNext) return;
+                const total = cards.length;
+                const ok = document.querySelectorAll('.obs-item.noticed').length;
+                if (ok === total && total > 0) btnNext.classList.add('ready');
+                else btnNext.classList.remove('ready');
+            }
+            cards.forEach(card => onClick(card, () => {
+                card.classList.toggle('noticed');
+                updateReady();
+            }));
+
+            /* Step 2 — pick up to 5 lyric lines. Confirm advances to step 3. */
+            const lines = document.querySelectorAll('.lyric-line');
+            const countEl = document.getElementById('lyricPickCount');
+            const confirmBtn = document.getElementById('lyricPickConfirm');
+            const MAX_PICKS = 5;
+            lines.forEach((line, i) => { line.dataset.lineId = 'line-' + i; });
+            function refreshPickUI() {
+                const n = state.selected.length;
+                if (countEl) countEl.textContent = n + ' of ' + MAX_PICKS + ' selected';
+                if (confirmBtn) confirmBtn.disabled = n !== MAX_PICKS;
+            }
+            lines.forEach(line => onClick(line, () => {
+                const id = line.dataset.lineId;
+                const idx = state.selected.findIndex(s => s.id === id);
+                if (idx >= 0) {
+                    state.selected.splice(idx, 1);
+                    line.classList.remove('highlighted');
+                } else {
+                    if (state.selected.length >= MAX_PICKS) return;
+                    state.selected.push({ id, text: line.textContent.trim() });
+                    line.classList.add('highlighted');
+                }
+                refreshPickUI();
+            }));
+            if (confirmBtn) onClick(confirmBtn, () => {
+                if (state.selected.length !== MAX_PICKS) return;
+                if (typeof window.__goToStep === 'function') window.__goToStep(2);
+            });
+            refreshPickUI();
+
+            /* Step 3 — backstory list. */
+            const backstoryList = document.getElementById('backstoryList');
+            function renderBackstoryList() {
+                if (!backstoryList) return;
+                backstoryList.innerHTML = '';
+                state.selected.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = 'backstory-item';
+                    row.innerHTML =
+                        '<div class="backstory-quote">\u201C' + item.text + '\u201D</div>' +
+                        '<textarea class="backstory-textarea" placeholder="Write a creative backstory for this lyric..."></textarea>';
+                    const ta = row.querySelector('textarea');
+                    ta.value = state.backstories[item.id] || '';
+                    ta.addEventListener('input', () => { state.backstories[item.id] = ta.value; });
+                    backstoryList.appendChild(row);
+                });
+            }
+            window.__renderBackstoryList = renderBackstoryList;
+
+            /* Step 4 — mono-ref panel. */
+            const monoRefList = document.getElementById('monoRefList');
+            function renderMonoRef() {
+                if (!monoRefList) return;
+                monoRefList.innerHTML = '';
+                state.selected.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = 'mono-ref-item';
+                    const back = state.backstories[item.id] || '';
+                    row.innerHTML =
+                        '<div class="mono-ref-quote">\u201C' + item.text + '\u201D</div>' +
+                        (back ? '<div class="mono-ref-back">' + back + '</div>' : '');
+                    monoRefList.appendChild(row);
+                });
+            }
+            window.__renderMonoRef = renderMonoRef;
+        } catch (err) {
+            console.error('Singers: activity block failed —', err);
+        }
+
+        /* ============== BLOCK C — PIXEL SPRITE (Hooded singer, head bowed) ============== */
+        try {
+            const C = {
+                skin: '#D4A574',
+                gray: '#3A3A3A',
+                grayLt: '#505050',
+                pants: '#151520',
+            };
+            function r(ctx, x, y, w, h, c) { ctx.fillStyle = c; ctx.fillRect(x, y, w, h); }
+            function drawBathroomSinger(ctx, f) {
+                const b = f % 2 === 0 ? 0 : -1;
+                ctx.clearRect(0, 0, 32, 48);
+                r(ctx, 12, 1+b, 8, 5, C.gray);
+                r(ctx, 11, 4+b, 10, 2, C.gray);
+                r(ctx, 13, 4+b, 6, 7, C.skin);
+                r(ctx, 14, 8+b, 1, 1, '#1a1a1a');
+                r(ctx, 17, 8+b, 1, 1, '#1a1a1a');
+                r(ctx, 10, 11+b, 12, 14, C.gray);
+                r(ctx, 12, 18+b, 8, 4, C.grayLt);
+                r(ctx, 8, 12+b, 2, 10, C.gray);
+                r(ctx, 22, 12+b, 2, 10, C.gray);
+                r(ctx, 12, 19+b, 3, 3, C.skin);
+                r(ctx, 17, 19+b, 3, 3, C.skin);
+                r(ctx, 12, 25, 4, 11, C.pants);
+                r(ctx, 17, 25, 4, 11, C.pants);
+                r(ctx, 11, 36, 5, 3, '#2A2A30');
+                r(ctx, 16, 36, 5, 3, '#2A2A30');
+            }
+            const canvas = document.getElementById('charSprite');
+            if (canvas) {
+                const sCtx = canvas.getContext('2d');
+                sCtx.imageSmoothingEnabled = false;
+                let frame = 0;
+                drawBathroomSinger(sCtx, 0);
+                setInterval(() => { frame++; drawBathroomSinger(sCtx, frame); }, 580);
+            }
+        } catch (err) {
+            console.error('Singers: sprite block failed —', err);
+        }
+    })();
+    </script>
+</body>
+</html>

@@ -1614,56 +1614,121 @@
     function buildPdf() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-        const charName      = document.querySelector('.page-header__name')?.textContent?.trim() || 'Louise Banks';
-        const scenarioTitle = (activeScenario && SCENARIOS[activeScenario]?.title) || '';
-        const prompt        = document.getElementById('write-prompt')?.textContent?.trim() || '';
-        const text          = document.getElementById('monologue-writing')?.value || '';
-        const W = 170;
+        const charName = document.querySelector('.page-header__name')?.textContent?.trim() || 'Louise Banks';
+        const L = 20, W = 170, BOTTOM = 278;
         let y = 20;
+
+        function ensure(h) {
+            if (y + h > BOTTOM) { doc.addPage(); y = 20; }
+        }
+        function rule() {
+            doc.setDrawColor(200, 200, 200);
+            doc.line(L, y, L + W, y);
+            y += 6;
+        }
+        function section(title) {
+            ensure(14);
+            y += 2;
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(13);
+            doc.setTextColor(40, 40, 40);
+            doc.text(title, L, y);
+            y += 6;
+            rule();
+        }
+        function sub(title) {
+            ensure(8);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(11);
+            doc.setTextColor(60, 60, 60);
+            doc.text(title, L, y);
+            y += 5;
+        }
+        function para(t, opts) {
+            opts = opts || {};
+            if (!t) t = '(nothing written)';
+            doc.setFont(opts.font || 'helvetica', opts.style || 'normal');
+            doc.setFontSize(opts.size || 10);
+            var c = (opts.color === undefined) ? 40 : opts.color;
+            doc.setTextColor(c, c, c);
+            var lines = doc.splitTextToSize(t, W - (opts.indent || 0));
+            for (var i = 0; i < lines.length; i++) {
+                ensure(5);
+                doc.text(lines[i], L + (opts.indent || 0), y);
+                y += 5;
+            }
+            y += 1;
+        }
 
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(10);
         doc.setTextColor(110, 110, 110);
-        doc.text('ARRIVAL \u2014 CHARACTER STUDY', 20, y);
+        doc.text('ARRIVAL \u2014 CHARACTER STUDY', L, y);
         y += 8;
-
         doc.setFontSize(20);
         doc.setTextColor(30, 30, 30);
-        doc.text(charName, 20, y);
+        doc.text(charName, L, y);
         y += 6;
+        rule();
 
-        doc.setDrawColor(190, 190, 190);
-        doc.line(20, y, 190, y);
-        y += 8;
+        section('Activity 1 \u2014 Quote Detective');
+        para('Score: ' + quizState.score + ' / ' + quizData.length, { style: 'bold', size: 11 });
+        y += 2;
+        quizData.forEach(function (q, i) {
+            sub('Q' + (i + 1) + ' \u2014 ' + (q.isLouise ? 'LOUISE' : 'OTHER'));
+            para('\u201C' + q.quote + '\u201D', { font: 'times', style: 'italic', size: 11, indent: 4 });
+            para(q.feedback, { size: 9, color: 80, indent: 4 });
+        });
 
-        if (scenarioTitle) {
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(13);
-            doc.setTextColor(50, 50, 50);
-            doc.text(scenarioTitle, 20, y);
-            y += 7;
+        section('Activity 2 \u2014 Louise\u2019s Words');
+        var SCENES = [
+            { label: 'Scene 1 \u2014 Beginnings and Endings', template: 'But now I\u2019m not so sure I believe in [s1b1] and [s1b2]. There are days that define your story beyond your [s1b3].', blanks: ['s1b1','s1b2','s1b3'] },
+            { label: 'Scene 2 \u2014 A Moment with Hannah', template: 'Stick \u2018em up! Are you the [s2b1] in this here town? These are my [s2b2] guns, and I\u2019m gonna getcha!', blanks: ['s2b1','s2b2'] },
+            { label: 'Scene 3 \u2014 Into the Unknown', template: 'They need to [s3b1] [s3b2].', blanks: ['s3b1','s3b2'] },
+            { label: 'Scene 4 \u2014 The Weapon or the Tool', template: 'We don\u2019t know if they understand the difference between a [s4b1] and a [s4b2]. Our language, like our [s4b3], is messy, and sometimes, one can be both.', blanks: ['s4b1','s4b2','s4b3'] },
+            { label: 'Scene 5 \u2014 Inside the Ship', template: 'I don\u2019t [s5b1]\u2026 Who is this [s5b2]?', blanks: ['s5b1','s5b2'] }
+        ];
+        SCENES.forEach(function (scene) {
+            sub(scene.label);
+            var studentText = scene.template;
+            var correctText = scene.template;
+            var allMatch = true;
+            scene.blanks.forEach(function (id) {
+                var input = document.getElementById(id);
+                var student = (input && input.value || '').trim();
+                var correct = (input && input.getAttribute('data-answer') || '').trim();
+                if (student.toLowerCase() !== correct.toLowerCase()) allMatch = false;
+                studentText = studentText.replace('[' + id + ']', student ? '[' + student + ']' : '[___]');
+                correctText = correctText.replace('[' + id + ']', '[' + correct + ']');
+            });
+            para('Your version: ' + studentText, { size: 10, indent: 4 });
+            para('Louise\u2019s words: ' + correctText, { size: 10, color: 110, indent: 4 });
+            para(allMatch ? 'Match: yes' : 'Match: no', { size: 9, color: allMatch ? 110 : 150, indent: 4 });
+        });
+
+        sub('Analysis');
+        var Q_LABELS = ['Characteristics', 'Desires', 'Internal Conflict'];
+        for (var qi = 1; qi <= 3; qi++) {
+            var val = (document.getElementById('words-q' + qi) || {}).value || '';
+            para(Q_LABELS[qi - 1] + ': ' + (val.trim() || '(nothing written)'), { size: 10, indent: 4 });
         }
 
-        doc.setFont('helvetica', 'italic');
-        doc.setFontSize(10);
-        doc.setTextColor(110, 110, 110);
-        const promptLines = doc.splitTextToSize(prompt, W);
-        doc.text(promptLines, 20, y);
-        y += promptLines.length * 5 + 8;
-
-        doc.setDrawColor(190, 190, 190);
-        doc.line(20, y, 190, y);
-        y += 8;
-
-        doc.setFont('times', 'normal');
-        doc.setFontSize(13);
-        doc.setTextColor(20, 20, 20);
-        const monoLines = doc.splitTextToSize(text || '(nothing written yet)', W);
-        if (y + monoLines.length * 6 > 270) { doc.addPage(); y = 20; }
-        doc.text(monoLines, 20, y);
+        section('Activity 3 \u2014 What Would Louise Say?');
+        ['a', 'b', 'c'].forEach(function (id) {
+            var s = SCENARIOS[id];
+            if (!s) return;
+            sub('Scenario ' + id.toUpperCase() + ' \u2014 ' + s.title);
+            para(s.context, { style: 'italic', size: 9, color: 110, indent: 4 });
+            var text = '';
+            if (activeScenario === id) {
+                text = (document.getElementById('monologue-writing') || {}).value || '';
+            }
+            if (!text) text = localStorage.getItem('arrival-louise-monologue-' + id) || '';
+            para(text.trim() || '(nothing written)', { font: 'times', size: 11, indent: 4 });
+        });
 
         const slug = charName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-        doc.save(slug + '-monologue.pdf');
+        doc.save(slug + '-character-study.pdf');
     }
     function savePdf() {
         if (window.jspdf) { buildPdf(); return; }

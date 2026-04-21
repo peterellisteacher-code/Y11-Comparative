@@ -1747,55 +1747,128 @@
     function buildPdf() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-        const charName      = document.querySelector('.page-header__name')?.textContent?.trim() || 'Hannah';
-        const scenarioTitle = document.getElementById('mono-context-title')?.textContent?.trim() || '';
-        const prompt        = document.getElementById('mono-write-prompt')?.textContent?.trim() || '';
-        const text          = document.getElementById('mono-write-textarea')?.value || '';
-        const W = 170;
+        const charName = document.querySelector('.page-header__name')?.textContent?.trim() || 'Hannah';
+        const L = 20, W = 170, BOTTOM = 278;
         let y = 20;
+
+        function ensure(h) {
+            if (y + h > BOTTOM) { doc.addPage(); y = 20; }
+        }
+        function rule() {
+            doc.setDrawColor(200, 200, 200);
+            doc.line(L, y, L + W, y);
+            y += 6;
+        }
+        function section(title) {
+            ensure(14);
+            y += 2;
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(13);
+            doc.setTextColor(40, 40, 40);
+            doc.text(title, L, y);
+            y += 6;
+            rule();
+        }
+        function sub(title) {
+            ensure(8);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(11);
+            doc.setTextColor(60, 60, 60);
+            doc.text(title, L, y);
+            y += 5;
+        }
+        function para(t, opts) {
+            opts = opts || {};
+            if (!t) t = '(nothing written)';
+            doc.setFont(opts.font || 'helvetica', opts.style || 'normal');
+            doc.setFontSize(opts.size || 10);
+            var c = (opts.color === undefined) ? 40 : opts.color;
+            doc.setTextColor(c, c, c);
+            var lines = doc.splitTextToSize(t, W - (opts.indent || 0));
+            for (var i = 0; i < lines.length; i++) {
+                ensure(5);
+                doc.text(lines[i], L + (opts.indent || 0), y);
+                y += 5;
+            }
+            y += 1;
+        }
 
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(10);
         doc.setTextColor(110, 110, 110);
-        doc.text('ARRIVAL \u2014 CHARACTER STUDY', 20, y);
+        doc.text('ARRIVAL \u2014 CHARACTER STUDY', L, y);
         y += 8;
-
         doc.setFontSize(20);
         doc.setTextColor(30, 30, 30);
-        doc.text(charName, 20, y);
+        doc.text(charName, L, y);
         y += 6;
+        rule();
 
-        doc.setDrawColor(190, 190, 190);
-        doc.line(20, y, 190, y);
-        y += 8;
+        section('Activity 1 \u2014 Character Calibration');
+        var commits = calibrationGet();
+        CALIBRATION_TOPICS.forEach(function (topic) {
+            sub(topic.label);
+            if (topic.id in commits) {
+                para('Commitment: ' + CALIBRATION_SCALE_FULL[commits[topic.id]], { size: 10, indent: 4 });
+            } else {
+                para('Commitment: (not yet committed)', { size: 10, color: 150, indent: 4 });
+            }
+        });
 
-        if (scenarioTitle) {
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(13);
-            doc.setTextColor(50, 50, 50);
-            doc.text(scenarioTitle, 20, y);
-            y += 7;
+        section('Activity 2 \u2014 Hannah\u2019s Words');
+        var SCENES = [
+            { label: 'Scene 1 \u2014 Play (age 6)', template: 'Louise: Stick \u2019em up! Are you the [s1b1] in this here town? These are my tickle guns, and I\u2019m gonna getcha! Hannah: (giggling) No! Louise: You want me to chase you? You better [s1b2]!', blanks: ['s1b1','s1b2'] },
+            { label: 'Scene 2 \u2014 The Drawing (age 8)', template: 'Hannah: Want to see my [s2b1] for Miss Garriott\u2019s class? Louise: Yeah, little nose. Hannah: We had to make up our own TV show. That\u2019s you and Dad. The show is called \u201CMommy and Daddy Talk to [s2b2].\u201D', blanks: ['s2b1','s2b2'] },
+            { label: 'Scene 3 \u2014 The Lakeside (age 8)', template: 'Louise: It has to do with a really rare disease. And it\u2019s [s3b1]. Kind of like you are, with your swimming, and your [s3b2], and all the other amazing things that you share with the world.', blanks: ['s3b1','s3b2'] },
+            { label: 'Scene 4 \u2014 The Homework (age 12)', template: 'Hannah: More [s4b1] than that. Louise: If you want science, call your [s4b2].', blanks: ['s4b1','s4b2'] }
+        ];
+        SCENES.forEach(function (scene) {
+            sub(scene.label);
+            var studentText = scene.template;
+            var correctText = scene.template;
+            var allMatch = true;
+            scene.blanks.forEach(function (id) {
+                var input = document.getElementById(id);
+                var student = (input && input.value || '').trim();
+                var correct = (input && input.getAttribute('data-answer') || '').trim();
+                if (student.toLowerCase() !== correct.toLowerCase()) allMatch = false;
+                studentText = studentText.replace('[' + id + ']', student ? '[' + student + ']' : '[___]');
+                correctText = correctText.replace('[' + id + ']', '[' + correct + ']');
+            });
+            para('Your version: ' + studentText, { size: 10, indent: 4 });
+            para('Script words: ' + correctText, { size: 10, color: 110, indent: 4 });
+            para(allMatch ? 'Match: yes' : 'Match: no', { size: 9, color: allMatch ? 110 : 150, indent: 4 });
+        });
+
+        sub('Analysis');
+        var Q_LABELS = ['Her Voice', 'What She Registers', 'The Reconciliation Gap'];
+        for (var qi = 1; qi <= 3; qi++) {
+            var val = (document.getElementById('words-q' + qi) || {}).value || '';
+            para(Q_LABELS[qi - 1] + ': ' + (val.trim() || '(nothing written)'), { size: 10, indent: 4 });
         }
 
-        doc.setFont('helvetica', 'italic');
-        doc.setFontSize(10);
-        doc.setTextColor(110, 110, 110);
-        const promptLines = doc.splitTextToSize(prompt, W);
-        doc.text(promptLines, 20, y);
-        y += promptLines.length * 5 + 8;
+        section('Activity 3 \u2014 Hannah\u2019s Monologue');
+        ['A', 'B', 'C', 'D'].forEach(function (id) {
+            var s = MONO_SCENARIOS[id];
+            if (!s) return;
+            sub(s.title);
+            var lensTopic = SCENARIO_LENS_TOPIC[id];
+            if (lensTopic in commits) {
+                var topicLabel = (CALIBRATION_TOPICS.find(function (t) { return t.id === lensTopic; }) || {}).label || lensTopic;
+                para('Lens (' + topicLabel + '): ' + SCENARIO_LENSES[id][commits[lensTopic]], { style: 'italic', size: 9, color: 110, indent: 4 });
+            }
+            var text = '';
+            if (activeMonoScenario === id) {
+                text = (document.getElementById('mono-write-textarea') || {}).value || '';
+            }
+            if (!text) {
+                try { text = localStorage.getItem('arrival-hannah-mono-text-' + id) || ''; } catch(e) {}
+            }
+            para(text.trim() || '(nothing written)', { font: 'times', size: 11, indent: 4 });
+        });
 
-        doc.setDrawColor(190, 190, 190);
-        doc.line(20, y, 190, y);
-        y += 8;
-
-        doc.setFont('times', 'normal');
-        doc.setFontSize(13);
-        doc.setTextColor(20, 20, 20);
-        const monoLines = doc.splitTextToSize(text || '(nothing written yet)', W);
-        if (y + monoLines.length * 6 > 270) { doc.addPage(); y = 20; }
-        doc.text(monoLines, 20, y);
-
-        doc.save('hannah-monologue.pdf');
+        var slug = charName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'hannah';
+        doc.save(slug + '-character-study.pdf');
     }
     function savePdf() {
         if (window.jspdf) { buildPdf(); return; }

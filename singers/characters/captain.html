@@ -1194,52 +1194,112 @@
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF({ unit: 'mm', format: 'a4' });
                 const charName = document.querySelector('.char-name')?.textContent?.trim() || 'Character';
-                const prompt   = document.querySelector('.monologue-prompt')?.textContent?.trim() || '';
-                const text     = document.querySelector('.monologue-area')?.value || '';
-                const W = 170;
+                const L = 20, W = 170, BOTTOM = 278;
                 let y = 20;
 
+                function ensure(h) {
+                    if (y + h > BOTTOM) { doc.addPage(); y = 20; }
+                }
+                function rule() {
+                    doc.setDrawColor(200, 200, 200);
+                    doc.line(L, y, L + W, y);
+                    y += 6;
+                }
+                function section(title) {
+                    ensure(14);
+                    y += 2;
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(13);
+                    doc.setTextColor(40, 40, 40);
+                    doc.text(title, L, y);
+                    y += 6;
+                    rule();
+                }
+                function sub(title) {
+                    ensure(8);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(11);
+                    doc.setTextColor(60, 60, 60);
+                    doc.text(title, L, y);
+                    y += 5;
+                }
+                function para(t, opts) {
+                    opts = opts || {};
+                    if (!t) t = '(nothing written)';
+                    doc.setFont(opts.font || 'helvetica', opts.style || 'normal');
+                    doc.setFontSize(opts.size || 10);
+                    var c = (opts.color === undefined) ? 40 : opts.color;
+                    doc.setTextColor(c, c, c);
+                    var lines = doc.splitTextToSize(t, W - (opts.indent || 0));
+                    for (var i = 0; i < lines.length; i++) {
+                        ensure(5);
+                        doc.text(lines[i], L + (opts.indent || 0), y);
+                        y += 5;
+                    }
+                    y += 1;
+                }
+
                 doc.setFont('helvetica', 'bold');
                 doc.setFontSize(10);
                 doc.setTextColor(110, 110, 110);
-                doc.text('THE SINGERS \u2014 CHARACTER STUDY', 20, y);
+                doc.text('THE SINGERS \u2014 CHARACTER STUDY', L, y);
                 y += 8;
-
                 doc.setFontSize(20);
                 doc.setTextColor(30, 30, 30);
-                doc.text(charName, 20, y);
+                doc.text(charName, L, y);
                 y += 6;
+                rule();
 
-                doc.setDrawColor(190, 190, 190);
-                doc.line(20, y, 190, y);
-                y += 8;
+                section('Activity 1 \u2014 First Look');
+                para('Questions you noticed (ticked):', { style: 'bold', size: 11 });
+                var obsItems = document.querySelectorAll('.obs-item');
+                if (obsItems.length === 0) {
+                    para('(no observations on this page)', { size: 9, color: 150, indent: 4 });
+                } else {
+                    obsItems.forEach(function (card) {
+                        var letter = (card.querySelector('.obs-letter') || {}).textContent || '';
+                        var text = (card.querySelector('.obs-text') || {}).textContent || '';
+                        var mark = card.classList.contains('noticed') ? '[x]' : '[ ]';
+                        para(mark + ' ' + letter.trim() + '. ' + text.trim(), { size: 10, indent: 4 });
+                    });
+                }
+                var own = (document.querySelector('.obs-own-input') || {}).value || '';
+                sub('Your own question');
+                para(own.trim() || '(nothing written)', { size: 10, indent: 4 });
 
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(13);
-                doc.setTextColor(50, 50, 50);
-                doc.text('Your Monologue', 20, y);
-                y += 7;
+                section('Activity 2 \u2014 The Song: Your Chosen Lines');
+                var highlighted = document.querySelectorAll('.lyric-line.highlighted');
+                if (highlighted.length === 0) {
+                    para('(no lines selected)', { size: 10, color: 150, indent: 4 });
+                } else {
+                    highlighted.forEach(function (line, i) {
+                        para((i + 1) + '. \u201C' + line.textContent.trim() + '\u201D', { font: 'times', style: 'italic', size: 11, indent: 4 });
+                    });
+                }
 
-                doc.setFont('helvetica', 'italic');
-                doc.setFontSize(10);
-                doc.setTextColor(110, 110, 110);
-                const promptLines = doc.splitTextToSize(prompt, W);
-                doc.text(promptLines, 20, y);
-                y += promptLines.length * 5 + 8;
+                section('Activity 3 \u2014 Backstories');
+                var backItems = document.querySelectorAll('#backstoryList .backstory-item');
+                if (backItems.length === 0) {
+                    para('(no backstories yet \u2014 select 5 lines in Activity 2 first)', { size: 10, color: 150, indent: 4 });
+                } else {
+                    backItems.forEach(function (item, i) {
+                        var quote = (item.querySelector('.backstory-quote') || {}).textContent || '';
+                        var ta = item.querySelector('textarea');
+                        var back = ta ? ta.value : '';
+                        sub('Line ' + (i + 1));
+                        para(quote.trim(), { font: 'times', style: 'italic', size: 10, color: 90, indent: 4 });
+                        para('Backstory: ' + (back.trim() || '(nothing written)'), { size: 10, indent: 4 });
+                    });
+                }
 
-                doc.setDrawColor(190, 190, 190);
-                doc.line(20, y, 190, y);
-                y += 8;
-
-                doc.setFont('times', 'normal');
-                doc.setFontSize(13);
-                doc.setTextColor(20, 20, 20);
-                const monoLines = doc.splitTextToSize(text || '(nothing written yet)', W);
-                if (y + monoLines.length * 6 > 270) { doc.addPage(); y = 20; }
-                doc.text(monoLines, 20, y);
+                section('Activity 4 \u2014 Your Monologue');
+                var prompt = (document.querySelector('.monologue-prompt') || {}).textContent || '';
+                para(prompt.trim(), { style: 'italic', size: 9, color: 110, indent: 4 });
+                var monoText = (document.querySelector('.monologue-area') || {}).value || '';
+                para(monoText.trim() || '(nothing written yet)', { font: 'times', size: 12, indent: 4 });
 
                 const slug = charName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-                doc.save(slug + '-monologue.pdf');
+                doc.save(slug + '-character-study.pdf');
             }
             onClick(document.getElementById('pdfBtn'), () => {
                 if (window.jspdf) { buildPdf(); return; }

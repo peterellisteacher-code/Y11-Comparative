@@ -180,9 +180,144 @@
   }
 
   /* ── PDF Export ────────────────────────────────────────────── */
-  function initPdf () {
+  function loadJsPdf (cb) {
+    if (window.jspdf) { cb(); return; }
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    s.onload = cb;
+    document.head.appendChild(s);
+  }
+
+  function buildSuperToysPdf (charId) {
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    var L = 20, W = 170, BOTTOM = 278;
+    var y = 20;
+    var charName = (document.querySelector('.page-title') || {}).textContent;
+    charName = (charName || charId).trim();
+    var prefix = 'supertoys-' + charId;
+
+    function ensure (h) {
+      if (y + h > BOTTOM) { doc.addPage(); y = 20; }
+    }
+    function rule () {
+      ensure(4);
+      doc.setDrawColor(190, 190, 190);
+      doc.line(L, y, L + W, y);
+      y += 5;
+    }
+    function section (title) {
+      ensure(10);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(50, 50, 50);
+      doc.text(title, L, y);
+      y += 6;
+      rule();
+    }
+    function subheading (label) {
+      ensure(7);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(90, 90, 90);
+      doc.text(label, L, y);
+      y += 5;
+    }
+    function paragraph (text, opts) {
+      opts = opts || {};
+      var body = (text == null || text === '') ? '(nothing written yet)' : String(text);
+      doc.setFont(opts.font || 'times', opts.style || 'normal');
+      doc.setFontSize(opts.size || 11);
+      doc.setTextColor(opts.r == null ? 25 : opts.r, opts.g == null ? 25 : opts.g, opts.b == null ? 25 : opts.b);
+      var lines = doc.splitTextToSize(body, W - (opts.indent || 0));
+      lines.forEach(function (line) {
+        ensure(5.5);
+        doc.text(line, L + (opts.indent || 0), y);
+        y += 5.5;
+      });
+      y += 2;
+    }
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(110, 110, 110);
+    doc.text('SUPER-TOYS LAST ALL SUMMER LONG — CHARACTER STUDY', L, y);
+    y += 7;
+
+    doc.setFontSize(20);
+    doc.setTextColor(30, 30, 30);
+    doc.text(charName, L, y);
+    y += 7;
+    rule();
+
+    // Activity 1 — Word Bank
+    section('Activity 1 — Word Bank');
+    var usedChips = Array.prototype.map.call(
+      document.querySelectorAll('#activity1 .chip.used'),
+      function (c) { return (c.dataset.word || c.textContent || '').trim(); }
+    ).filter(Boolean);
+    subheading('Words used from the bank');
+    paragraph(usedChips.length ? usedChips.join(', ') : '(none selected)', { font: 'helvetica', size: 10 });
+
+    [
+      { key: 'a1-characteristics', label: 'Characteristics' },
+      { key: 'a1-desires',         label: 'Desires' },
+      { key: 'a1-goals',           label: 'Goals' },
+      { key: 'a1-fears',           label: 'Fears' }
+    ].forEach(function (row) {
+      subheading(row.label);
+      var ta = document.querySelector('[data-save="' + row.key + '"]');
+      var val = ta ? ta.value : localStorage.getItem(prefix + '-' + row.key);
+      paragraph(val);
+    });
+
+    // Activity 2 — Selected Lines
+    section('Activity 2 — Selected Lines');
+    var selectedIdxs = [];
+    try { selectedIdxs = JSON.parse(localStorage.getItem(prefix + '-selected-lines') || '[]'); } catch (e) {}
+    var lines = window.CHARACTER_LINES || [];
+    if (!selectedIdxs.length) {
+      paragraph('(no lines selected yet)', { font: 'helvetica', style: 'italic', size: 10, r: 110, g: 110, b: 110 });
+    } else {
+      selectedIdxs.forEach(function (idx, i) {
+        var text = lines[idx];
+        if (!text) return;
+        paragraph((i + 1) + '. “' + text + '”');
+      });
+    }
+
+    // Activity 3 — Reasons
+    section('Activity 3 — Why These Lines');
+    if (!selectedIdxs.length) {
+      paragraph('(Activity 2 not completed)', { font: 'helvetica', style: 'italic', size: 10, r: 110, g: 110, b: 110 });
+    } else {
+      selectedIdxs.forEach(function (idx) {
+        var text = lines[idx];
+        if (!text) return;
+        var key = prefix + '-a3-reason-' + idx;
+        var liveTa = document.querySelector('[data-save="a3-reason-' + idx + '"]');
+        var reason = liveTa ? liveTa.value : localStorage.getItem(key);
+        subheading('“' + text + '”');
+        paragraph(reason);
+      });
+    }
+
+    // Activity 4 — Monologue
+    section('Activity 4 — Monologue');
+    var monoTa = document.querySelector('[data-save="a4-monologue"]');
+    var mono = monoTa ? monoTa.value : localStorage.getItem(prefix + '-a4-monologue');
+    paragraph(mono, { font: 'times', size: 12 });
+
+    var slug = charName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || charId;
+    doc.save(slug + '-character-study.pdf');
+  }
+
+  function initPdf (charId) {
     var btn = document.getElementById('pdf-btn');
-    if (btn) btn.addEventListener('click', function () { window.print(); });
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      loadJsPdf(function () { buildSuperToysPdf(charId); });
+    });
   }
 
   /* ══════════════════════════════════════════════════════════
@@ -399,7 +534,7 @@
     initChips();
     initLineSelection(charId);
     initActivityHooks(charId);
-    initPdf();
+    initPdf(charId);
   };
 
 }());

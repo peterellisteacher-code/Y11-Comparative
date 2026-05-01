@@ -297,7 +297,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 
 /* PRINT */
 @media print{
-  .topbar,.tabs,.step-footer,.save-row,.plan-nav,.btn,.pick-bank,.save-pdf-top,.name-row,.source-filter,.s0-overlay,.rm-nav,.mono-switcher{display:none!important}
+  .topbar,.tabs,.step-footer,.save-row,.plan-nav,.btn,.pick-bank,.save-pdf-top,.name-row,.source-filter,.rm-nav,.mono-switcher{display:none!important}
   html,body{overflow:visible!important;height:auto!important;background:#fff!important}
   .body,.screen,.step,.plan-content,.step-body,.rm-content{overflow:visible!important;height:auto!important;display:block!important}
   .screen,.step{display:block!important;page-break-after:always}
@@ -324,89 +324,9 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--ink3)}
 
-/* ── STATION 0 — CURIOSITY CHECK-IN ── */
-.s0-overlay{position:fixed;inset:0;background:var(--paper);z-index:100;display:flex;flex-direction:column;overflow-y:auto}
-.s0-overlay.hidden{display:none}
-.s0-inner{max-width:680px;margin:0 auto;padding:3rem 2rem 4rem;width:100%}
-.s0-kicker{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:.75rem}
-.s0-title{font-family:'Lora',serif;font-size:32px;font-weight:400;line-height:1.2;color:var(--ink);margin-bottom:.6rem}
-.s0-title em{font-style:italic;color:var(--teal)}
-.s0-intro{font-size:14px;color:var(--ink2);line-height:1.75;margin-bottom:2rem;border-left:3px solid var(--teal);padding-left:1rem;background:var(--teal-bg);padding:.875rem 1rem;border-radius:0 7px 7px 0}
-.s0-q-block{margin-bottom:1.75rem}
-.s0-q-label{font-family:'Lora',serif;font-size:16px;font-weight:600;color:var(--ink);margin-bottom:.25rem;line-height:1.4}
-.s0-q-hint{font-size:12px;color:var(--ink3);margin-bottom:.6rem;line-height:1.5}
-.s0-textarea{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:.75rem 1rem;font-family:'Inter',sans-serif;font-size:13.5px;line-height:1.65;resize:none;background:#fff;color:var(--ink);transition:border-color .2s,box-shadow .2s}
-.s0-textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,122,106,.1)}
-.s0-divider{border:none;border-top:1px dashed var(--border);margin:2rem 0}
-.s0-submit-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
-.s0-submit-hint{font-size:12px;color:var(--ink3);flex:1}
-.s0-progress{display:flex;gap:5px;margin-bottom:2.5rem}
-.s0-prog-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:background .2s}
-.s0-prog-dot.filled{background:var(--teal)}
-.s0-wall-section{margin-top:1.5rem;padding:1.25rem;background:#fff;border:1.5px solid var(--border);border-radius:10px}
-.s0-wall-label{font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink3);margin-bottom:.75rem}
-.s0-wall-item{background:var(--teal-bg);border-left:3px solid var(--teal);padding:.55rem .875rem;border-radius:0 6px 6px 0;font-size:13px;font-family:'Lora',serif;font-style:italic;color:var(--ink);margin-bottom:.5rem;animation:fadeUp .35s ease both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.s0-your-badge{display:inline-block;font-size:10px;font-weight:600;background:var(--teal);color:#fff;padding:.1rem .45rem;border-radius:4px;margin-left:.5rem;vertical-align:middle;letter-spacing:.04em}
-.s0-wall-cta{font-size:12px;color:var(--ink3);margin-top:.75rem;line-height:1.6}
-.s0-wall-cta a{color:var(--teal);text-decoration:underline}
-.s0-confirmation{background:var(--green-bg);border-left:3px solid var(--green);padding:.875rem 1.1rem;border-radius:7px;margin-bottom:1.5rem;font-size:13.5px;color:var(--green);line-height:1.6}
-.s0-confirmation strong{color:var(--green)}
 </style>
 </head>
 <body>
-
-<!-- ═══════════════════════════════════════
-  STATION 0 — CURIOSITY CHECK-IN
-═══════════════════════════════════════ -->
-<div class="s0-overlay" id="s0-overlay">
-  <div class="s0-inner">
-    <div class="s0-kicker">Stage 1 English · Intertextual Study — Monologue</div>
-    <h1 class="s0-title">Before you begin —<br><em>your questions matter</em></h1>
-    <div class="s0-intro">
-      You've already met the source texts and started thinking about what a monologue does. Before you step into the main site, take three minutes to tell us where you're at. Your answers will shape how we teach this unit — and nothing here is marked.
-    </div>
-    <div class="s0-progress">
-      <div class="s0-prog-dot" id="s0d0"></div>
-      <div class="s0-prog-dot" id="s0d1"></div>
-    </div>
-    <div class="s0-q-block">
-      <div class="s0-q-label">1. What do you already know about intertextuality?</div>
-      <div class="s0-q-hint">A few words is enough. There are no wrong answers — this is just a snapshot of where you're starting from.</div>
-      <textarea class="s0-textarea" id="s0q1" rows="3" placeholder="e.g. I know it has something to do with texts connecting to each other…" oninput="s0Progress()"></textarea>
-    </div>
-    <div class="s0-q-block">
-      <div class="s0-q-label">2. What's one thing you're genuinely curious or confused about going into this task?</div>
-      <div class="s0-q-hint">This is the most important question. Your curiosity is the starting point for everything on this site.</div>
-      <textarea class="s0-textarea" id="s0q2" rows="3" placeholder="e.g. I'm not sure how my monologue is supposed to connect to the original text — does it need to be obvious?" oninput="s0Progress()"></textarea>
-    </div>
-    <hr class="s0-divider">
-    <div class="s0-submit-row">
-      <button class="btn btn-primary" id="s0-submit" onclick="s0Submit()" disabled style="font-size:14px;padding:.65rem 1.4rem">Enter the site →</button>
-      <div class="s0-submit-hint" id="s0-hint">Answer both questions to continue.</div>
-    </div>
-    <div id="s0-wall" style="display:none">
-      <hr class="s0-divider">
-      <div class="s0-confirmation">
-        <strong>Thanks — your question has been noted.</strong> Your teacher will read all responses before the next lesson and may use them to shape how intertextuality is introduced.
-      </div>
-      <div class="s0-wall-section">
-        <div class="s0-wall-label">Questions your class is asking</div>
-        <div id="s0-wall-items"></div>
-        <div class="s0-wall-cta">
-          These are the questions your class is bringing to this task. You'll return to your own question at the end of the unit — and try to answer it in your Writer's Statement.<br><br>
-          <strong>Submit your question to the class bank</strong> using the form below — your teacher will read all responses before the next lesson.<br>
-        </div>
-        <div style="margin-top:1rem;border-radius:10px;overflow:hidden;border:1.5px solid var(--border)">
-          <iframe width="100%" height="480px" src="https://forms.office.com/Pages/ResponsePage.aspx?id=7N0ggSwMJUiPhgSzvdC50-e-AdKPZmpEqhNDjdYQtl9UREdZQUdVTzE1VDU2RDFEQVJLOEU1SFBESC4u&embed=true" frameborder="0" marginwidth="0" marginheight="0" style="border:none;max-width:100%;background:#fff" allowfullscreen webkitallowfullscreen mozallowfullscreen msallowfullscreen></iframe>
-        </div>
-        <div style="margin-top:1rem;font-size:12px;color:var(--ink3);line-height:1.6">
-          Once you've submitted, you're ready to begin. <a href="#" onclick="s0Enter();return false" style="color:var(--teal);font-weight:500">Enter the site →</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div class="print-header" id="ph">
   <h1>Writing a Monologue — Stage 1 English · Intertextual Study</h1>
@@ -1242,68 +1162,6 @@ let planActive = 'source';
 const PLAN_ORDER = ['source', 'listener', 'need', 'voice', 'journey', 'miniplay', 'ws'];
 
 const LS = 'mono_v5_watchanalysis';
-
-/* ════════════════════════════════════════════════════════════
-   STATION 0 — CURIOSITY CHECK-IN
-════════════════════════════════════════════════════════════ */
-const SEED_QUESTIONS = [
-  "Does my monologue have to reference the source text directly, or can the connection be more subtle?",
-  "Can I choose a minor character, or does it have to be one of the main ones?",
-  "How do I show intertextuality in a written monologue — is it different from a performed one?",
-  "Do the two texts need to share the same theme, or just connect in some way?"
-];
-
-let s0Submitted = false;
-
-function s0Progress() {
-  const q1 = (document.getElementById('s0q1').value || '').trim().length >= 5;
-  const q2 = (document.getElementById('s0q2').value || '').trim().length >= 8;
-  document.getElementById('s0d0').classList.toggle('filled', q1);
-  document.getElementById('s0d1').classList.toggle('filled', q2);
-  const allDone = q1 && q2;
-  document.getElementById('s0-submit').disabled = !allDone;
-  document.getElementById('s0-hint').textContent = allDone ? "All done — you're ready to enter." : 'Answer both questions to continue.';
-}
-
-function s0BuildWall(myQuestion) {
-  const wallEl = document.getElementById('s0-wall-items');
-  const items = [
-    { text: myQuestion, mine: true },
-    ...SEED_QUESTIONS.map(q => ({ text: q, mine: false }))
-  ];
-  wallEl.innerHTML = items.map(item =>
-    `<div class="s0-wall-item">${item.text}${item.mine ? '<span class="s0-your-badge">yours</span>' : ''}</div>`
-  ).join('');
-}
-
-function s0Submit() {
-  const q1 = document.getElementById('s0q1').value.trim();
-  const q2 = document.getElementById('s0q2').value.trim();
-  if (!q1 || !q2) return;
-  s0Submitted = true;
-  const checkin = { q1, q2, done: true };
-  try {
-    const raw = localStorage.getItem(LS);
-    const d = raw ? JSON.parse(raw) : {};
-    d.checkin = checkin;
-    localStorage.setItem(LS, JSON.stringify(d));
-  } catch(e) {}
-  document.querySelector('.s0-submit-row').style.display = 'none';
-  document.getElementById('s0-wall').style.display = 'block';
-  s0BuildWall(q2);
-  document.getElementById('s0-wall').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function s0Enter() { document.getElementById('s0-overlay').classList.add('hidden'); }
-
-function s0CheckAlreadyDone() {
-  try {
-    const raw = localStorage.getItem(LS);
-    if (!raw) return;
-    const d = JSON.parse(raw);
-    if (d.checkin && d.checkin.done) document.getElementById('s0-overlay').classList.add('hidden');
-  } catch(e) {}
-}
 
 /* ════════════════════════════════════════════════════════════
    SAVE / LOAD
@@ -2415,7 +2273,6 @@ function savePDF() {
 ════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   load();
-  s0CheckAlreadyDone();
 
   // Read Me default
   rmGo('tuna');

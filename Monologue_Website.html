@@ -292,6 +292,12 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .rm-section-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:.5rem}
 .rm-text{font-family:'Lora',serif;font-size:14.5px;line-height:2;color:var(--ink);white-space:pre-wrap}
 .rm-text em{font-style:italic}
+.rm-fulltext{font-family:'Lora',serif;font-size:14.5px;line-height:2;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-left:3px solid currentColor;border-radius:0 7px 7px 0;padding:1.1rem 1.3rem;margin-bottom:1rem}
+.rm-fulltext p{margin-bottom:1rem}
+.rm-fulltext p:last-child{margin-bottom:0}
+.rm-fulltext .rm-stage{font-style:italic;color:var(--ink3);font-size:13px}
+.rm-download{display:inline-flex;align-items:center;gap:.45rem;padding:.5rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--ink2);text-decoration:none;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500;transition:background .15s,border-color .15s,color .15s}
+.rm-download:hover{background:var(--paper);border-color:var(--ink3);color:var(--ink)}
 .rm-copyright{margin-top:2rem;padding:1rem 1.1rem;background:var(--paper);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--ink3);line-height:1.7}
 .rm-copyright strong{color:var(--ink2);display:block;margin-bottom:.25rem}
 
@@ -1157,16 +1163,18 @@ const S5_TEXTS = {
   tuna: {
     title: 'Tuna Fish',
     author: 'Christopher Durang',
+    play: 'Laughing Wild',
     speaker: 'The Woman',
     accent: 'var(--amber)',
-    synopsis: '<p><em>Tuna Fish</em> is a short comic monologue by American playwright Christopher Durang. It belongs to a tradition of absurdist American comedy in which ordinary settings — a supermarket, an aisle, a delay at a shelf — become the trigger for a much larger breakdown.</p><p>The speaker, known only as The Woman, has come out of the supermarket and is now speaking directly to us. She tries to explain what just happened. She starts philosophically ("I want to talk to you about life") and unravels from there. The monologue\'s comedy is the gap between the big claim — <em>life</em> — and the tiny, unbearable thing that broke her: a man reading the back of a tuna can.</p><p>Durang uses direct address to the audience so that we become her only remaining audience, the only people she can try to make understand. As you read, notice how the voice tumbles — sentences chasing each other, qualifications on qualifications, the mind mid-unravel.</p>',
-    copyright: 'Christopher Durang, <em>Tuna Fish Casserole</em>. © Christopher Durang. All rights reserved. Key passages reproduced here for classroom study only, under educational fair-dealing provisions. The full printed text is in your teacher\'s classroom handout.',
+    synopsis: '<p><em>Tuna Fish</em> is the opening monologue of <em>Laughing Wild</em>, a 1987 play by American playwright Christopher Durang. It belongs to a tradition of absurdist American comedy in which ordinary settings — a supermarket, an aisle, a delay at a shelf — become the trigger for a much larger breakdown.</p><p>The speaker, known only as The Woman, has come out of the supermarket and is now speaking directly to us. She tries to explain what just happened. She starts philosophically ("I want to talk to you about life") and unravels from there. The monologue\'s comedy is the gap between the big claim — <em>life</em> — and the tiny, unbearable thing that broke her: a man reading the back of a tuna can.</p><p>Durang uses direct address to the audience so that we become her only remaining audience, the only people she can try to make understand. As you read, notice how the voice tumbles — sentences chasing each other, qualifications on qualifications, the mind mid-unravel.</p>',
+    copyright: 'Christopher Durang, <em>Laughing Wild</em> (1987). © Christopher Durang. All rights reserved. Reproduced here for classroom study only, under educational fair-dealing provisions. The full printed play is in your teacher\'s classroom handout.',
     sections: [
-      { label: 'Opening — The Hook', text: '"I want to talk to you about life. It\'s just too difficult to be alive, isn\'t it, and try to function? I mean, there are some people who are mentally ready to cope with life but I am not one of them."' },
-      { label: 'The Supermarket — Set-up', text: '"There was this person in the supermarket and they were standing right in front of the tuna fish and I waited a long while, to see if they\'d move, and they didn\'t — they were looking at tuna fish too, but they were taking a real long time on it, reading the ingredients on each can like they were a book, a pretty boring book if you ask me, but nobody has."' },
-      { label: 'The Climax — The Breaking Point', text: '"I waited a long while, and they didn\'t move, and I couldn\'t get to the tuna fish cans... and so I reached over with my fist, and I brought it down real hard on his head and screamed: \'Would you kindly move asshole!!!\'"' },
-      { label: 'The Resolution — Fleeing', text: '"I ran out of the supermarket and I came here. I need to be surrounded with culture right now, not tuna fish."' }
-    ]
+      { label: 'Opening — The Hook', text: '"I want to talk to you about life. It\'s just too difficult to be alive, isn\'t it, and try to function? There are all these people to deal with."' },
+      { label: 'The Supermarket — Set-up', text: '"I tried to buy a can of tuna fish in the supermarket, and there was this person standing right in front of where I wanted to reach out to get the tuna fish, and I waited a while, to see if they\'d move, and they didn\'t — they were looking at tuna fish too, but they were taking a real long time on it, reading the ingredients on each can like they were a book, a pretty boring book if you ask me, but nobody has."' },
+      { label: 'The Climax — The Breaking Point', text: '"And so I reached over with my fist, and I brought it down real hard on his head and screamed: \'Would you kindly move asshole!!!\'"' },
+      { label: 'The Resolution — Fleeing', text: '"I ran out of the supermarket, and I thought, I\'ll take a taxi to the Metropolitan Museum of Art, I need to be surrounded with culture right now, not tuna fish."' }
+    ],
+    fullText: '<p>"I want to talk to you about life. It\'s just too difficult to be alive, isn\'t it, and try to function? There are all these people to deal with. I tried to buy a can of tuna fish in the supermarket, and there was this person standing right in front of where I wanted to reach out to get the tuna fish, and I waited a while, to see if they\'d move, and they didn\'t — they were looking at tuna fish too, but they were taking a real long time on it, reading the ingredients on each can like they were a book, a pretty boring book if you ask me, but nobody has; so I waited a long while, and they didn\'t move, and I couldn\'t get to the tuna fish cans; and I thought about asking them to move, but then they seemed so stupid not to have sensed that I needed to get by them that I had this awful fear that it would do no good, no good at all, to ask them, they\'d probably say something like, \'We\'ll move when we\'re goddam ready you nagging bitch\' and then what would I do? And so then I started to cry out of frustration, quietly, so as not to disturb anyone, and still, even though I was softly sobbing, this stupid person didn\'t grasp that I needed to get by them, and so I reached over with my fist, and I brought it down real hard on his head and screamed: \'Would you kindly move asshole!!!\'</p><p>And the person fell to the ground, and looked totally startled, and some child nearby started to cry, and I was still crying, and I couldn\'t imagine making use of the tuna fish now anyway, and so I shouted at the child to stop crying — I mean, it was drawing too much attention to me — and I ran out of the supermarket, and I thought, I\'ll take a taxi to the Metropolitan Museum of Art, I need to be surrounded with culture right now, not tuna fish."</p>'
   },
   ruben: {
     title: 'Ruben Guthrie',
@@ -1174,14 +1182,15 @@ const S5_TEXTS = {
     speaker: 'Ruben Guthrie',
     accent: 'var(--coral)',
     synopsis: '<p><em>Ruben Guthrie</em> is a play by Australian writer and actor Brendan Cowell. First produced in 2009 at Belvoir St Theatre, it follows a successful Sydney advertising executive whose drinking nearly kills him — and whose attempt at sobriety is messier than he wants anyone to know.</p><p>In this monologue Ruben addresses his Saturday sobriety support group in Centennial Park. He begins like a performer: thanking the Group, naming members by name, making jokes about Ken\'s dog. The tone is warm, celebratory, Australian and casual. But the speech has a trap built into it — about halfway through, the jokes crack and Ruben tells the truth: sobriety is boring, and the nights are dangerous. Then he pulls himself back up into celebration by announcing his engagement.</p><p>This monologue is a masterclass in form: Ruben is speaking to a specific, named, present audience (direct address to a group), and everything he says is shaped by the fact that they are listening, and by the fact that he has to appear to be doing well in front of them.</p>',
-    copyright: 'Brendan Cowell, <em>Ruben Guthrie</em>. © Brendan Cowell / Currency Press. All rights reserved. Key passages reproduced here for classroom study only, under educational fair-dealing provisions. The full printed play is in your teacher\'s classroom handout.',
+    copyright: 'Brendan Cowell, <em>Ruben Guthrie</em>. © Brendan Cowell / Currency Press. All rights reserved. Reproduced here for classroom study only, under educational fair-dealing provisions. The full printed play is in your teacher\'s classroom handout.',
     sections: [
       { label: 'Opening — Addressing the Group', text: '"Thanks for responding so positively to this idea Group. I never thought I\'d be standing here in the sunlight with you people but I gotta say it feels good. Ken I think your Rottweiler is taking a shit on my rug."' },
       { label: 'The Set-up — Performed Gratitude', text: '"And what a gorgeous day — not a cloud in the sky — ok there\'s one cloud, thanks Jermy for picking that up! We are blessed. Blessed to be sober and clean."' },
       { label: 'The Climax — The Crack', text: '"It is f***ing boring being sober. Sometimes Janelle, sometimes! It\'s the nights really isn\'t it?"' },
       { label: 'The Turn — The Darkness', text: '"But then the night comes."' },
       { label: 'The Resolution — The Announcement', text: '"But I got you guys now... most of all I got the love of a good woman... and that is why I am marrying her! That girl over there with the puppy in her arms — she will be my wife! My wife — my life."' }
-    ]
+    ],
+    fullText: '<p>Hello my name is Ruben Guthrie and how exciting is this? Hey…</p><p>I\'m excited are you excited — this is the next level! And what a gorgeous day — not a cloud in the sky — ok there\'s one cloud, thanks Jermy for picking that up!</p><p>We are blessed. Blessed to be sober and clean, and blessed to be here, on this special Saturday morning, in Centennial Park, with our dogs! Or in Janelle\'s case with her pig. I\'m sorry Janelle what is that thing? Oh it\'s a pig-dog. Was that a rescue?</p><p>Thanks for responding so positively to this idea Group. I never thought I\'d be standing here in the sunlight with you people but I gotta say it feels good. To have organised something with my Home Group I really. I\'m chuffed. So thank you for the constant love and support.</p><p>Ken I think your Rottweiler is taking a shit on my rug. Ken you may want to…</p><p>What do you feed that thing?</p><p>It\'s…let\'s admit! It is f***ing boring being sober. Sometimes Janelle, sometimes!</p><p>It\'s the nights really isn\'t it? The days are ok because you feel so fresh, you don\'t have a hangover, and nothing clouds you — you\'re firing from the time you bounce out of bed; I\'m alive and Mel and Koshie are my friends!</p><p>But then the night comes.</p><p>When you\'re drinking it\'s the days that feel heavy and the nights that sing. Stop drinking it\'s the days that sing songs and the night it just presses on your brain, it sticks needles in your eyes it makes pain in the middle of your chest it says \'drink\' it says \'walk through the walls Ruben follow the lights Ruben follow the lights down the shiny road to the golden place\'.</p><p>But I got you guys now. I got Janelle on the end of the phone I got Ken down the street with Halo 2 but most of all I got the love of a good woman, a woman that says \'yes\' to my problems and \'yes\' to my trauma and \'yes\' to my ideas of buying a dog and calling it \'Pellegrino\' and \'yes\' to my idea of holding Saturday Group meetings in Centennial Park and sharing with our dogs our loyal canines and her name is Virginia and she gives me strength because she validates my pain, and that is why I am marrying her!</p><p>That girl over there with the puppy in her arms — she will be my wife!</p><p>My wife — my life.</p><p class="rm-stage">[RUBEN howls into the wind.]</p>'
   },
   nora: {
     title: "A Doll's House",
@@ -1196,7 +1205,8 @@ const S5_TEXTS = {
       { label: 'Opening — The Doll-Child', text: 'NORA: It is perfectly true, Torvald. When I was at home with papa, he told me his opinion about everything, and so I had the same opinions; and if I differed from him I concealed the fact, because he would not have liked it. He called me his doll-child, and he played with me just as I used to play with my dolls. And when I came to live with you…' },
       { label: 'The Accusation', text: 'I mean that I was simply transferred from papa\'s hand into yours. You arranged everything according to your own taste, and so I got the same tastes as you — or else I pretended to, I am really not quite sure which — I think sometimes the one and sometimes the other. When I look back on it, it seems to me as if I had been living here like a poor woman — just from hand to mouth. I have existed merely to perform tricks for you, Torvald. But you would have it so. You and papa have committed a great sin against me. It is your fault that I have made nothing of my life.' },
       { label: 'The Realisation — The Journey Complete', text: 'You neither think nor talk like the man I could bind myself to. As soon as your fear was over — and it was not fear for what threatened me, but for what might happen to you — when the whole thing was past, as far as you were concerned it was exactly as if nothing at all had happened. Exactly as before, I was your little skylark, your doll, which you would in future treat with doubly gentle care, because it was so brittle and fragile. Torvald — it was then it dawned upon me that for eight years I had been living here with a strange man, and had borne him three children. Oh! I can\'t bear to think of it! I could tear myself into little bits!' }
-    ]
+    ],
+    fullText: '<p>NORA: It is perfectly true, Torvald. When I was at home with papa, he told me his opinion about everything, and so I had the same opinions; and if I differed from him I concealed the fact, because he would not have liked it. He called me his doll-child, and he played with me just as I used to play with my dolls. And when I came to live with you…</p><p>I mean that I was simply transferred from papa\'s hand into yours. You arranged everything according to your own taste, and so I got the same tastes as you — or else I pretended to, I am really not quite sure which — I think sometimes the one and sometimes the other. When I look back on it, it seems to me as if I had been living here like a poor woman — just from hand to mouth. I have existed merely to perform tricks for you, Torvald. But you would have it so. You and papa have committed a great sin against me. It is your fault that I have made nothing of my life.</p><p>You neither think nor talk like the man I could bind myself to. As soon as your fear was over — and it was not fear for what threatened me, but for what might happen to you — when the whole thing was past, as far as you were concerned it was exactly as if nothing at all had happened. Exactly as before, I was your little skylark, your doll, which you would in future treat with doubly gentle care, because it was so brittle and fragile. Torvald — it was then it dawned upon me that for eight years I had been living here with a strange man, and had borne him three children. Oh! I can\'t bear to think of it! I could tear myself into little bits!</p>'
   }
 };
 
@@ -1413,7 +1423,7 @@ function rmGo(key) {
       ${t.synopsis}
     </div>
 
-    <div style="font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink3);margin-bottom:.75rem;border-top:1px solid var(--border);padding-top:1rem">${t.fulltext ? 'The monologue — full text' : 'The monologue — key passages'}</div>`;
+    <div style="font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink3);margin-bottom:.75rem;border-top:1px solid var(--border);padding-top:1rem">The monologue — key passages</div>`;
 
   t.sections.forEach(sec => {
     html += `
@@ -1422,6 +1432,17 @@ function rmGo(key) {
         <div class="rm-text">${sec.text}</div>
       </div>`;
   });
+
+  if (t.fullText) {
+    html += `
+      <div style="font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink3);margin:1.75rem 0 .75rem;border-top:1px solid var(--border);padding-top:1rem">The monologue — full text</div>
+      <div class="rm-fulltext" style="color:${accent}">${t.fullText}</div>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:.5rem">
+        <button class="rm-download" type="button" onclick="rmDownload('${key}')" aria-label="Download ${t.title} as a text file">
+          <span aria-hidden="true">⬇</span> Download <em style="font-style:italic">${t.title}</em> (.txt)
+        </button>
+      </div>`;
+  }
 
   html += `
     <div class="rm-copyright">
@@ -1436,6 +1457,47 @@ function rmGo(key) {
 
   document.getElementById('rm-content').innerHTML = html;
   document.getElementById('rm-content').scrollTop = 0;
+}
+
+function rmDownload(key) {
+  const t = S5_TEXTS[key];
+  if (!t || !t.fullText) return;
+
+  const stripHtml = s => {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = s;
+    return tmp.textContent || '';
+  };
+
+  const paragraphs = (t.fullText.match(/<p[^>]*>[\s\S]*?<\/p>/gi) || [t.fullText])
+    .map(p => stripHtml(p).trim())
+    .filter(Boolean);
+
+  const lines = [];
+  lines.push(t.title.toUpperCase());
+  if (t.play) lines.push('From the play: ' + t.play);
+  lines.push('by ' + t.author);
+  if (t.translator) lines.push('Translated by ' + stripHtml(t.translator));
+  lines.push('');
+  lines.push('Spoken by ' + t.speaker);
+  lines.push('');
+  lines.push('────────────────────────────');
+  lines.push('');
+  lines.push(paragraphs.join('\n\n'));
+  lines.push('');
+  lines.push('────────────────────────────');
+  lines.push('');
+  lines.push(stripHtml(t.copyright));
+
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = t.title.replace(/[^a-z0-9]+/gi, '_').replace(/^_|_$/g, '') + '.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
 /* ════════════════════════════════════════════════════════════

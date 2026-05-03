@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,9 +33,9 @@
 
         /* === RESET === */
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { width: 100%; height: 100dvh; overflow: hidden; background: var(--bar-dark); }
+        html, body { width: 100%; min-height: 100dvh; background: var(--bar-dark); }
         body { font-family: 'Inter', sans-serif; font-size: var(--text-base); color: var(--bar-text); }
-        #app { position: relative; width: 100vw; height: 100dvh; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
+        #app { position: relative; width: 100vw; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; }
 
         /* === BACKGROUND — Smoky dive bar atmosphere === */
         .bg-container { position: fixed; inset: 0; z-index: 0; background: var(--bar-dark); overflow: hidden; }

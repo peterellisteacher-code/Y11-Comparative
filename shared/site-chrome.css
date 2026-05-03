@@ -1,0 +1,145 @@
+/* =========================================================
+   site-chrome.css — Shared chrome for cross-page consistency
+   WCAG 2.2 AA: SC 2.4.1 Bypass Blocks, SC 3.2.3 Consistent Navigation,
+                SC 3.2.4 Consistent Identification, SC 2.4.7 Focus Visible.
+   Import LAST in each page so it overrides per-page chrome styles.
+   ========================================================= */
+
+/* Skip-link — first focusable element, off-screen until focused */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #0d0b08;
+    color: #ffffff;
+    padding: 8px 16px;
+    z-index: 1000;
+    text-decoration: none;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 0 0 4px 0;
+}
+.skip-link:focus {
+    top: 0;
+    outline: 3px solid #ffffff;
+    outline-offset: -2px;
+}
+
+/* Site topbar — same DOM order on every page:
+   [back-link slot]   [breadcrumb slot]   [pdf-btn slot]
+   left               centre               right                       */
+.site-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 24px;
+    min-height: 56px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.site-topbar__left  { display: flex; align-items: center; gap: 8px; }
+.site-topbar__centre { flex: 1 1 auto; text-align: center; }
+.site-topbar__right { display: flex; align-items: center; gap: 8px; }
+
+/* Back-link — always top-left, label always begins with ← */
+.site-topbar .back-link,
+.site-topbar a.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    min-height: 24px;
+    text-decoration: none;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--chrome-fg, currentColor);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.site-topbar .back-link:hover {
+    background: var(--chrome-hover-bg, rgba(0,0,0,0.05));
+    border-color: var(--chrome-hover-border, currentColor);
+}
+
+/* Save-PDF button — always top-right */
+.site-topbar .pdf-btn,
+.site-topbar button.pdf-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    min-height: 24px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    background: var(--chrome-accent, #1f6f4f);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+}
+.site-topbar .pdf-btn:hover {
+    background: var(--chrome-accent-hover, var(--chrome-accent, #194f3a));
+}
+.site-topbar .pdf-btn:active { transform: translateY(1px); }
+
+/* Breadcrumb (optional centre slot, used at 3+ levels deep) */
+.site-topbar .breadcrumb {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    color: var(--chrome-muted, currentColor);
+}
+.site-topbar .breadcrumb a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.site-topbar .breadcrumb a:hover { text-decoration-thickness: 2px; }
+.site-topbar .breadcrumb [aria-current="page"] {
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Universal focus indicator — meets SC 2.4.7 + 1.4.11 + 2.4.13 */
+.site-topbar :focus-visible {
+    outline: 3px solid var(--chrome-focus, #2563eb);
+    outline-offset: 2px;
+    border-radius: inherit;
+}
+@media (forced-colors: active) {
+    .site-topbar :focus-visible { outline-color: Highlight; }
+    .site-topbar .pdf-btn { border: 1px solid currentColor; }
+}
+
+/* Visually hidden utility — for screen-reader-only labels */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Mobile reflow — under 768px the topbar wraps to two rows */
+@media (max-width: 768px) {
+    .site-topbar {
+        flex-wrap: wrap;
+        padding: 12px 16px;
+    }
+    .site-topbar__centre {
+        order: 3;
+        flex-basis: 100%;
+        text-align: left;
+        padding-top: 8px;
+    }
+}

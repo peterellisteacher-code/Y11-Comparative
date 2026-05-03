@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -186,8 +186,9 @@
 
         footer span { color: var(--copper); }
     </style>
-</head>
+<style>.skip-link{position:absolute;top:-40px;left:0;background:#0d0b08;color:#fff;padding:8px 16px;z-index:1000;text-decoration:none;font:600 14px Inter,sans-serif}.skip-link:focus{top:0}</style></head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="page-shell">
         <header>
             <a class="back-link" href="index.html">&larr; Archive</a>
@@ -195,7 +196,7 @@
             <span class="subtitle">Unit Materials</span>
         </header>
 
-        <main>
+        <main id="main-content" tabindex="-1">
             <section>
                 <h2>Assessment</h2>
                 <ul class="resource-list">

@@ -54,29 +54,53 @@
     }
   }
 
-  /* ── Tab Switching ─────────────────────────────────────────── */
+  /* ── Tab Switching (W3C APG tabs pattern) ──────────────────── */
   function initTabs () {
     var btns   = document.querySelectorAll('.tab-btn');
     var panels = document.querySelectorAll('.tab-panel');
+    if (!btns.length) return;
+    var btnArr = Array.prototype.slice.call(btns);
 
-    btns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        btns.forEach(function (b) {
-          b.classList.remove('active');
-          b.setAttribute('aria-selected', 'false');
-        });
-        panels.forEach(function (p) {
-          p.classList.remove('active');
-          p.setAttribute('aria-hidden', 'true');
-        });
-        btn.classList.add('active');
-        btn.setAttribute('aria-selected', 'true');
-        var panel = document.getElementById(btn.dataset.tab);
-        if (panel) {
-          panel.classList.add('active');
-          panel.setAttribute('aria-hidden', 'false');
+    function activate (btn, focusIt) {
+      btnArr.forEach(function (b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+        b.setAttribute('tabindex', '-1');
+      });
+      panels.forEach(function (p) {
+        p.classList.remove('active');
+        p.setAttribute('aria-hidden', 'true');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      btn.setAttribute('tabindex', '0');
+      if (focusIt) btn.focus();
+      var panel = document.getElementById(btn.dataset.tab);
+      if (panel) {
+        panel.classList.add('active');
+        panel.setAttribute('aria-hidden', 'false');
+      }
+    }
+
+    btnArr.forEach(function (btn, i) {
+      btn.addEventListener('click', function () { activate(btn, false); });
+      btn.addEventListener('keydown', function (e) {
+        var key = e.key;
+        var nextIdx = null;
+        if (key === 'ArrowRight' || key === 'Right') nextIdx = (i + 1) % btnArr.length;
+        else if (key === 'ArrowLeft' || key === 'Left') nextIdx = (i - 1 + btnArr.length) % btnArr.length;
+        else if (key === 'Home') nextIdx = 0;
+        else if (key === 'End') nextIdx = btnArr.length - 1;
+        if (nextIdx !== null) {
+          e.preventDefault();
+          activate(btnArr[nextIdx], true);
         }
       });
+    });
+
+    // Ensure initial state matches markup (active tab gets tabindex=0; others -1)
+    btnArr.forEach(function (b) {
+      b.setAttribute('tabindex', b.classList.contains('active') ? '0' : '-1');
     });
   }
 

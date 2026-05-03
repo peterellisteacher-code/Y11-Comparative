@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/character-activities.css">
+  <link rel="stylesheet" href="../../shared/site-chrome.css">
   <style>
     :root {
       --cp: #8E5E7A;
@@ -17,6 +18,7 @@
   </style>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
 <header class="top-bar">
   <a href="../characters.html" class="back-link">← Characters</a>
@@ -24,29 +26,29 @@
   <button id="pdf-btn" class="pdf-btn">↓ Save PDF</button>
 </header>
 
-<div class="page-body">
+<div class="page-body" id="main-content" tabindex="-1">
 
   <!-- ── Character Panel ─────────────────────────────────── -->
   <aside class="char-panel">
-    <img class="portrait" src="assets/monica_v4.png" alt="Monica at the window">
+    <img class="portrait" src="assets/monica_v4.png" alt="Monica at the window" width="256" height="192">
     <p class="char-name">Monica</p>
-    <div id="sprite-wrap"><img src="../sprites/monica/rotations/south.png" alt="Monica"></div>
+    <div id="sprite-wrap"><img src="../sprites/monica/rotations/south.png" alt="Monica, David's mother" width="124" height="124"></div>
     <blockquote class="char-quote">"Why can't we communicate?"</blockquote>
   </aside>
 
   <!-- ── Activities Panel ────────────────────────────────── -->
   <div class="activities-panel">
-    <nav class="tab-bar">
-      <button class="tab-btn active" data-tab="activity1" aria-selected="true">Activity 1 — Word Bank</button>
-      <button class="tab-btn" data-tab="activity2" aria-selected="false">Activity 2 — Select Lines</button>
-      <button class="tab-btn" data-tab="activity3" aria-selected="false">Activity 3 — Why These Lines</button>
-      <button class="tab-btn" data-tab="activity4" aria-selected="false">Activity 4 — Monologue</button>
-    </nav>
+    <div class="tab-bar" role="tablist" aria-label="Character activities">
+      <button class="tab-btn active" data-tab="activity1" aria-selected="true" role="tab" id="tab-activity1" aria-controls="activity1" tabindex="0">Activity 1 — Word Bank</button>
+      <button class="tab-btn" data-tab="activity2" aria-selected="false" role="tab" id="tab-activity2" aria-controls="activity2" tabindex="-1">Activity 2 — Select Lines</button>
+      <button class="tab-btn" data-tab="activity3" aria-selected="false" role="tab" id="tab-activity3" aria-controls="activity3" tabindex="-1">Activity 3 — Why These Lines</button>
+      <button class="tab-btn" data-tab="activity4" aria-selected="false" role="tab" id="tab-activity4" aria-controls="activity4" tabindex="-1">Activity 4 — Monologue</button>
+    </div><!-- /tablist -->
 
     <div class="tab-content">
 
       <!-- ═══ ACTIVITY 1 ═════════════════════════════════════ -->
-      <section class="tab-panel active" id="activity1" aria-hidden="false">
+      <section class="tab-panel active" id="activity1" aria-hidden="false" role="tabpanel" aria-labelledby="tab-activity1" tabindex="0">
         <p class="act-title">Words Monica uses in the story</p>
         <p class="act-desc">Every word Monica says aloud in the story is here. Her vocabulary moves between the domestic and the things she can't quite bring herself to say. Click a word when you use it below.</p>
 
@@ -139,7 +141,7 @@
       </section>
 
       <!-- ═══ ACTIVITY 2 — SELECT LINES ══════════════════════ -->
-      <section class="tab-panel" id="activity2" aria-hidden="true">
+      <section class="tab-panel" id="activity2" aria-hidden="true" role="tabpanel" aria-labelledby="tab-activity2" tabindex="0">
         <p class="act-title">Every line Monica speaks in the story</p>
         <p class="act-desc">Below is every line Monica says aloud across the story. Choose <em>five</em> that feel most telling -- the ones where her voice carries the most weight. Click a line to select or un-select it.</p>
         <p class="line-counter" id="line-counter">0 of 5 selected</p>
@@ -147,7 +149,7 @@
       </section>
 
       <!-- ═══ ACTIVITY 3 — WHY THESE LINES ═══════════════════ -->
-      <section class="tab-panel" id="activity3" aria-hidden="true">
+      <section class="tab-panel" id="activity3" aria-hidden="true" role="tabpanel" aria-labelledby="tab-activity3" tabindex="0">
         <p class="act-title">The heavy-lifting words in Monica's lines</p>
         <p class="act-desc">Your five selected lines are shown below with the <em>verbs</em>, <em>nouns</em>, <em>adjectives</em>, and <em>adverbs</em> picked out. These are the words doing the heavy lifting. Beneath each line, write why this line matters to Monica.</p>
         <div class="pos-legend">
@@ -160,7 +162,7 @@
       </section>
 
       <!-- ═══ ACTIVITY 4 — MONOLOGUE ═════════════════════════ -->
-      <section class="tab-panel" id="activity4" aria-hidden="true">
+      <section class="tab-panel" id="activity4" aria-hidden="true" role="tabpanel" aria-labelledby="tab-activity4" tabindex="0">
         <div class="a4-layout">
           <div class="a4-left">
             <p class="a4-left-title">Your chosen lines &amp; reasons</p>

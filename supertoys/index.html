@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,13 +12,12 @@
 
     <style>
         :root { --text-hero: 76px; /* One Perfect Fourth step above --text-3xl (57 * 1.333) */ }
-        html, body { height: 100dvh; overflow: hidden; background: #F5ECD7; }
+        html, body { min-height: 100dvh; background: #F5ECD7; }
         body { font-family: 'Inter', sans-serif; color: #3D2B1E; }
 
         #app {
-            position: relative; width: 100vw; height: 100vh;
+            position: relative; width: 100vw; min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
-            overflow: hidden;
         }
 
         /* ==============================

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,13 +52,17 @@
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         html, body {
-            height: 100dvh;
-            overflow: hidden;
+            min-height: 100dvh;
             background: var(--ink-deep);
             color: var(--paper);
             font-family: 'Inter', system-ui, sans-serif;
             font-size: var(--text-base);
             line-height: 1.5;
+        }
+        @media (max-width: 768px) {
+            .page-shell { padding: var(--space-sm); height: auto; min-height: 100dvh; }
+            .cabinet-row--narratives,
+            .cabinet-row--assessments { grid-template-columns: 1fr; }
         }
 
         /* Paper-grain texture overlay */
@@ -429,6 +433,32 @@
         }
         .hub-footer span { color: var(--copper); }
 
+        /* Motion-pause toggle button (SC 2.2.2) */
+        .motion-toggle {
+            position: fixed;
+            top: var(--space-sm);
+            right: var(--space-sm);
+            z-index: 50;
+            background: rgba(13, 11, 8, 0.85);
+            border: 1px solid var(--copper);
+            color: var(--copper-bright);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: var(--space-xs) var(--space-sm);
+            min-height: 44px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+        .motion-toggle:hover { background: rgba(13, 11, 8, 0.95); color: var(--paper); border-color: var(--copper-bright); }
+        .motion-toggle:focus-visible { outline: 3px solid var(--copper-bright); outline-offset: 2px; }
+
+        body.motion-paused *,
+        body.motion-paused *::before,
+        body.motion-paused *::after { animation-play-state: paused !important; }
+
         /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
@@ -450,7 +480,7 @@
 
                 <a href="arrival/index.html" class="plate plate--narrative plate--arrival" role="listitem" aria-label="Arrival">
                     <div class="artifact-window">
-                        <img class="artifact-img" src="generated-images/hub/rd_pixelate_1776507645_sq.png" alt="Pixel-art still of two heptapod creatures looming through fog with a logogram forming between them" />
+                        <img class="artifact-img" width="192" height="192" src="generated-images/hub/rd_pixelate_1776507645_sq.png" alt="Pixel-art still of two heptapod creatures looming through fog with a logogram forming between them" />
                         <div class="arrival-fog" aria-hidden="true"></div>
                         <div class="arrival-glow" aria-hidden="true"></div>
                         <span class="plate-title">Arrival</span>
@@ -459,7 +489,7 @@
 
                 <a href="supertoys/index.html" class="plate plate--narrative plate--supertoys" role="listitem" aria-label="Super-Toys">
                     <div class="artifact-window">
-                        <img class="artifact-img" src="generated-images/hub/rd_pixelate_1776512161_sq.png" alt="Pixel-art still of a small boy in a sailor outfit standing among synthetic tulips in a greenhouse" />
+                        <img class="artifact-img" width="288" height="288" src="generated-images/hub/rd_pixelate_1776512161_sq.png" alt="Pixel-art still of a small boy in a sailor outfit standing among synthetic tulips in a greenhouse" />
                         <div class="supertoys-tint" aria-hidden="true"></div>
                         <div class="uncanny-glitch" aria-hidden="true"></div>
                         <span class="plate-title">Super-Toys</span>
@@ -468,7 +498,7 @@
 
                 <a href="singers/index.html" class="plate plate--narrative plate--singers" role="listitem" aria-label="The Singers">
                     <div class="artifact-window">
-                        <img class="artifact-img" src="generated-images/hub/rd_pixelate_1776580361_sq.png" alt="Pixel-art close-up of a bearded man in a red beanie smoking a cigarette in dim amber light" />
+                        <img class="artifact-img" width="256" height="256" src="generated-images/hub/rd_pixelate_1776580361_sq.png" alt="Pixel-art close-up of a bearded man in a red beanie smoking a cigarette in dim amber light" />
                         <div class="singers-spotlight" aria-hidden="true"></div>
                         <span class="plate-title">The Singers</span>
                     </div>
@@ -481,14 +511,14 @@
 
                 <a href="Monologue_Website.html" class="plate plate--assessment" role="listitem" aria-label="Monologues">
                     <div class="artifact-window">
-                        <img class="artifact-img" src="generated-images/hub/rd_pixelate_1776514298_sq.png" alt="Pixel-art still of a single wooden chair in a pool of amber spotlight on a dark empty stage" />
+                        <img class="artifact-img" width="192" height="192" src="generated-images/hub/rd_pixelate_1776514298_sq.png" alt="Pixel-art still of a single wooden chair in a pool of amber spotlight on a dark empty stage" />
                         <span class="plate-title">Monologues</span>
                     </div>
                 </a>
 
                 <a href="resources.html" class="plate plate--resources" role="listitem" aria-label="Resources">
                     <div class="artifact-window">
-                        <img class="artifact-img" src="generated-images/hub/rd_pixelate_1776514433_sq.png" alt="Pixel-art still of a vintage typewriter with a draft page curling out on a wooden desk" />
+                        <img class="artifact-img" width="192" height="192" src="generated-images/hub/rd_pixelate_1776514433_sq.png" alt="Pixel-art still of a vintage typewriter with a draft page curling out on a wooden desk" />
                         <span class="plate-title">Resources</span>
                     </div>
                 </a>
@@ -502,5 +532,26 @@
         </footer>
 
     </div>
+
+    <button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false">Pause motion</button>
+    <script>
+        (function () {
+            var btn = document.getElementById('motion-toggle');
+            if (!btn) return;
+            // Honour OS preference at load: if user has reduced-motion, default to paused
+            try {
+                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    document.body.classList.add('motion-paused');
+                    btn.setAttribute('aria-pressed', 'true');
+                    btn.textContent = 'Play motion';
+                }
+            } catch (e) { /* ignore */ }
+            btn.addEventListener('click', function () {
+                var paused = document.body.classList.toggle('motion-paused');
+                btn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+                btn.textContent = paused ? 'Play motion' : 'Pause motion';
+            });
+        }());
+    </script>
 </body>
 </html>

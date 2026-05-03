@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
         :root {
             --space-xs: 8px;
@@ -28,8 +29,7 @@
         }
 
         html, body {
-            height: 100dvh;
-            overflow: hidden;
+            min-height: 100dvh;
         }
 
         body {
@@ -38,8 +38,7 @@
             background: #0D1117;
             display: grid;
             grid-template-rows: auto auto 1fr;
-            height: 100dvh;
-            overflow: hidden;
+            min-height: 100dvh;
         }
 
         /* === COMPACT HEADER === */
@@ -53,7 +52,7 @@
         }
 
         .page-header__back {
-            color: rgba(184,197,214,0.5);
+            color: rgba(184,197,214,0.75); /* SC 1.4.3 bumped from 0.5 (3.51:1) to 0.75 (~5:1) */
             text-decoration: none;
             font-size: var(--text-base);
             transition: color 0.2s;
@@ -113,7 +112,7 @@
             background: none;
             border: none;
             border-bottom: 2px solid transparent;
-            color: rgba(184,197,214,0.45);
+            color: rgba(184,197,214,0.7); /* SC 1.4.3 bumped from 0.45 (3.06:1) to 0.7 (~4.8:1) */
             font-family: 'Inter', sans-serif;
             font-size: var(--text-sm);
             font-weight: 500;
@@ -292,7 +291,7 @@
         .calibration-pip__label {
             font-family: 'Inter', sans-serif;
             font-size: var(--text-sm);
-            color: rgba(232,228,223,0.45);
+            color: rgba(232,228,223,0.7); /* SC 1.4.3 bumped from 0.45 (3.79:1) to 0.7 (~5:1) */
             line-height: 1.15;
             text-align: center;
             transition: color 0.15s;
@@ -927,9 +926,21 @@
             .tab-panel { position: static !important; overflow: visible !important;
                          padding: 0 !important; display: block !important; }
         }
+
+        /* ── Focus Visible (WCAG 2.4.7) ── */
+        *:focus-visible {
+            outline: 3px solid #D4956A;
+            outline-offset: 2px;
+            border-radius: inherit;
+        }
+        @media (forced-colors: active) {
+            *:focus-visible { outline-color: Highlight; }
+        }
     </style>
+    <link rel="stylesheet" href="../../shared/site-chrome.css">
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
     <!-- COMPACT HEADER -->
     <header class="page-header">
@@ -949,7 +960,7 @@
     </nav>
 
     <!-- CONTENT AREA -->
-    <main class="tab-content">
+    <main class="tab-content" id="main-content" tabindex="-1">
 
         <!-- ========================================================
              PANEL 1: CHARACTER CALIBRATION
@@ -994,7 +1005,7 @@
 
                     <!-- SCENE 1: COWBOY PLAY (age 6) -->
                     <div class="scene-card active">
-                        <img class="scene-image" src="Hannah%20gifs/scene%201.gif" alt="Young Hannah laughing as Louise plays cowboys with her at the lake house">
+                        <img class="scene-image" src="Hannah%20gifs/scene%201.gif" alt="Young Hannah laughing as Louise plays cowboys with her at the lake house" width="602" height="251">
                         <div class="scene-body">
                             <div class="scene-label-row">
                                 <span class="scene-label">Play</span>
@@ -1002,11 +1013,11 @@
                             </div>
                             <p class="scene-passage">
                                 <span class="scene-speaker">Louise:</span> Stick &rsquo;em up! Are you the
-                                <span class="fill-blank"><input class="fill-blank__input" id="s1b1" type="text" data-answer="sheriff" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b1">WORD &#9662;</span></span>
+                                <span class="fill-blank"><label for="s1b1" class="visually-hidden">Scene 1, blank 1 — word: sheriff</label><input class="fill-blank__input" id="s1b1" type="text" data-answer="sheriff" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b1">WORD &#9662;</span></span>
                                 in this here town? These are my tickle guns, and I&rsquo;m gonna getcha!<br>
                                 <span class="scene-speaker">Hannah:</span> <em>(giggling)</em> No!<br>
                                 <span class="scene-speaker">Louise:</span> You want me to chase you? You better
-                                <span class="fill-blank"><input class="fill-blank__input" id="s1b2" type="text" data-answer="run" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b2">WORD &#9662;</span></span>!
+                                <span class="fill-blank"><label for="s1b2" class="visually-hidden">Scene 1, blank 2 — word: run</label><input class="fill-blank__input" id="s1b2" type="text" data-answer="run" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b2">WORD &#9662;</span></span>!
                             </p>
                             <div id="bk-s1b1" class="scene-bank" data-input="s1b1"></div>
                             <div id="bk-s1b2" class="scene-bank" data-input="s1b2"></div>
@@ -1017,7 +1028,7 @@
 
                     <!-- SCENE 2: THE DRAWING (age 8) -->
                     <div class="scene-card">
-                        <img class="scene-image" src="Hannah%20gifs/scene%202.jpg" alt="Young Hannah showing Louise her drawing of Mommy and Daddy">
+                        <img class="scene-image" src="Hannah%20gifs/scene%202.jpg" alt="Young Hannah showing Louise her drawing of Mommy and Daddy" width="800" height="333">
                         <div class="scene-body">
                             <div class="scene-label-row">
                                 <span class="scene-label">The Drawing</span>
@@ -1025,11 +1036,11 @@
                             </div>
                             <p class="scene-passage">
                                 <span class="scene-speaker">Hannah:</span> Want to see my
-                                <span class="fill-blank"><input class="fill-blank__input" id="s2b1" type="text" data-answer="project" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s2b1">WORD &#9662;</span></span>
+                                <span class="fill-blank"><label for="s2b1" class="visually-hidden">Scene 2, blank 1 — word: project</label><input class="fill-blank__input" id="s2b1" type="text" data-answer="project" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s2b1">WORD &#9662;</span></span>
                                 for Miss Garriott&rsquo;s class?<br>
                                 <span class="scene-speaker">Louise:</span> Yeah, little nose.<br>
                                 <span class="scene-speaker">Hannah:</span> We had to make up our own TV show. If we had one. That&rsquo;s you and Dad. The show is called &ldquo;Mommy and Daddy Talk to
-                                <span class="fill-blank"><input class="fill-blank__input" id="s2b2" type="text" data-answer="Animals" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s2b2">WORD &#9662;</span></span>.&rdquo;<br>
+                                <span class="fill-blank"><label for="s2b2" class="visually-hidden">Scene 2, blank 2 — word: Animals</label><input class="fill-blank__input" id="s2b2" type="text" data-answer="Animals" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s2b2">WORD &#9662;</span></span>.&rdquo;<br>
                                 <span class="scene-speaker">Louise:</span> Oh! Well, it&rsquo;s lovely.
                             </p>
                             <div id="bk-s2b1" class="scene-bank" data-input="s2b1"></div>
@@ -1041,7 +1052,7 @@
 
                     <!-- SCENE 3: THE LAKESIDE (age 8) -->
                     <div class="scene-card">
-                        <img class="scene-image" src="Hannah%20gifs/scene%203.jpg" alt="Young Hannah and Louise at the lakeside, afternoon light" data-scene-num="3">
+                        <img class="scene-image" src="Hannah%20gifs/scene%203.jpg" alt="Young Hannah and Louise at the lakeside, afternoon light" data-scene-num="3" width="500" height="305">
                         <div class="scene-body">
                             <div class="scene-label-row">
                                 <span class="scene-label">The Lakeside</span>
@@ -1052,8 +1063,8 @@
                                 <span class="scene-speaker">Louise:</span> It&rsquo;s my fault. I told him something that he wasn&rsquo;t ready to hear.<br>
                                 <span class="scene-speaker">Hannah:</span> What? What&rsquo;s going to happen?<br>
                                 <span class="scene-speaker">Louise:</span> It has to do with a really rare disease. And it&rsquo;s
-                                <span class="fill-blank"><input class="fill-blank__input" id="s3b1" type="text" data-answer="unstoppable" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s3b1">WORD &#9662;</span></span>. Kind of like you are, with your swimming, and your
-                                <span class="fill-blank"><input class="fill-blank__input" id="s3b2" type="text" data-answer="poetry" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s3b2">WORD &#9662;</span></span>, and all the other amazing things that you share with the world.<br>
+                                <span class="fill-blank"><label for="s3b1" class="visually-hidden">Scene 3, blank 1 — word: unstoppable</label><input class="fill-blank__input" id="s3b1" type="text" data-answer="unstoppable" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s3b1">WORD &#9662;</span></span>. Kind of like you are, with your swimming, and your
+                                <span class="fill-blank"><label for="s3b2" class="visually-hidden">Scene 3, blank 2 — word: poetry</label><input class="fill-blank__input" id="s3b2" type="text" data-answer="poetry" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s3b2">WORD &#9662;</span></span>, and all the other amazing things that you share with the world.<br>
                                 <span class="scene-speaker">Hannah:</span> I&rsquo;m unstoppable?<br>
                                 <span class="scene-speaker">Louise:</span> Yeah.
                             </p>
@@ -1066,7 +1077,7 @@
 
                     <!-- SCENE 4: THE HOMEWORK (age 12) -->
                     <div class="scene-card">
-                        <img class="scene-image" src="Hannah%20gifs/Scene%204.jpg" alt="Teen Hannah and Louise doing homework together, interior evening">
+                        <img class="scene-image" src="Hannah%20gifs/Scene%204.jpg" alt="Teen Hannah and Louise doing homework together, interior evening" width="721" height="623">
                         <div class="scene-body">
                             <div class="scene-label-row">
                                 <span class="scene-label">The Homework</span>
@@ -1078,10 +1089,10 @@
                                 <span class="scene-speaker">Hannah:</span> No&hellip; Like, it&rsquo;s a competition. But both sides end up happy.<br>
                                 <span class="scene-speaker">Louise:</span> Like a win-win?<br>
                                 <span class="scene-speaker">Hannah:</span> More
-                                <span class="fill-blank"><input class="fill-blank__input" id="s4b1" type="text" data-answer="science-y" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s4b1">WORD &#9662;</span></span>
+                                <span class="fill-blank"><label for="s4b1" class="visually-hidden">Scene 4, blank 1 — word: science-y</label><input class="fill-blank__input" id="s4b1" type="text" data-answer="science-y" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s4b1">WORD &#9662;</span></span>
                                 than that.<br>
                                 <span class="scene-speaker">Louise:</span> If you want science, call your
-                                <span class="fill-blank"><input class="fill-blank__input" id="s4b2" type="text" data-answer="father" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s4b2">WORD &#9662;</span></span>.
+                                <span class="fill-blank"><label for="s4b2" class="visually-hidden">Scene 4, blank 2 — word: father</label><input class="fill-blank__input" id="s4b2" type="text" data-answer="father" autocomplete="off" readonly placeholder="___"><span class="fill-blank__badge" data-bank="bk-s4b2">WORD &#9662;</span></span>.
                             </p>
                             <div id="bk-s4b1" class="scene-bank" data-input="s4b1"></div>
                             <div id="bk-s4b2" class="scene-bank" data-input="s4b2"></div>

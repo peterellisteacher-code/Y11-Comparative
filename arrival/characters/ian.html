@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +10,7 @@
     <style>
         /* === RESET & TOKENS === */
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
         :root {
             --space-xs: 8px;
@@ -28,8 +29,7 @@
         }
 
         html, body {
-            height: 100dvh;
-            overflow: hidden;
+            min-height: 100dvh;
             font-family: 'Inter', sans-serif;
             color: #E8E4DF;
             background: #0D1117;
@@ -39,8 +39,7 @@
         .page-shell {
             display: grid;
             grid-template-rows: auto auto 1fr;
-            height: 100dvh;
-            overflow: hidden;
+            min-height: 100dvh;
         }
 
         /* === COMPACT HEADER === */
@@ -56,7 +55,7 @@
         }
 
         .page-header__back {
-            color: rgba(184,197,214,0.5);
+            color: rgba(184,197,214,0.75); /* SC 1.4.3 bumped from 0.5 (3.51:1) to 0.75 (~5:1) */
             text-decoration: none;
             font-size: var(--text-sm);
             transition: color 0.2s;
@@ -117,7 +116,7 @@
             background: transparent;
             border: none;
             border-bottom: 2px solid transparent;
-            color: rgba(184,197,214,0.45);
+            color: rgba(184,197,214,0.7); /* SC 1.4.3 bumped from 0.45 (3.06:1) to 0.7 (~4.8:1) */
             font-family: 'Inter', sans-serif;
             font-size: var(--text-sm);
             font-weight: 500;
@@ -213,10 +212,10 @@
         }
         .btn-ghost {
             border-color: rgba(184,197,214,0.2);
-            color: rgba(184,197,214,0.45);
+            color: rgba(184,197,214,0.7); /* SC 1.4.3 bumped from 0.45 (3.06:1) to 0.7 (~4.8:1) */
         }
         .btn-ghost:hover:not(:disabled) {
-            border-color: rgba(184,197,214,0.45);
+            border-color: rgba(184,197,214,0.7); /* SC 1.4.3 bumped from 0.45 (3.06:1) to 0.7 (~4.8:1) */
             color: rgba(184,197,214,0.75);
         }
         .btn:disabled { opacity: 0.3; cursor: default; }
@@ -574,7 +573,7 @@
         .scene-reference__list li {
             font-family: 'Cormorant Garamond', serif;
             font-size: var(--text-sm);
-            color: rgba(232,228,223,0.45);
+            color: rgba(232,228,223,0.7); /* SC 1.4.3 bumped from 0.45 (3.79:1) to 0.7 (~5:1) */
             font-style: italic;
             line-height: 1.5;
         }
@@ -628,6 +627,12 @@
             padding: var(--space-md);
             cursor: pointer;
             transition: border-color 0.25s, box-shadow 0.25s;
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            text-align: left;
+            width: 100%;
+            display: block;
         }
         .scenario-card:hover {
             border-color: rgba(123,160,142,0.45);
@@ -673,7 +678,7 @@
             font-family: 'Cormorant Garamond', serif;
             font-size: var(--text-base);
             font-style: italic;
-            color: rgba(184,197,214,0.5);
+            color: rgba(184,197,214,0.75); /* SC 1.4.3 bumped from 0.5 (3.51:1) to 0.75 (~5:1) */
             margin-bottom: var(--space-md);
             padding: var(--space-sm) var(--space-md);
             border-left: 2px solid rgba(123,160,142,0.25);
@@ -761,7 +766,7 @@
         .word-bank-instruction {
             font-family: 'Inter', sans-serif;
             font-size: var(--text-sm);
-            color: rgba(232,228,223,0.45);
+            color: rgba(232,228,223,0.7); /* SC 1.4.3 bumped from 0.45 (3.79:1) to 0.7 (~5:1) */
             margin-bottom: var(--space-sm);
             line-height: 1.5;
         }
@@ -882,9 +887,21 @@
             .scenario-context { color: #333; background: #f5f5f5; border-color: #999; }
         }
 
+        /* ── Focus Visible (WCAG 2.4.7) ── */
+        *:focus-visible {
+            outline: 3px solid #7BA08E;
+            outline-offset: 2px;
+            border-radius: inherit;
+        }
+        @media (forced-colors: active) {
+            *:focus-visible { outline-color: Highlight; }
+        }
+
     </style>
+    <link rel="stylesheet" href="../../shared/site-chrome.css">
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="page-shell">
 
         <!-- COMPACT HEADER -->
@@ -905,7 +922,7 @@
         </nav>
 
         <!-- CONTENT AREA -->
-        <div class="tab-content">
+        <div class="tab-content" id="main-content" tabindex="-1">
 
             <!-- ========================================================
                  PANEL 1: QUOTE DETECTIVE
@@ -953,17 +970,17 @@
 
                     <!-- SCENE 1: THE HELICOPTER -->
                     <div class="scene-card active">
-                        <img class="scene-image" src="../generated-images/rd_pro_pixelate_1776492655.png" alt="Ian reading Louise's book in a military helicopter">
+                        <img class="scene-image" src="../generated-images/rd_pro_pixelate_1776492655.png" alt="Ian reading Louise's book in a military helicopter" width="512" height="512">
                         <div class="scene-body">
                             <span class="scene-label">First Meeting</span>
                             <p class="scene-passage">
                                 <span class="scene-speaker">Ian:</span> Yeah, it&rsquo;s great. Even if it&rsquo;s
-                                <span class="fill-blank"><input class="fill-blank__input" id="s1b1" type="text" data-answer="wrong" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b1">ADJ ▾</span></span>.<br>
+                                <span class="fill-blank"><label for="s1b1" class="visually-hidden">Scene 1, blank 1 — adjective: wrong</label><input class="fill-blank__input" id="s1b1" type="text" data-answer="wrong" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b1">ADJ ▾</span></span>.<br>
                                 <span class="scene-speaker">Louise:</span> It&rsquo;s
-                                <span class="fill-blank"><input class="fill-blank__input" id="s1b2" type="text" data-answer="wrong" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b2">ADJ ▾</span></span>?<br>
+                                <span class="fill-blank"><label for="s1b2" class="visually-hidden">Scene 1, blank 2 — adjective: wrong</label><input class="fill-blank__input" id="s1b2" type="text" data-answer="wrong" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b2">ADJ ▾</span></span>?<br>
                                 <span class="scene-speaker">Ian:</span> Well, the cornerstone of civilization isn&rsquo;t
-                                <span class="fill-blank"><input class="fill-blank__input" id="s1b3" type="text" data-answer="language" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b3">NOUN ▾</span></span>, it&rsquo;s
-                                <span class="fill-blank"><input class="fill-blank__input" id="s1b4" type="text" data-answer="science" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b4">NOUN ▾</span></span>.
+                                <span class="fill-blank"><label for="s1b3" class="visually-hidden">Scene 1, blank 3 — noun: language</label><input class="fill-blank__input" id="s1b3" type="text" data-answer="language" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b3">NOUN ▾</span></span>, it&rsquo;s
+                                <span class="fill-blank"><label for="s1b4" class="visually-hidden">Scene 1, blank 4 — noun: science</label><input class="fill-blank__input" id="s1b4" type="text" data-answer="science" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s1b4">NOUN ▾</span></span>.
                             </p>
                             <div id="bk-s1b1" class="scene-bank" data-category="adjectives" data-input="s1b1"></div>
                             <div id="bk-s1b2" class="scene-bank" data-category="adjectives" data-input="s1b2"></div>
@@ -976,14 +993,14 @@
 
                     <!-- SCENE 2: NAMING THE ALIENS -->
                     <div class="scene-card">
-                        <img class="scene-image" src="../generated-images/rd_pro_pixelate_1776492707.png" alt="Ian and Louise in hazmat suits discussing the heptapods Abbott and Costello">
+                        <img class="scene-image" src="../generated-images/rd_pro_pixelate_1776492707.png" alt="Ian and Louise in hazmat suits discussing the heptapods Abbott and Costello" width="512" height="512">
                         <div class="scene-body">
                             <span class="scene-label">Naming the Unknown</span>
                             <p class="scene-passage">
                                 <span class="scene-speaker">Louise:</span> So, what are we gonna call them?<br>
                                 <span class="scene-speaker">Ian:</span> I don&rsquo;t know. I was thinking
-                                <span class="fill-blank"><input class="fill-blank__input" id="s2b1" type="text" data-answer="Abbott" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s2b1">NAME ▾</span></span> and
-                                <span class="fill-blank"><input class="fill-blank__input" id="s2b2" type="text" data-answer="Costello" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s2b2">NAME ▾</span></span>.
+                                <span class="fill-blank"><label for="s2b1" class="visually-hidden">Scene 2, blank 1 — name: Abbott</label><input class="fill-blank__input" id="s2b1" type="text" data-answer="Abbott" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s2b1">NAME ▾</span></span> and
+                                <span class="fill-blank"><label for="s2b2" class="visually-hidden">Scene 2, blank 2 — name: Costello</label><input class="fill-blank__input" id="s2b2" type="text" data-answer="Costello" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s2b2">NAME ▾</span></span>.
                             </p>
                             <div id="bk-s2b1" class="scene-bank" data-category="properNouns" data-input="s2b1"></div>
                             <div id="bk-s2b2" class="scene-bank" data-category="properNouns" data-input="s2b2"></div>
@@ -994,14 +1011,14 @@
 
                     <!-- SCENE 3: STILL SINGLE -->
                     <div class="scene-card">
-                        <img class="scene-image" src="../generated-images/rd_pro_pixelate_1776433250.png" alt="Ian looking at Louise with admiration in the research trailer">
+                        <img class="scene-image" src="../generated-images/rd_pro_pixelate_1776433250.png" alt="Ian looking at Louise with admiration in the research trailer" width="512" height="512">
                         <div class="scene-body">
                             <span class="scene-label">Still Single</span>
                             <p class="scene-passage">
                                 <span class="scene-speaker">Ian:</span> As I watch you steer us around these
-                                <span class="fill-blank"><input class="fill-blank__input" id="s3b1" type="text" data-answer="communication" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s3b1">NOUN ▾</span></span>
+                                <span class="fill-blank"><label for="s3b1" class="visually-hidden">Scene 3, blank 1 — noun: communication</label><input class="fill-blank__input" id="s3b1" type="text" data-answer="communication" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s3b1">NOUN ▾</span></span>
                                 traps that I didn&rsquo;t even know existed, it&rsquo;s like, &ldquo;what?&rdquo; I guess that&rsquo;s why I&rsquo;m
-                                <span class="fill-blank"><input class="fill-blank__input" id="s3b2" type="text" data-answer="single" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s3b2">ADJ ▾</span></span>.
+                                <span class="fill-blank"><label for="s3b2" class="visually-hidden">Scene 3, blank 2 — adjective: single</label><input class="fill-blank__input" id="s3b2" type="text" data-answer="single" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s3b2">ADJ ▾</span></span>.
                             </p>
                             <div id="bk-s3b1" class="scene-bank" data-category="nouns" data-input="s3b1"></div>
                             <div id="bk-s3b2" class="scene-bank" data-category="adjectives" data-input="s3b2"></div>
@@ -1012,15 +1029,15 @@
 
                     <!-- SCENE 4: IF YOU COULD SEE YOUR WHOLE LIFE -->
                     <div class="scene-card">
-                        <img class="scene-image" src="../generated-images/rd_pro_pixelate_1776433283.png" alt="Ian and Louise in a contemplative moment during the evacuation">
+                        <img class="scene-image" src="../generated-images/rd_pro_pixelate_1776433283.png" alt="Ian and Louise in a contemplative moment during the evacuation" width="512" height="512">
                         <div class="scene-body">
                             <span class="scene-label">What Would You Change?</span>
                             <p class="scene-passage">
                                 <span class="scene-speaker">Louise:</span> If you could see your whole life from start to finish, would you change things?<br>
                                 <span class="scene-speaker">Ian:</span>
-                                <span class="fill-blank"><input class="fill-blank__input" id="s4b1" type="text" data-answer="Maybe" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s4b1">ADV ▾</span></span>
+                                <span class="fill-blank"><label for="s4b1" class="visually-hidden">Scene 4, blank 1 — adverb: Maybe</label><input class="fill-blank__input" id="s4b1" type="text" data-answer="Maybe" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s4b1">ADV ▾</span></span>
                                 I&rsquo;d say what I
-                                <span class="fill-blank"><input class="fill-blank__input" id="s4b2" type="text" data-answer="felt" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s4b2">VERB ▾</span></span>
+                                <span class="fill-blank"><label for="s4b2" class="visually-hidden">Scene 4, blank 2 — verb: felt</label><input class="fill-blank__input" id="s4b2" type="text" data-answer="felt" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s4b2">VERB ▾</span></span>
                                 more often. I-I don&rsquo;t know.
                             </p>
                             <div id="bk-s4b1" class="scene-bank" data-category="adverbs" data-input="s4b1"></div>
@@ -1032,20 +1049,20 @@
 
                     <!-- SCENE 5: THE STARS CONFESSION -->
                     <div class="scene-card">
-                        <img class="scene-image" src="../generated-images/rd_pixelate_1776495626.png" alt="Ian looking up at the night sky full of stars">
+                        <img class="scene-image" src="../generated-images/rd_pixelate_1776495626.png" alt="Ian looking up at the night sky full of stars" width="512" height="512">
                         <div class="scene-body">
                             <span class="scene-label">It Was Meeting You</span>
                             <p class="scene-passage">
                                 <span class="scene-speaker">Ian:</span> You know I&rsquo;ve had my head tilted up to the
-                                <span class="fill-blank"><input class="fill-blank__input" id="s5b1" type="text" data-answer="stars" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b1">NOUN ▾</span></span>
+                                <span class="fill-blank"><label for="s5b1" class="visually-hidden">Scene 5, blank 1 — noun: stars</label><input class="fill-blank__input" id="s5b1" type="text" data-answer="stars" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b1">NOUN ▾</span></span>
                                 for as long as I can
-                                <span class="fill-blank"><input class="fill-blank__input" id="s5b2" type="text" data-answer="remember" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b2">VERB ▾</span></span>.
+                                <span class="fill-blank"><label for="s5b2" class="visually-hidden">Scene 5, blank 2 — verb: remember</label><input class="fill-blank__input" id="s5b2" type="text" data-answer="remember" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b2">VERB ▾</span></span>.
                                 You know what
-                                <span class="fill-blank"><input class="fill-blank__input" id="s5b3" type="text" data-answer="surprised" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b3">VERB ▾</span></span>
+                                <span class="fill-blank"><label for="s5b3" class="visually-hidden">Scene 5, blank 3 — verb: surprised</label><input class="fill-blank__input" id="s5b3" type="text" data-answer="surprised" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b3">VERB ▾</span></span>
                                 me the most? It wasn&rsquo;t meeting
-                                <span class="fill-blank"><input class="fill-blank__input" id="s5b4" type="text" data-answer="them" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b4">PRN ▾</span></span>.
+                                <span class="fill-blank"><label for="s5b4" class="visually-hidden">Scene 5, blank 4 — pronoun: them</label><input class="fill-blank__input" id="s5b4" type="text" data-answer="them" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b4">PRN ▾</span></span>.
                                 It was meeting
-                                <span class="fill-blank"><input class="fill-blank__input" id="s5b5" type="text" data-answer="you" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b5">PRN ▾</span></span>.
+                                <span class="fill-blank"><label for="s5b5" class="visually-hidden">Scene 5, blank 5 — pronoun: you</label><input class="fill-blank__input" id="s5b5" type="text" data-answer="you" autocomplete="off" placeholder="___"><span class="fill-blank__badge" data-bank="bk-s5b5">PRN ▾</span></span>.
                             </p>
                             <div id="bk-s5b1" class="scene-bank" data-category="nouns" data-input="s5b1"></div>
                             <div id="bk-s5b2" class="scene-bank" data-category="verbs" data-input="s5b2"></div>
@@ -1121,21 +1138,21 @@
                         <p class="panel-intro">Choose one scenario and write Ian&rsquo;s monologue. Use the word banks to stay in his voice: he is a scientist who has learned to feel, and he is working through something his equations cannot solve.</p>
                     </div>
                     <div class="scenario-grid" id="scenarioGrid">
-                        <div class="scenario-card" data-scenario="a" onclick="openScenario('a')">
+                        <button type="button" class="scenario-card" data-scenario="a" onclick="openScenario('a')">
                             <p class="scenario-card__label">Scenario A</p>
                             <h3 class="scenario-card__title">Responding to the Truth</h3>
                             <p class="scenario-card__subtitle">Louise has just told Ian what she knew would happen to Hannah. Write his response as a one-sided monologue.</p>
-                        </div>
-                        <div class="scenario-card" data-scenario="b" onclick="openScenario('b')">
+                        </button>
+                        <button type="button" class="scenario-card" data-scenario="b" onclick="openScenario('b')">
                             <p class="scenario-card__label">Scenario B</p>
                             <h3 class="scenario-card__title">Hannah&rsquo;s First Birthday</h3>
                             <p class="scenario-card__subtitle">Ian gives a toast at Hannah&rsquo;s first birthday. He doesn&rsquo;t know what Louise knows.</p>
-                        </div>
-                        <div class="scenario-card" data-scenario="c" onclick="openScenario('c')">
+                        </button>
+                        <button type="button" class="scenario-card" data-scenario="c" onclick="openScenario('c')">
                             <p class="scenario-card__label">Scenario C</p>
                             <h3 class="scenario-card__title">Choose Your Own Scenario</h3>
                             <p class="scenario-card__subtitle">Write Ian speaking in a moment you choose: to Louise, to Hannah, to the heptapods, or to himself.</p>
-                        </div>
+                        </button>
                     </div>
                 </div>
 

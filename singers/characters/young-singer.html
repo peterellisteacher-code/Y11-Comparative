@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,7 +45,7 @@
            ============================================= */
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html, body {
-            height: 100dvh; overflow: hidden;
+            min-height: 100dvh;
             background: var(--bar-dark);
             color: var(--bar-text);
             font-family: 'Inter', sans-serif;
@@ -639,10 +639,10 @@
             .step:not(.active) { display: none !important; }
             html, body { height: auto; overflow: auto; background: #fff; color: #111; }
             .page-shell { height: auto; overflow: auto; }
-            .page-header { border-bottom: 1px solid #ccc; padding: 12px 24px; }
+            .page-header { border-bottom: 1px solid #ccc; padding: var(--space-sm) var(--space-md); }
             .header-back, .header-step { display: none; }
             .header-label { color: #555; }
-            .page-main { padding: 24px; overflow: auto; }
+            .page-main { padding: var(--space-md); overflow: auto; }
             .page-grid { grid-template-columns: 1fr; height: auto; }
             .step-panel, .step { height: auto; overflow: visible; }
             .step-hd { border-bottom: 1px solid #ccc; }
@@ -653,7 +653,7 @@
             .monologue-area {
                 border: 1px solid #bbb; background: #fff; color: #111;
                 height: auto; min-height: 220px;
-                font-family: Georgia, serif; font-size: 14px;
+                font-family: Georgia, serif; font-size: var(--text-sm);
                 print-color-adjust: exact;
             }
         }
@@ -790,7 +790,7 @@
             font-size: var(--text-lg);
             line-height: 1;
             cursor: pointer;
-            padding: 2px 6px;
+            padding: 2px 6px; /* stylelint-disable-line scale-unlimited/declaration-strict-value */
         }
         .song-note-remove:hover { color: var(--accent); }
         .song-note-quote {
